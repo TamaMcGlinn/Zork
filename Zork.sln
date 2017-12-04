@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2002
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zork", "Zork\Zork.csproj", "{9BBBD4D2-2ED4-4017-B8D6-4DB3A8FDA9E2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zork", "Zork\Zork.csproj", "{06343EEB-60BF-4947-B7BF-180016820DAF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ZorkUnitTest", "ZorkUnitTest\ZorkUnitTest.csproj", "{7CC69D41-CC76-4B79-A0F2-0A7F121B471F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,15 +13,19 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{9BBBD4D2-2ED4-4017-B8D6-4DB3A8FDA9E2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{9BBBD4D2-2ED4-4017-B8D6-4DB3A8FDA9E2}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{9BBBD4D2-2ED4-4017-B8D6-4DB3A8FDA9E2}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{9BBBD4D2-2ED4-4017-B8D6-4DB3A8FDA9E2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{06343EEB-60BF-4947-B7BF-180016820DAF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06343EEB-60BF-4947-B7BF-180016820DAF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06343EEB-60BF-4947-B7BF-180016820DAF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06343EEB-60BF-4947-B7BF-180016820DAF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CC69D41-CC76-4B79-A0F2-0A7F121B471F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CC69D41-CC76-4B79-A0F2-0A7F121B471F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CC69D41-CC76-4B79-A0F2-0A7F121B471F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CC69D41-CC76-4B79-A0F2-0A7F121B471F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {A9E086B0-73B6-48E5-9C2E-D93D6965FB99}
+		SolutionGuid = {9B871176-0BDA-4BF8-8EE5-18FC3C1FCF4D}
 	EndGlobalSection
 EndGlobal

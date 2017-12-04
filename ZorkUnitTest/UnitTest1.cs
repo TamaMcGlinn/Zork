@@ -1,16 +1,14 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace UnitTest
+namespace ZorkUnitTest
 {
     [TestClass]
-    public class TestPhrases
+    public class UnitTest1
     {
         [TestMethod]
-        public void TestHello()
+        public void TestMethod1()
         {
-            Game g = new Game();
-            
         }
     }
 }
