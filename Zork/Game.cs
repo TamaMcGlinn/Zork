@@ -21,6 +21,9 @@ namespace Zork
             createMaze();
         }
 
+        /// <summary>
+        /// Create a maze with at least one path between every two points.
+        /// </summary>
         private void createMaze()
         {
             allRooms = new Room[Width, Height];
@@ -29,6 +32,11 @@ namespace Zork
             createNeighbour(currentRoom);
         }
 
+        /// <summary>
+        /// Set the canGoThere variable to true between the two locations.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
         private void connect(Point a, Point b)
         {
             if(a.X == b.X)
@@ -59,6 +67,11 @@ namespace Zork
             }
         }
 
+        /// <summary>
+        /// Return the neighbouring points for which the room is null.
+        /// </summary>
+        /// <param name="place">The target location to examine</param>
+        /// <returns></returns>
         private List<Point> listEmptyNeighbours(Point place)
         {
             List<Point> result = new List<Point>();
@@ -81,6 +94,10 @@ namespace Zork
             return result;
         }
 
+        /// <summary>
+        /// Create rooms next to the current one as long as there are still null neighbours
+        /// </summary>
+        /// <param name="fromPoint"></param>
         private void createNeighbour(Point fromPoint)
         {
             List<Point> options;
@@ -97,6 +114,12 @@ namespace Zork
             } while (options.Count > 0);
         }
 
+        /// <summary>
+        /// Attempt to go from the from point to the towards point.
+        /// </summary>
+        /// <param name="from">From point</param>
+        /// <param name="towards">Destination point</param>
+        /// <param name="direction">Direction from from to towards</param>
         private void tryGo(Point from, Point towards, Direction direction)
         {
             if( towards.X < 0 || towards.X == Width || towards.Y < 0 || towards.Y == Height)
