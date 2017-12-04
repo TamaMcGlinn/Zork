@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Zork.Objects
 {
-    public class Weapon
+    public class Weapon : IObject
     {
         #region properties
         private string _name;
