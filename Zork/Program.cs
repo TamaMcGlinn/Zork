@@ -10,7 +10,7 @@ namespace Zork
             Game g = new Game();
             try
             {
-                g.Run();
+                g.run();
             } catch(Exception e)
             {
                 Console.WriteLine(e.Message);
