@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Zork
 {
-    enum Direction
+    public enum Direction
     {
         North,
         East,

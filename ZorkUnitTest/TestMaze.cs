@@ -11,7 +11,7 @@ namespace ZorkUnitTest
         public void CreateRoom()
         {
             Game g = new Game();
-            
+            Assert.IsNotNull(g);
         }
     }
 }

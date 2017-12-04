@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Zork
 {
-    class Room
+    public class Room
     {
         private string description;
         public Dictionary<Direction,bool> canGoThere;
