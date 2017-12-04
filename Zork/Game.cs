@@ -21,8 +21,8 @@ namespace Zork
         public void Run()
         {
             while (true) {
-            allRooms[currentRoom.x,currentRoom.y].Print();
-            string userInput = Console.ReadLine();
+                allRooms[currentRoom.x,currentRoom.y].Print();
+                string userInput = Console.ReadLine();
                 switch (userInput[0])
                 {
                     case 'n':
