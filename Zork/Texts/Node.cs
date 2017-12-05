@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace Zork.Texts
 {
+    /// <summary>
+    /// Each node has a text and some number of child nodes.
+    /// </summary>
     class Node
     {
         private string _text;
