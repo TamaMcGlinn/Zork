@@ -23,7 +23,7 @@ namespace ZorkUnitTest
                 Assert.Fail("Weapon strength is not correct");
             }
 
-            if(weapon.Description != "A heavy longsword")
+            if(weapon.Description != "A heavy longsword.")
             {
                 Assert.Fail("The description is not correct");
             }
