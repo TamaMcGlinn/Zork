@@ -15,8 +15,8 @@ namespace Zork
         Point currentRoom;
         const int Width = 20;
         const int Height = 20;
-        const int StartX = 5;
-        const int StartY = 9;
+        const int StartX = 1;
+        const int StartY = 1;
         Random rng = new Random();
 
         public Game()
@@ -33,6 +33,19 @@ namespace Zork
             currentRoom = new Point(StartX, StartY);
             allRooms[StartX, StartY] = new Room("Your house");
             createNeighbour(currentRoom);
+            addExtraConnections(Width*Height);
+            printWholeMap();
+        }
+
+        private void addExtraConnections(int extras)
+        {
+            for(int i = 0; i < extras; ++i)
+            {
+                var roomToConnect = new Point(rng.Next(1, Width - 1), rng.Next(1, Height - 1));
+                int neighbourToConnect = rng.Next(0, 4);
+                var neighbourPoint = new Point(roomToConnect.X + (neighbourToConnect % 2)*((neighbourToConnect / 2) * 2 - 1), roomToConnect.Y + (1 - (neighbourToConnect % 2)) * ((neighbourToConnect / 2) * 2 - 1));
+                connect(roomToConnect, neighbourPoint);
+            }
         }
 
         /// <summary>
@@ -66,6 +79,43 @@ namespace Zork
                     Debug.Assert(a.X - 1 == b.X);
                     allRooms[a.X, a.Y].canGoThere[Direction.West] = true;
                     allRooms[b.X, b.Y].canGoThere[Direction.East] = true;
+                }
+            }
+        }
+
+        private void printWholeMap()
+        {
+            for (int yi = 0; yi < Height; ++yi)
+            {
+                for (int xi = 0; xi < Width; ++xi)
+                {
+                    Console.Write("0");
+                    if (allRooms[xi, yi].canGoThere[Direction.East])
+                    {
+                        Debug.Assert(xi == Width-1 || allRooms[xi+1, yi].canGoThere[Direction.West]);
+                        Console.Write("-");
+                    } else if(xi < Width - 1)
+                    {
+                        Console.Write(" ");
+                    }
+                }
+                Console.Write("\n");
+                if( yi < Height-1)
+                {
+                    for (int xi = 0; xi < Width; ++xi)
+                    {
+                        if (allRooms[xi, yi].canGoThere[Direction.South])
+                        {
+                            Debug.Assert(yi == Height - 1 || allRooms[xi, yi+1].canGoThere[Direction.North]);
+                            Console.Write("|");
+                        }
+                        else if (xi < Width - 1)
+                        {
+                            Console.Write(" ");
+                        }
+                        Console.Write(" ");
+                    }
+                    Console.Write("\n");
                 }
             }
         }
