@@ -17,9 +17,8 @@ namespace ZorkUnitTest
         public void characterConstructorTest()
         {
             Weapon longSword = createWeapon();
-            Character character1 = new Character("Jan", 4, 100, longSword, new Room("A small room"), "This man has a long beard.");
-       
-            if (character1.Name != "Jan")
+            Character character1 = new Character("sherrif_barney", 4, 100, longSword, "This man has a long beard.");
+            if (character1.Name != "sherrif_barney")
             {
                 Assert.Fail("The name of the character is not correct");
             }
@@ -59,15 +58,17 @@ namespace ZorkUnitTest
         [TestMethod]
         public void lookAroundTest()
         {
+            Room room = new Room("A place");
             Character character = createCharacter();
-            character.Location.ObjectsInRoom = createListOfThreeWeaponObjects();
-            character.Location.CharactersInRoom.Add(createCharacter());
-            string lookAroundTextString = character.lookAround();
+            room.CharactersInRoom.Add(character);
+            room.ObjectsInRoom = createListOfThreeWeaponObjects();
+            room.CharactersInRoom.Add(createCharacter());
+            string lookAroundTextString = room.LookAround();
             string[] lookAroundTextList = lookAroundTextString.Split('\n');
 
             //Na feedback dit:
             //checks if the current room's description is being printed first.
-            Assert.IsTrue(lookAroundTextString.Contains(character.Location.Description));
+            Assert.IsTrue(lookAroundTextString.Contains(room.Description));
             //in plaats van:
             //checks if the current room's description is being printed first.
             //if (!lookAroundTextList[0].Contains(character.Location.Description))
@@ -78,7 +79,7 @@ namespace ZorkUnitTest
 
 
             //checks whether the second line of text contains the name of the character (the character which is added to the room
-            if (!lookAroundTextList[2].Contains(character.Name))
+            if (!lookAroundTextList[2].Contains(character.Name.Replace('_', ' ')))
             {
                 Assert.Fail("The character's name is not printed in the second line of the look around method");
             }
@@ -106,7 +107,7 @@ namespace ZorkUnitTest
         /// <returns>A character equipped with a longsword</returns>
         private Character createCharacter()
         {
-            return new Character("Jan", 4, 100, createWeapon(), new Room("A golden room"), "This man has a long beard.");
+            return new Character("sherrif_barney", 4, 100, createWeapon(), "This man has a long beard.");
         }
 
         private List<IObject> createListOfThreeWeaponObjects()
@@ -120,7 +121,7 @@ namespace ZorkUnitTest
 
         private Character createCharacterWithoutWeapon()
         {
-            return new Character("Jan", 4, 100, null, new Room("A golden room"), "This man has a long beard.");
+            return new Character("sherrif_barney", 4, 100, null, "This man has a long beard.");
         }
     }
 }

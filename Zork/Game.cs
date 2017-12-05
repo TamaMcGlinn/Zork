@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
 using System.Text;
+using System.Drawing;
+using System.Linq;
 
 namespace Zork
 {
@@ -13,6 +15,7 @@ namespace Zork
     {
         Room[,] allRooms;
         Point currentRoom;
+        List<Character> allCharacters;
         const int Width = 20;
         const int Height = 20;
         const int StartX = 1;
@@ -22,6 +25,10 @@ namespace Zork
         public Game()
         {
             createMaze();
+            allCharacters = new List<Character>();
+            var barney = new Character("sherrif_barney", 3, 100, null, "A fat man in a aprim black sherrif's uniform. He has a mustache and short brown hair.");
+            allCharacters.Add(barney);
+            allRooms[0, 0].CharactersInRoom.Add(barney);
         }
 
         /// <summary>
@@ -192,10 +199,9 @@ namespace Zork
         /// </summary>
         public void run()
         {
-            Character player = new Character("Sherlock", 5, 100, null, allRooms[0, 0], "This is you, Sherlock Holmes!");
             printInstructions();
             while (true) {
-                allRooms[currentRoom.X,currentRoom.Y].Print();
+                allRooms[currentRoom.X,currentRoom.Y].print();
                 string userInput = Console.ReadLine();
                 switch (userInput[0])
                 {
@@ -217,17 +223,32 @@ namespace Zork
                         break;
                     case 'L':
                     case 'l':
-                        player.lookAround();
+                        Console.Write(allRooms[currentRoom.X, currentRoom.Y].LookAround());
+                        break;
+                    case 't':
+                    case 'T':
+                        var talkCommand = userInput.Split(' ');
+                        if (talkCommand.Length >= 3 && talkCommand[1] == "to")
+                        {
+                            string charactername = string.Join("_", talkCommand.Skip(2)).ToLower();
+                            Character talkTarget = allRooms[currentRoom.X, currentRoom.Y].CharactersInRoom.Find((Character c) => { return c.Name == charactername; });
+                            if(talkTarget == null)
+                            {
+                                Console.WriteLine("There is nobody called " + charactername + " here.");
+                            }
+                            talkTarget.Talk();
+                        } else
+                        {
+                            Console.WriteLine("Did you mean; \"Talk to [character name]\"?");
+                        }
                         break;
                     default:
                         printInstructions();
                         break;
                 }
-                //sets the player's location after moving
-                player.Location = allRooms[currentRoom.X, currentRoom.Y];
-                
             }
         }
+
         private void printInstructions()
         {
             Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around, [L] to look around");

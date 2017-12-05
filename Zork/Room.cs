@@ -43,7 +43,6 @@ namespace Zork
         public List<Character> CharactersInRoom
         {
             get { return _charactersInRoom; }
-            set { _charactersInRoom = value; }
         }
         #endregion properties
 
@@ -58,7 +57,7 @@ namespace Zork
             };
         }
 
-        public void Print() {
+        public void print() {
             Console.WriteLine(Description);
             Console.WriteLine("You can go:");
             foreach (var kvp in CanGoThere)
@@ -95,7 +94,8 @@ namespace Zork
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < CharactersInRoom.Count; i++)
             {
-                sb.Append(CharactersInRoom[i].Name);
+                string formattedName = CharactersInRoom[i].Name.Replace('_', ' ');
+                sb.Append(formattedName);
                 sb.Append(" : ");
                 sb.Append(CharactersInRoom[i].Description);
                 sb.AppendLine();
@@ -103,5 +103,24 @@ namespace Zork
 
             return sb.ToString();
         }
+
+        public string LookAround()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            //prints the description of the room
+            sb.AppendLine(Description);
+
+            //prints all characters
+            sb.AppendLine("The following characters are in this room:");
+            sb.Append(printCharactersInRoom());
+
+            //prints all objects
+            sb.AppendLine("You see the following objects laying around:");
+            sb.Append(printObjectsInRoom());
+            Console.WriteLine(sb.ToString());
+            return sb.ToString();
+        }
+
     }
 }
