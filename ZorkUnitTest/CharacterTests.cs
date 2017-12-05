@@ -18,6 +18,7 @@ namespace ZorkUnitTest
         {
             Weapon longSword = createWeapon();
             Character character1 = new Character("Jan", 4, 100, longSword, new Room("A small room"), "This man has a long beard.");
+       
             if (character1.Name != "Jan")
             {
                 Assert.Fail("The name of the character is not correct");
@@ -64,11 +65,18 @@ namespace ZorkUnitTest
             string lookAroundTextString = character.lookAround();
             string[] lookAroundTextList = lookAroundTextString.Split('\n');
 
+            //Na feedback dit:
             //checks if the current room's description is being printed first.
-            if (!lookAroundTextList[0].Contains(character.Location.Description))
-            {
-                Assert.Fail("The first object seen is not the room description, should start with room description");
-            }
+            Assert.IsTrue(lookAroundTextString.Contains(character.Location.Description));
+            //in plaats van:
+            //checks if the current room's description is being printed first.
+            //if (!lookAroundTextList[0].Contains(character.Location.Description))
+            //{
+            //    Assert.Fail("The first object seen is not the room description, should start with room description");
+            //}
+            //en voor de volgtijdelijkheid dan: assert.istrue(indexof(1) < indexof(2));
+
+
             //checks whether the second line of text contains the name of the character (the character which is added to the room
             if (!lookAroundTextList[2].Contains(character.Name))
             {
