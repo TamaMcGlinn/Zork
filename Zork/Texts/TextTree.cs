@@ -6,7 +6,7 @@ namespace Zork.Texts
     /// <summary>
     /// A tree of Nodes with one root
     /// </summary>
-    class TextTree
+    public class TextTree
     {
         private string _name;
 

@@ -4,7 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Zork.Objects;
+using Zork.Texts;
 using System.Drawing;
+using System.Diagnostics;
 
 namespace Zork
 {
@@ -53,6 +55,14 @@ namespace Zork
             set { _location = value; }
         }
 
+        private TextTree _text;
+
+        public TextTree Text
+        {
+            get { return _text; }
+            set { _text = value; }
+        }
+        
         #endregion properties
 
         /// <summary>
@@ -70,6 +80,50 @@ namespace Zork
             this.Health = health;
             this.EquippedWeapon = weapon;
             this.Location = location;
+            this.Text = new TextTree(name + ".txt");
+        }
+
+        /// <summary>
+        /// Output text and accept player choices until the tree reaches a leaf node
+        /// </summary>
+        public void Talk()
+        {
+            bool playerIsTalking = false;
+            Node currentNode = Text.RootNode;
+            while (true)
+            {
+                Console.WriteLine(currentNode.Text);
+                if (currentNode.Children.Count == 0)
+                {
+                    return;
+                }
+
+                if (!playerIsTalking)
+                {
+                    int responseNumber = 1;
+                    foreach (Node child in currentNode.Children)
+                    {
+                        Console.WriteLine(responseNumber + "> " + child.Text);
+                        ++responseNumber;
+                    }
+                    Console.Write("> ");
+                    int chosenResponse = -1;
+                    while (Int32.TryParse(Console.ReadLine(), out chosenResponse) == false || chosenResponse < 0 || chosenResponse > currentNode.Children.Count)
+                    {
+                        Console.WriteLine("Write a number for one of the responses");
+                    }
+                    Node playerResponse = currentNode.Children[chosenResponse - 1];
+                    Console.WriteLine("> " + playerResponse.Text);
+                    if (playerResponse.Children.Count == 1)
+                    {
+                        currentNode = playerResponse.Children.First();
+                    } else
+                    {
+                        Debug.Assert(playerResponse.Children.Count == 0);
+                        return;
+                    }
+                }
+            }
         }
     }
 }

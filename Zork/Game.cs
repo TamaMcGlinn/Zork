@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Drawing;
+using System.Linq;
 
 namespace Zork
 {
     class Game
     {
         Room[,] allRooms;
+        List<Character> allCharacters;
         Coordinates currentRoom;
         const int Width = 20;
         const int Height = 20;
@@ -16,6 +19,10 @@ namespace Zork
             allRooms = new Room[Width,Height];
             allRooms[0, 0] = new Room("You are in a busy street in London.");
             currentRoom = new Coordinates( 0, 0 );
+            allCharacters = new List<Character>();
+            var barney = new Character("sherrif_barney", 3, 100, null, new Point(0, 0));
+            allCharacters.Add(barney);
+            allRooms[0, 0].Characters.Add(barney);
         }
 
         public void Run()
@@ -83,6 +90,23 @@ namespace Zork
                         else
                         {
                             currentRoom.x++;
+                        }
+                        break;
+                    case 't':
+                    case 'T':
+                        var talkCommand = userInput.Split(' ');
+                        if (talkCommand.Length >= 3 && talkCommand[1] == "to")
+                        {
+                            string charactername = string.Join("_", talkCommand.Skip(2)).ToLower();
+                            Character talkTarget = allRooms[currentRoom.x, currentRoom.y].Characters.Find((Character c) => { return c.Name == charactername; });
+                            if(talkTarget == null)
+                            {
+                                Console.WriteLine("There is nobody called " + charactername + " here.");
+                            }
+                            talkTarget.Talk();
+                        } else
+                        {
+                            Console.WriteLine("Did you mean; \"Talk to [character name]\"?");
                         }
                         break;
                     default:

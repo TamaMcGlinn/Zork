@@ -5,7 +5,7 @@ namespace Zork.Texts
     /// <summary>
     /// Each node has a text and some number of child nodes.
     /// </summary>
-    class Node
+    public class Node
     {
         private string _text;
 
