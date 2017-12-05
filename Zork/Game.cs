@@ -15,11 +15,14 @@ namespace Zork
         {
             allRooms = new Room[Width,Height];
             allRooms[0, 0] = new Room("You are in a busy street in London.");
-            currentRoom = new Coordinates( 0, 0 );
+            currentRoom = new Coordinates(0, 0);
+
         }
 
         public void Run()
         {
+            Character player = new Character("Sherlock", 5, 100, null, allRooms[0, 0], "This is you, Sherlock Holmes!");
+            printInstructions();
             while (true) {
                 allRooms[currentRoom.x,currentRoom.y].Print();
                 string userInput = Console.ReadLine();
@@ -85,11 +88,22 @@ namespace Zork
                             currentRoom.x++;
                         }
                         break;
+                    case 'L':
+                    case 'l':
+                        player.lookAround();
+                        break;
                     default:
-                        Console.Write("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around");
+                        printInstructions();
                         break;
                 }
+                //sets the player's location after moving
+                player.Location = allRooms[currentRoom.x, currentRoom.y];
+                
             }
+        }
+        private void printInstructions()
+        {
+            Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around, [L] to look around");
         }
     }
 }

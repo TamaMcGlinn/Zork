@@ -45,13 +45,22 @@ namespace Zork
             set { _weapon = value; }
         }
 
-        private Point _location;
+        private Room _location;
 
-        public Point Location
+        public Room Location
         {
             get { return _location; }
             set { _location = value; }
         }
+
+        private string _description;
+
+        public string Description
+        {
+            get { return _description; }
+            set { _description = value; }
+        }
+
 
         #endregion properties
 
@@ -63,13 +72,36 @@ namespace Zork
         /// <param name="health">The characters health</param>
         /// <param name="weapon">The weapon the character has equipped</param>
         /// <param name="location">Current location of the character</param>
-        public Character(string name, int strength,int health, Weapon weapon, Point location)
+        /// <param name="description">a description of what the character looks like</param>
+        public Character(string name, int strength,int health, Weapon weapon, Room location, string description)
         {
             this.Name = name;
             this.Strength = strength;
             this.Health = health;
             this.EquippedWeapon = weapon;
             this.Location = location;
+        }
+
+        /// <summary>
+        /// Creates a printable string of all things you see at your current location
+        /// </summary>
+        /// <returns>A string with all information about what you see</returns>
+        public string lookAround()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            //prints the description of the room
+            sb.AppendLine(Location.Description);
+
+            //prints all characters
+            sb.AppendLine("The following characters are in this room:");
+            sb.Append(Location.printCharactersInRoom());
+
+            //prints all objects
+            sb.AppendLine("You see the following objects laying around:");
+            sb.Append(Location.printObjectsInRoom());
+            Console.WriteLine(sb.ToString());
+            return sb.ToString();
         }
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Zork.Objects
 {
-    interface IObject
+    public interface IObject
     {
         string Name { get; set; }
         string Description { get; set; }
