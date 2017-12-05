@@ -15,7 +15,7 @@ namespace ZorkUnitTest
         [TestMethod]
         public void CharacterConstructorTest()
         {
-            Weapon longSword = new Weapon("Longsword", 16);
+            Weapon longSword = new Weapon("Longsword", 16, "A heavy longsword.");
             Character character1 = new Character("Jan", 4, 100, longSword, new Point(10,5));
             if (character1.Name != "Jan")
             {
