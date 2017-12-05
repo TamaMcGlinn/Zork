@@ -64,6 +64,7 @@ namespace ZorkUnitTest
             string lookAroundTextString = character.lookAround();
             string[] lookAroundTextList = lookAroundTextString.Split('\n');
 
+            //checks if the current room's description is being printed first.
             if (!lookAroundTextList[0].Contains(character.Location.Description))
             {
                 Assert.Fail("The first object seen is not the room description, should start with room description");
