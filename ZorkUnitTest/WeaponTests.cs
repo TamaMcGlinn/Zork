@@ -13,17 +13,21 @@ namespace ZorkUnitTest
         [TestMethod]
         public void WeaponConstructorTest()
         {
-            Weapon weapon = new Weapon("Longsword", 16, "A heavy longsword.");
-            if(weapon.Name!="Longsword")
+            string name = "Longsword";
+            string desc = "A heavy longsword.";
+            int strength = 16;
+
+            Weapon weapon = new Weapon(name, strength, desc);
+            if(weapon.Name!=name)
             {
                 Assert.Fail("Weapon name is not correct");
             }
-            if(weapon.Strength != 16)
+            if(weapon.Strength != strength)
             {
                 Assert.Fail("Weapon strength is not correct");
             }
 
-            if(weapon.Description != "A heavy longsword")
+            if(weapon.Description != desc)
             {
                 Assert.Fail("The description is not correct");
             }
