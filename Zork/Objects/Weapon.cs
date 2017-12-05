@@ -24,12 +24,23 @@ namespace Zork.Objects
             get { return _strength; }
             set { _strength = value; }
         }
+        private string _description;
+
+        public string Description
+        {
+            get { return _description; }
+            set { _description = value; }
+        }
         #endregion properties
 
-        public Weapon(string name, int strength)
+        public Weapon(string name, int strength, string description)
         {
             Name = name;
             Strength = strength;
+            Description = description;
         }
+
+
+       
     }
 }
