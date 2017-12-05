@@ -8,6 +8,13 @@ namespace Zork
     public class Room : IObject
     {
         #region properties
+        private Dictionary<Direction,bool> _canGoThere;
+
+        public Dictionary<Direction,bool> CanGoThere
+        {
+            get { return _canGoThere; }
+        }
+
         private string _name;
 
         public string Name
@@ -43,10 +50,24 @@ namespace Zork
         public Room(string desc)
         {
             Description = desc;
+            _canGoThere = new Dictionary<Direction, bool> {
+                { Direction.North, false },
+                { Direction.East, false },
+                { Direction.South, false },
+                { Direction.West, false }
+            };
         }
 
         public void Print() {
             Console.WriteLine(Description);
+            Console.WriteLine("You can go:");
+            foreach (var kvp in CanGoThere)
+            {
+                if (kvp.Value)
+                {
+                    Console.WriteLine(kvp.Key);
+                }
+            }
         }
 
         /// <summary>

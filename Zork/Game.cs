@@ -1,92 +1,219 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Drawing;
 using System.Text;
 
 namespace Zork
 {
-    class Game
+    /// <summary>
+    /// A Zork Game, which initialises the rooms, characters and objects, and allows you to play.
+    /// </summary>
+    public class Game
     {
         Room[,] allRooms;
-        Coordinates currentRoom;
+        Point currentRoom;
         const int Width = 20;
         const int Height = 20;
+        const int StartX = 1;
+        const int StartY = 1;
+        Random rng = new Random();
 
         public Game()
         {
-            allRooms = new Room[Width,Height];
-            allRooms[0, 0] = new Room("You are in a busy street in London.");
-            currentRoom = new Coordinates(0, 0);
-
+            createMaze();
         }
 
-        public void Run()
+        /// <summary>
+        /// Create a maze with at least one path between every two points.
+        /// </summary>
+        private void createMaze()
+        {
+            allRooms = new Room[Width, Height];
+            currentRoom = new Point(StartX, StartY);
+            allRooms[StartX, StartY] = new Room("Your house");
+            createNeighbour(currentRoom);
+            addExtraConnections(Width*Height);
+            printWholeMap();
+        }
+
+        private void addExtraConnections(int extras)
+        {
+            for(int i = 0; i < extras; ++i)
+            {
+                var roomToConnect = new Point(rng.Next(1, Width - 1), rng.Next(1, Height - 1));
+                int neighbourToConnect = rng.Next(0, 4);
+                var neighbourPoint = new Point(roomToConnect.X + (neighbourToConnect % 2)*((neighbourToConnect / 2) * 2 - 1), roomToConnect.Y + (1 - (neighbourToConnect % 2)) * ((neighbourToConnect / 2) * 2 - 1));
+                connect(roomToConnect, neighbourPoint);
+            }
+        }
+
+        /// <summary>
+        /// Set the canGoThere variable to true between the two locations.
+        /// </summary>
+        /// <param name="a"></param>
+        /// <param name="b"></param>
+        private void connect(Point a, Point b)
+        {
+            if(a.X == b.X)
+            {
+                if(a.Y+1 == b.Y)
+                {
+                    allRooms[a.X,a.Y].CanGoThere[Direction.South] = true;
+                    allRooms[b.X,b.Y].CanGoThere[Direction.North] = true;
+                } else
+                {
+                    Debug.Assert(a.Y - 1 == b.Y);
+                    allRooms[a.X, a.Y].CanGoThere[Direction.North] = true;
+                    allRooms[b.X, b.Y].CanGoThere[Direction.South] = true;
+                }
+            } else
+            {
+                if (a.X + 1 == b.X)
+                {
+                    allRooms[a.X, a.Y].CanGoThere[Direction.East] = true;
+                    allRooms[b.X, b.Y].CanGoThere[Direction.West] = true;
+                }
+                else
+                {
+                    Debug.Assert(a.X - 1 == b.X);
+                    allRooms[a.X, a.Y].CanGoThere[Direction.West] = true;
+                    allRooms[b.X, b.Y].CanGoThere[Direction.East] = true;
+                }
+            }
+        }
+
+        private void printWholeMap()
+        {
+            for (int yi = 0; yi < Height; ++yi)
+            {
+                for (int xi = 0; xi < Width; ++xi)
+                {
+                    Console.Write("0");
+                    if (allRooms[xi, yi].CanGoThere[Direction.East])
+                    {
+                        Debug.Assert(xi == Width-1 || allRooms[xi+1, yi].CanGoThere[Direction.West]);
+                        Console.Write("-");
+                    } else if(xi < Width - 1)
+                    {
+                        Console.Write(" ");
+                    }
+                }
+                Console.Write("\n");
+                if( yi < Height-1)
+                {
+                    for (int xi = 0; xi < Width; ++xi)
+                    {
+                        if (allRooms[xi, yi].CanGoThere[Direction.South])
+                        {
+                            Debug.Assert(yi == Height - 1 || allRooms[xi, yi+1].CanGoThere[Direction.North]);
+                            Console.Write("|");
+                        }
+                        else if (xi < Width - 1)
+                        {
+                            Console.Write(" ");
+                        }
+                        Console.Write(" ");
+                    }
+                    Console.Write("\n");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Return the neighbouring points for which the room is null.
+        /// </summary>
+        /// <param name="place">The target location to examine</param>
+        /// <returns></returns>
+        private List<Point> listEmptyNeighbours(Point place)
+        {
+            List<Point> result = new List<Point>();
+            if(place.X > 0 && allRooms[place.X-1,place.Y] == null)
+            {
+                result.Add(new Point(place.X - 1, place.Y));
+            }
+            if (place.Y > 0 && allRooms[place.X, place.Y - 1] == null)
+            {
+                result.Add(new Point(place.X, place.Y - 1));
+            }
+            if(place.X < Width-1 && allRooms[place.X+1,place.Y] == null)
+            {
+                result.Add(new Point(place.X + 1, place.Y));
+            }
+            if (place.Y < Height-1 && allRooms[place.X, place.Y + 1] == null)
+            {
+                result.Add(new Point(place.X, place.Y + 1));
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Create rooms next to the current one as long as there are still null neighbours
+        /// </summary>
+        /// <param name="fromPoint"></param>
+        private void createNeighbour(Point fromPoint)
+        {
+            List<Point> options;
+            do
+            {
+                options = listEmptyNeighbours(fromPoint);
+                if (options.Count > 0)
+                {
+                    Point destPoint = options[rng.Next(0, options.Count)];
+                    allRooms[destPoint.X, destPoint.Y] = new Room("A busy street in London.");
+                    connect(fromPoint, destPoint);
+                    createNeighbour(destPoint); //recursive step
+                }
+            } while (options.Count > 0);
+        }
+
+        /// <summary>
+        /// Attempt to go from the from point to the towards point.
+        /// </summary>
+        /// <param name="from">From point</param>
+        /// <param name="towards">Destination point</param>
+        /// <param name="direction">Direction from from to towards</param>
+        private void tryGo(Point from, Point towards, Direction direction)
+        {
+            if( towards.X < 0 || towards.X == Width || towards.Y < 0 || towards.Y == Height)
+            {
+                Console.WriteLine("You attempt to go " + direction.ToString().ToLower() + " but face the end of the world.");
+            } else if( allRooms[from.X,from.Y].CanGoThere[direction])
+            {
+                currentRoom = towards;
+            } else
+            {
+                Console.WriteLine("You cannot go " + direction.ToString().ToLower());
+            }
+        }
+
+        /// <summary>
+        /// Print the room, get user input to accept commands
+        /// </summary>
+        public void run()
         {
             Character player = new Character("Sherlock", 5, 100, null, allRooms[0, 0], "This is you, Sherlock Holmes!");
             printInstructions();
             while (true) {
-                allRooms[currentRoom.x,currentRoom.y].Print();
+                allRooms[currentRoom.X,currentRoom.Y].Print();
                 string userInput = Console.ReadLine();
                 switch (userInput[0])
                 {
                     case 'n':
                     case 'N':
-                        if (currentRoom.y == 0)
-                        {
-                            Console.WriteLine("You attempt to go north but face the end of the world.");
-                        }
-                        else if (allRooms[currentRoom.x, currentRoom.y - 1] == null)
-                        {
-                            Console.WriteLine("There is nothing to the north.");
-                        }
-                        else
-                        {
-                            currentRoom.y--;
-                        }
+                        tryGo(currentRoom, new Point(currentRoom.X, currentRoom.Y-1), Direction.North);
                         break;
                     case 's':
                     case 'S':
-                        if (currentRoom.y == Height - 1)
-                        {
-                            Console.WriteLine("You attempt to go south but face the end of the world.");
-                        }
-                        else if (allRooms[currentRoom.x, currentRoom.y + 1] == null)
-                        {
-                            Console.WriteLine("There is nothing to the south.");
-                        }
-                        else
-                        {
-                            currentRoom.y++;
-                        }
+                        tryGo(currentRoom, new Point(currentRoom.X, currentRoom.Y + 1), Direction.South);
                         break;
                     case 'e':
                     case 'E':
-                        if (currentRoom.x == Width - 1)
-                        {
-                            Console.WriteLine("You attempt to go east but face the end of the world.");
-                        }
-                        else if (allRooms[currentRoom.x + 1, currentRoom.y] == null)
-                        {
-                            Console.WriteLine("There is nothing to the east.");
-                        }
-                        else
-                        {
-                            currentRoom.x++;
-                        }
+                        tryGo(currentRoom, new Point(currentRoom.X + 1, currentRoom.Y), Direction.East);
                         break;
                     case 'w':
                     case 'W':
-                        if (currentRoom.x == 0)
-                        {
-                            Console.WriteLine("You attempt to go west but face the end of the world.");
-                        }
-                        else if (allRooms[currentRoom.x - 1, currentRoom.y] == null)
-                        {
-                            Console.WriteLine("There is nothing to the west.");
-                        }
-                        else
-                        {
-                            currentRoom.x++;
-                        }
+                        tryGo(currentRoom, new Point(currentRoom.X - 1, currentRoom.Y), Direction.West);
                         break;
                     case 'L':
                     case 'l':
@@ -97,7 +224,7 @@ namespace Zork
                         break;
                 }
                 //sets the player's location after moving
-                player.Location = allRooms[currentRoom.x, currentRoom.y];
+                player.Location = allRooms[currentRoom.X, currentRoom.Y];
                 
             }
         }
