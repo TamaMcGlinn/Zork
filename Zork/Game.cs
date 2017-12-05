@@ -28,7 +28,7 @@ namespace Zork
             allCharacters = new List<Character>();
             var barney = new Character("sherrif_barney", 3, 100, null, "A fat man in a aprim black sherrif's uniform. He has a mustache and short brown hair.");
             allCharacters.Add(barney);
-            allRooms[0, 0].CharactersInRoom.Add(barney);
+            allRooms[StartX, StartY].CharactersInRoom.Add(barney);
         }
 
         /// <summary>
