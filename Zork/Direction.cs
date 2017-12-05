@@ -6,6 +6,9 @@ using System.Threading.Tasks;
 
 namespace Zork
 {
+    /// <summary>
+    /// The cardinal directions
+    /// </summary>
     public enum Direction
     {
         North,

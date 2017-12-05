@@ -6,6 +6,9 @@ using System.Text;
 
 namespace Zork
 {
+    /// <summary>
+    /// A Zork Game, which initialises the rooms, characters and objects, and allows you to play.
+    /// </summary>
     public class Game
     {
         Room[,] allRooms;
@@ -134,6 +137,9 @@ namespace Zork
             }
         }
 
+        /// <summary>
+        /// Print the room, get user input to accept commands
+        /// </summary>
         public void run()
         {
             while (true) {
