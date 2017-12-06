@@ -4,6 +4,7 @@ using Zork;
 using Zork.Objects;
 using System.Drawing;
 using System.Collections.Generic;
+using Zork.Characters;
 
 namespace ZorkUnitTest
 {
@@ -17,7 +18,7 @@ namespace ZorkUnitTest
         public void characterConstructorTest()
         {
             Weapon longSword = createWeapon();
-            Character character1 = new Character("sherrif_barney", 4, 100, longSword, "This man has a long beard.");
+            Character character1 = new NPC("sherrif_barney", 4, 100, longSword, "This man has a long beard.");
             if (character1.Name != "sherrif_barney")
             {
                 Assert.Fail("The name of the character is not correct");
@@ -106,7 +107,7 @@ namespace ZorkUnitTest
         /// <returns>A character equipped with a longsword</returns>
         private Character createCharacter()
         {
-            return new Character("sherrif_barney", 4, 100, createWeapon(), "This man has a long beard.");
+            return new NPC("sherrif_barney", 4, 100, createWeapon(), "This man has a long beard.");
         }
 
         private List<BaseObject> createListOfThreeWeaponObjects()
@@ -120,7 +121,7 @@ namespace ZorkUnitTest
 
         private Character createCharacterWithoutWeapon()
         {
-            return new Character("sherrif_barney", 4, 100, null, "This man has a long beard.");
+            return new NPC("sherrif_barney", 4, 100, null, "This man has a long beard.");
         }
     }
 }

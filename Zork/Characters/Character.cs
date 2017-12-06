@@ -10,7 +10,7 @@ using System.Diagnostics;
 
 namespace Zork
 {
-    public class Character
+    public abstract class Character
     {
 
         #region properties
@@ -19,7 +19,7 @@ namespace Zork
         public string Name
         {
             get { return _name; }
-            set { _name = value; }
+            protected set { _name = value; }
         }
 
         private int _strength;
@@ -27,7 +27,7 @@ namespace Zork
         public int Strength
         {
             get { return _strength; }
-            set { _strength = value; }
+            protected set { _strength = value; }
         }
 
         private int _health;
@@ -35,7 +35,7 @@ namespace Zork
         public int Health
         {
             get { return _health; }
-            set { _health = value; }
+            protected set { _health = value; }
         }
 
 
@@ -44,7 +44,7 @@ namespace Zork
         public Weapon EquippedWeapon
         {
             get { return _weapon; }
-            set { _weapon = value; }
+            protected set { _weapon = value; }
         }
 
         private string _description;
@@ -52,7 +52,7 @@ namespace Zork
         public string Description
         {
             get { return _description; }
-            set { _description = value; }
+            protected set { _description = value; }
         }
         
         private TextTree _text;
@@ -60,13 +60,34 @@ namespace Zork
         public TextTree Text
         {
             get { return _text; }
-            set { _text = value; }
+            protected set { _text = value; }
         }
-        
+
         #endregion properties
 
+
+
+        public Character()
+        {
+
+        }
+
         /// <summary>
-        /// Character constructor
+        /// Ctor with all default values except name and description
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="description"></param>
+        public Character(string name, string description)
+        {
+            Name = name;
+            Description = description;
+            Health = 100;
+            Strength = 5;
+            EquippedWeapon = null;
+            setTextTree();
+        }
+        /// <summary>
+        /// Character constructor with full options for parameters
         /// </summary>
         /// <param name="name">The name of the character</param>
         /// <param name="strength">The characters strength</param>
@@ -74,13 +95,21 @@ namespace Zork
         /// <param name="weapon">The weapon the character has equipped</param>
         /// <param name="location">Current location of the character</param>
         /// <param name="description">a description of what the character looks like</param>
-        public Character(string name, int strength,int health, Weapon weapon, string description)
+        public Character(string name, int strength, int health, Weapon weapon, string description)
         {
             this.Name = name;
+            this.Description = description;
             this.Strength = strength;
             this.Health = health;
             this.EquippedWeapon = weapon;
-            this.Text = new TextTree(name + ".txt");
+            setTextTree();
+        }
+
+
+        private void setTextTree()
+        {
+
+            this.Text = new TextTree(Name + ".txt");
         }
 
         /// <summary>

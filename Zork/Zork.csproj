@@ -43,8 +43,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Character.cs" />
+    <Compile Include="Characters\Character.cs" />
+    <Compile Include="Characters\CharacterDefinitions.cs" />
+    <Compile Include="Characters\NPC.cs" />
+    <Compile Include="Characters\Player.cs" />
     <Compile Include="Direction.cs" />
+    <Compile Include="Extensions\ListNPCExtensionscs.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Maze.cs" />
     <Compile Include="Objects\Clue.cs" />
