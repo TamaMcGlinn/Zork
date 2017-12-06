@@ -13,7 +13,7 @@ namespace Zork
     /// </summary>
     public class Game
     {
-        Room[,] allRooms;
+        Room[,] maze;
         Point currentRoom;
         List<Character> allCharacters;
         const int Width = 20;
@@ -28,7 +28,7 @@ namespace Zork
             allCharacters = new List<Character>();
             var barney = new Character("sherrif_barney", 3, 100, null, "A fat man in a prim black sherrif's uniform. He has a mustache and short brown hair.");
             allCharacters.Add(barney);
-            allRooms[StartX, StartY].CharactersInRoom.Add(barney);
+            maze[StartX, StartY].CharactersInRoom.Add(barney);
         }
 
         /// <summary>
@@ -36,9 +36,9 @@ namespace Zork
         /// </summary>
         private void createMaze()
         {
-            allRooms = new Room[Width, Height];
+            maze = new Room[Width, Height];
             currentRoom = new Point(StartX, StartY);
-            allRooms[StartX, StartY] = new Room("Your house");
+            maze[StartX, StartY] = new Room("Your house");
             createNeighbour(currentRoom);
             addExtraConnections(Width*Height);
             printWholeMap();
@@ -66,26 +66,26 @@ namespace Zork
             {
                 if(a.Y+1 == b.Y)
                 {
-                    allRooms[a.X,a.Y].CanGoThere[Direction.South] = true;
-                    allRooms[b.X,b.Y].CanGoThere[Direction.North] = true;
+                    maze[a.X,a.Y].CanGoThere[Direction.South] = true;
+                    maze[b.X,b.Y].CanGoThere[Direction.North] = true;
                 } else
                 {
                     Debug.Assert(a.Y - 1 == b.Y);
-                    allRooms[a.X, a.Y].CanGoThere[Direction.North] = true;
-                    allRooms[b.X, b.Y].CanGoThere[Direction.South] = true;
+                    maze[a.X, a.Y].CanGoThere[Direction.North] = true;
+                    maze[b.X, b.Y].CanGoThere[Direction.South] = true;
                 }
             } else
             {
                 if (a.X + 1 == b.X)
                 {
-                    allRooms[a.X, a.Y].CanGoThere[Direction.East] = true;
-                    allRooms[b.X, b.Y].CanGoThere[Direction.West] = true;
+                    maze[a.X, a.Y].CanGoThere[Direction.East] = true;
+                    maze[b.X, b.Y].CanGoThere[Direction.West] = true;
                 }
                 else
                 {
                     Debug.Assert(a.X - 1 == b.X);
-                    allRooms[a.X, a.Y].CanGoThere[Direction.West] = true;
-                    allRooms[b.X, b.Y].CanGoThere[Direction.East] = true;
+                    maze[a.X, a.Y].CanGoThere[Direction.West] = true;
+                    maze[b.X, b.Y].CanGoThere[Direction.East] = true;
                 }
             }
         }
@@ -97,9 +97,9 @@ namespace Zork
                 for (int xi = 0; xi < Width; ++xi)
                 {
                     Console.Write("0");
-                    if (allRooms[xi, yi].CanGoThere[Direction.East])
+                    if (maze[xi, yi].CanGoThere[Direction.East])
                     {
-                        Debug.Assert(xi == Width-1 || allRooms[xi+1, yi].CanGoThere[Direction.West]);
+                        Debug.Assert(xi == Width-1 || maze[xi+1, yi].CanGoThere[Direction.West]);
                         Console.Write("-");
                     } else if(xi < Width - 1)
                     {
@@ -111,9 +111,9 @@ namespace Zork
                 {
                     for (int xi = 0; xi < Width; ++xi)
                     {
-                        if (allRooms[xi, yi].CanGoThere[Direction.South])
+                        if (maze[xi, yi].CanGoThere[Direction.South])
                         {
-                            Debug.Assert(yi == Height - 1 || allRooms[xi, yi+1].CanGoThere[Direction.North]);
+                            Debug.Assert(yi == Height - 1 || maze[xi, yi+1].CanGoThere[Direction.North]);
                             Console.Write("|");
                         }
                         else if (xi < Width - 1)
@@ -135,19 +135,19 @@ namespace Zork
         private List<Point> listEmptyNeighbours(Point place)
         {
             List<Point> result = new List<Point>();
-            if(place.X > 0 && allRooms[place.X-1,place.Y] == null)
+            if(place.X > 0 && maze[place.X-1,place.Y] == null)
             {
                 result.Add(new Point(place.X - 1, place.Y));
             }
-            if (place.Y > 0 && allRooms[place.X, place.Y - 1] == null)
+            if (place.Y > 0 && maze[place.X, place.Y - 1] == null)
             {
                 result.Add(new Point(place.X, place.Y - 1));
             }
-            if(place.X < Width-1 && allRooms[place.X+1,place.Y] == null)
+            if(place.X < Width-1 && maze[place.X+1,place.Y] == null)
             {
                 result.Add(new Point(place.X + 1, place.Y));
             }
-            if (place.Y < Height-1 && allRooms[place.X, place.Y + 1] == null)
+            if (place.Y < Height-1 && maze[place.X, place.Y + 1] == null)
             {
                 result.Add(new Point(place.X, place.Y + 1));
             }
@@ -166,7 +166,7 @@ namespace Zork
                 if (options.Count > 0)
                 {
                     Point destPoint = options[rng.Next(0, options.Count)];
-                    allRooms[destPoint.X, destPoint.Y] = new Room("A busy street in London.");
+                    maze[destPoint.X, destPoint.Y] = new Room("A busy street in London.");
                     connect(fromPoint, destPoint);
                     createNeighbour(destPoint); //recursive step
                 } else
@@ -187,7 +187,7 @@ namespace Zork
             if( towards.X < 0 || towards.X == Width || towards.Y < 0 || towards.Y == Height)
             {
                 Console.WriteLine("You attempt to go " + direction.ToString().ToLower() + " but face the end of the world.");
-            } else if( allRooms[from.X,from.Y].CanGoThere[direction])
+            } else if( maze[from.X,from.Y].CanGoThere[direction])
             {
                 currentRoom = towards;
             } else
@@ -203,7 +203,7 @@ namespace Zork
         {
             printInstructions();
             while (true) {
-                allRooms[currentRoom.X,currentRoom.Y].print();
+                maze[currentRoom.X,currentRoom.Y].print();
                 string userInput = Console.ReadLine();
                 switch (userInput[0])
                 {
@@ -225,7 +225,7 @@ namespace Zork
                         break;
                     case 'L':
                     case 'l':
-                        Console.Write(allRooms[currentRoom.X, currentRoom.Y].LookAround());
+                        Console.Write(maze[currentRoom.X, currentRoom.Y].LookAround());
                         break;
                     case 't':
                     case 'T':
@@ -233,7 +233,7 @@ namespace Zork
                         if (talkCommand.Length >= 3 && talkCommand[1] == "to")
                         {
                             string charactername = string.Join("_", talkCommand.Skip(2)).ToLower();
-                            Character talkTarget = allRooms[currentRoom.X, currentRoom.Y].CharactersInRoom.Find((Character c) => { return c.Name == charactername; });
+                            Character talkTarget = maze[currentRoom.X, currentRoom.Y].CharactersInRoom.Find((Character c) => { return c.Name == charactername; });
                             if(talkTarget == null)
                             {
                                 Console.WriteLine("There is nobody called " + charactername + " here.");
