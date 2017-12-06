@@ -29,5 +29,12 @@ namespace ZorkUnitTest
             var health = makeVial();
             //Player p = new Player();
         }
+
+        [TestMethod]
+        public void ClueAddsDescription()
+        {
+            Clue c = new Clue("parchment", "it says the man is Barry");
+
+        }
     }
 }

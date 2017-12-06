@@ -7,6 +7,7 @@ Sherrif Barney
 	>Kun je helpen zoeken?
 		<Waarnaar zoek je?
 			>Naar de moordenaar, natuurlijk!
+				<[tornrag]Hij heeft een rode jas aan. Die heb ik nog niet gezien.
 				<Zoek eerst maar uit wie het heeft gedaan.
 			>Ik zoek een wapen.
 				<Als je de wet in eigen handen wil nemen kan ik je niet helpen.

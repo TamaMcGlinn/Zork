@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Zork.Texts
@@ -39,6 +40,22 @@ namespace Zork.Texts
             return i-1;
         }
 
+        private List<string> getConditions(ref string inputLine)
+        {
+            List<string> result = new List<string>();
+            int start = inputLine.IndexOf('[');
+            if(start >= 0)
+            {
+                int end = inputLine.IndexOf(']');
+                Debug.Assert(end > 0);
+                Debug.Assert(end > start);
+                string conditions = inputLine.Substring(start+1, end - start - 1);
+                result = conditions.Split(',').ToList();
+                inputLine = inputLine.Substring(end+1);
+            }
+            return result;
+        }
+
         private Node readNode(string[] lines, int line)
         {
             if(line >= lines.Count())
@@ -46,7 +63,9 @@ namespace Zork.Texts
                 return null;
             }
             int tabs = countInitialTabs(lines[line]);
-            Node currentNode = new Node(lines[line].Substring(tabs + 1));
+            string contents = lines[line].Substring(tabs + 1);
+            List<string> conditions = getConditions(ref contents);
+            Node currentNode = new Node(contents, conditions);
             List<int> childBeginLines = new List<int>();
             for (int endline = line + 1; endline != lines.Count(); ++endline)
             {

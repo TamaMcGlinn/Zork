@@ -5,7 +5,7 @@ using Zork.Objects;
 
 namespace Zork
 {
-    public class Room : IObject
+    public class Room
     {
         #region properties
         private Dictionary<Direction,bool> _canGoThere;
@@ -30,9 +30,9 @@ namespace Zork
             set { _description = value; }
         }
 
-        private List<IObject> _objectsInRoom = new List<IObject>();
+        private List<BaseObject> _objectsInRoom = new List<BaseObject>();
 
-        public List<IObject> ObjectsInRoom
+        public List<BaseObject> ObjectsInRoom
         {
             get { return _objectsInRoom; }
             set { _objectsInRoom = value; }

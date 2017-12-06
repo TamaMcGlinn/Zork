@@ -109,9 +109,9 @@ namespace ZorkUnitTest
             return new Character("sherrif_barney", 4, 100, createWeapon(), "This man has a long beard.");
         }
 
-        private List<IObject> createListOfThreeWeaponObjects()
+        private List<BaseObject> createListOfThreeWeaponObjects()
         {
-            List<IObject> objectsInRoom = new List<IObject>();
+            List<BaseObject> objectsInRoom = new List<BaseObject>();
             objectsInRoom.Add(createWeapon());
             objectsInRoom.Add(createWeapon());
             objectsInRoom.Add(createWeapon());
