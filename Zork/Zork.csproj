@@ -48,7 +48,7 @@
     <Compile Include="Characters\NPC.cs" />
     <Compile Include="Characters\Player.cs" />
     <Compile Include="Direction.cs" />
-    <Compile Include="Extensions\ListNPCExtensionscs.cs" />
+    <Compile Include="Extensions\ListNPCExtensions.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Maze.cs" />
     <Compile Include="Objects\Clue.cs" />
