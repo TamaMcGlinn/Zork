@@ -110,7 +110,7 @@ namespace Zork
         /// <summary>
         /// Lists all items in the room and gives options for the player to pick them up. If he chooses a valid     item it gets added to the inventory
         /// </summary>
-        public void pickupItem()
+        private void pickupItem()
         {
             if (maze[currentRoom].ObjectsInRoom.Count <= 0)
             {
