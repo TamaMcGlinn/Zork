@@ -105,6 +105,16 @@ namespace Zork
             setTextTree();
         }
 
+        /// <summary>
+        /// Take the specified damage, return whether we are still alive
+        /// </summary>
+        /// <param name="damage">hitpoints to remove</param>
+        /// <returns>whether we are still alive</returns>
+        public bool takeDamage(int damage)
+        {
+            Health -= damage;
+            return Health > 0;
+        }
 
         private void setTextTree()
         {
