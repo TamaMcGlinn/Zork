@@ -62,7 +62,6 @@ namespace ZorkUnitTest
             Character character = createCharacter();
             room.CharactersInRoom.Add(character);
             room.ObjectsInRoom = createListOfThreeWeaponObjects();
-            room.CharactersInRoom.Add(createCharacter());
             string lookAroundTextString = room.LookAround();
             string[] lookAroundTextList = lookAroundTextString.Split('\n');
 
