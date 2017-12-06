@@ -63,6 +63,15 @@ namespace Zork
             protected set { _text = value; }
         }
 
+        private List<Objects.BaseObject> _inventory;
+
+        public List<Objects.BaseObject> Inventory
+        {
+            get { return _inventory; }
+            set { _inventory = value; }
+        }
+
+
         #endregion properties
 
 
@@ -103,6 +112,22 @@ namespace Zork
             this.Health = health;
             this.EquippedWeapon = weapon;
             setTextTree();
+        }
+
+        /// <summary>
+        /// picks up items, if its a weapon it equips the weapon
+        /// </summary>
+        /// <param name="objectToPickUp"></param>
+        public void PickUp(BaseObject objectToPickUp)
+        {
+            if(objectToPickUp is Weapon)
+            {
+                EquippedWeapon = (objectToPickUp as Weapon);
+            }
+            else
+            {
+                Inventory.Add(objectToPickUp);
+            }
         }
 
 

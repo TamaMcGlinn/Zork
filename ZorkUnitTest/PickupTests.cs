@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Zork.Characters;
 using Zork.Objects;
 
 namespace ZorkUnitTest
@@ -35,6 +36,23 @@ namespace ZorkUnitTest
         {
             Clue c = new Clue("parchment", "it says the man is Barry");
 
+        }
+
+        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
+        public void PickUpWeaponTest()
+        {
+            Player p = CharacterDefinitions.PlayerCharacter;
+            Weapon w = new Weapon("Longsword", 5, "a big sword");
+            p.PickUp(w);
+            Assert.IsTrue(p.EquippedWeapon == w);
+        }
+
+        public void PickupObjectTest()
+        {
+            Player p = CharacterDefinitions.PlayerCharacter;
+            Clue bo = new Clue("pants", "description");
+            p.PickUp(bo);
+            Assert.IsTrue(p.Inventory.Contains(bo));
         }
     }
 }

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Zork.Extensions;
+using Zork.Objects;
 
 namespace Zork
 {
@@ -95,6 +96,10 @@ namespace Zork
                             Console.WriteLine("Did you mean; \"Talk to [character name]\"?");
                         }
                         break;
+                    case 'p':
+                    case 'P':
+                        pickupItem();
+                        break;
                     default:
                         printInstructions();
                         break;
@@ -102,9 +107,31 @@ namespace Zork
             }
         }
 
+        /// <summary>
+        /// Lists all items in the room and gives options for the player to pick them up. If he chooses a valid item it gets added to the inventory
+        /// </summary>
+        public void pickupItem()
+        {
+            for (int i = 0; i < maze[currentRoom].ObjectsInRoom.Count; i++)
+            {
+                Console.WriteLine($"[{i}] to pickup:" + maze[currentRoom].ObjectsInRoom[i].Name);
+            }
+            string input = Console.ReadLine();
+            int inputInteger;
+            int.TryParse(input, out inputInteger);
+            if (inputInteger >= 0 && inputInteger < maze[currentRoom].ObjectsInRoom.Count)
+            {
+                Characters.CharacterDefinitions.PlayerCharacter.PickUp(maze[currentRoom].ObjectsInRoom[inputInteger]);
+            }
+            else
+            {
+                Console.WriteLine("Cannot pick that item up.");
+            }
+        }
+
         private void printInstructions()
         {
-            Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around, [L] to look around");
+            Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around, [L] to look around, [P] to pick up an item");
         }
     }
 }
