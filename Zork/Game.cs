@@ -13,7 +13,6 @@ namespace Zork
     {
         Maze maze;
         Point currentRoom;
-        List<Character> allCharacters;
         const int Width = 20;
         const int Height = 20;
         const int StartX = 1;
