@@ -160,18 +160,20 @@ namespace Zork
         /// <param name="fromPoint"></param>
         private void createNeighbour(Point fromPoint)
         {
-            List<Point> options;
-            do
+            while(true)
             {
-                options = listEmptyNeighbours(fromPoint);
+                List<Point> options = listEmptyNeighbours(fromPoint);
                 if (options.Count > 0)
                 {
                     Point destPoint = options[rng.Next(0, options.Count)];
                     allRooms[destPoint.X, destPoint.Y] = new Room("A busy street in London.");
                     connect(fromPoint, destPoint);
                     createNeighbour(destPoint); //recursive step
+                } else
+                {
+                    break;
                 }
-            } while (options.Count > 0);
+            }
         }
 
         /// <summary>
