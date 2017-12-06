@@ -10,6 +10,9 @@ namespace Zork.Objects
     {
         private int _potency;
 
+        /// <summary>
+        /// How many hitpoints are restored upon usage.
+        /// </summary>
         public int Potency
         {
             get { return _potency; }
