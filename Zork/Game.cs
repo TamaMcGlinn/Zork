@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using Zork.Extensions;
@@ -26,10 +25,7 @@ namespace Zork
             currentRoom = new Point(StartX, StartY);
             maze = new Maze(Width, Height, StartX, StartY);
             maze.Print();
-            allCharacters = new List<Character>();
-            var barney = new Character("sherrif_barney", 3, 100, null, "A fat man in a prim black sherrif's uniform. He has a mustache and short brown hair.");
-            allCharacters.Add(barney);
-            maze[currentRoom].CharactersInRoom.Add(barney);
+            maze[StartX, StartY].CharactersInRoom.Add(Characters.CharacterDefinitions.NPCS.FindNPC("sherrif_barney"));
         }
 
         /// <summary>
