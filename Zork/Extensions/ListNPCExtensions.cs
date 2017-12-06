@@ -7,7 +7,7 @@ using Zork.Characters;
 
 namespace Zork.Extensions
 {
-    public static class ListNPCExtensionscs
+    public static class ListNPCExtensions
     {
         public static NPC FindNPC(this List<NPC> list, string name)
         {
