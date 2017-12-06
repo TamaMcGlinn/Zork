@@ -9,6 +9,7 @@ namespace Zork.Characters
 {
     public class NPC : Character
     {
+        
         public NPC(string name, string description) : base(name, description)
         {
         }
