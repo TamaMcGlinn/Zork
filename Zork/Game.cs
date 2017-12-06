@@ -30,7 +30,7 @@ namespace Zork
             allCharacters = new List<Character>();
             var barney = new Character("sherrif_barney", 3, 100, null, "A fat man in a prim black sherrif's uniform. He has a mustache and short brown hair.");
             allCharacters.Add(barney);
-            maze[StartX, StartY].CharactersInRoom.Add(barney);
+            maze[currentRoom].CharactersInRoom.Add(barney);
         }
 
         /// <summary>
