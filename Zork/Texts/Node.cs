@@ -4,6 +4,7 @@ namespace Zork.Texts
 {
     /// <summary>
     /// Each node has a text and some number of child nodes.
+    /// It also has a set of conditions to be satisfied in order for the entry to be visible.
     /// </summary>
     public class Node
     {
