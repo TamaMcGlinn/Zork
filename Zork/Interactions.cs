@@ -91,6 +91,7 @@ namespace Zork
             if (player.Health < 0)
             {
                 player.Inventory.Clear();
+                player.ResetHealth();
                 Console.WriteLine("You died! But luckily you've returned without items.");
                 return false;
             }

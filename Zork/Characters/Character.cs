@@ -14,6 +14,9 @@ namespace Zork
     {
 
         #region properties
+
+        protected static readonly int MaxHealth = 100;
+
         private string _name;
 
         public string Name
@@ -126,7 +129,12 @@ namespace Zork
                 Console.WriteLine($"{Inventory[i].Name} : {Inventory[i].Description}");
             };
         }
-        
+
+        public void ResetHealth()
+        {
+            Health = MaxHealth;
+        }
+
         /// Take the specified damage, return whether we are still alive
         /// </summary>
         /// <param name="damage">hitpoints to remove</param>
