@@ -58,7 +58,7 @@ namespace Zork
         }
 
         public void Print() {
-            Console.WriteLine(Description);
+            Console.WriteLine("\n"+Description + "\n");
             Console.WriteLine("You can go:");
             foreach (var kvp in CanGoThere)
             {

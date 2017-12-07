@@ -37,7 +37,13 @@ namespace Zork
             return null;
         }
 
-
+        /// <summary>
+        /// Gets an enemy from the current room of the user depending on userinput
+        /// </summary>
+        /// <param name="maze"></param>
+        /// <param name="currentRoom"></param>
+        /// <param name="enemyNumber"></param>
+        /// <returns></returns>
         private static Character getEnemyCharacterFromRoom(Maze maze, Point currentRoom, int enemyNumber)
         {
             if (enemyNumber >= 0)
