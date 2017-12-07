@@ -62,12 +62,9 @@ namespace Zork
             get { return _text; }
             protected set { _text = value; }
         }
-
-<<<<<<< HEAD
+        
         private List<Objects.BaseObject> _inventory = new List<BaseObject>();
-=======
-        private List<BaseObject> _inventory = new List<BaseObject>();
->>>>>>> develop
+
 
         public List<BaseObject> Inventory
         {
