@@ -74,6 +74,7 @@ namespace Zork
         /// </summary>
         public void Run()
         {
+            Interactions interactions = new Interactions();
             PrintInstructions();
             while (true) {
                 maze[currentRoom].Print();
@@ -106,7 +107,7 @@ namespace Zork
                         break;
                     case 'p':
                     case 'P':
-                        PickupItem();
+                        interactions.PickupItem(maze, currentRoom);
                         break;
                     case 'i':
                     case 'I':
@@ -115,6 +116,14 @@ namespace Zork
                     case 'c':
                     case 'C':
                         CharacterDefinitions.PlayerCharacter.PrintStats();
+                        break;
+                    case 'b':
+                    case 'B':
+                        Character enemy = interactions.ChooseEnemy(maze, currentRoom);
+                        if (enemy != null)
+                        {
+                            interactions.Fight(enemy, CharacterDefinitions.PlayerCharacter);
+                        }
                         break;
                     default:
                         PrintInstructions();
@@ -156,7 +165,7 @@ namespace Zork
         private void PrintInstructions()
         {
             Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around.");
-            Console.WriteLine("[L] to look around, [P] to pick up an item, [I] Inventory");
+            Console.WriteLine("[L] to look around, [P] to pick up an item, [I] Inventory, [B] Battle");
             Console.WriteLine("[C] to view stats");
         }
     }
