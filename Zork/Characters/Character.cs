@@ -44,7 +44,7 @@ namespace Zork
         public Weapon EquippedWeapon
         {
             get { return _weapon; }
-            protected set { _weapon = value; }
+            set { _weapon = value; }
         }
 
         private string _description;
@@ -63,6 +63,15 @@ namespace Zork
             protected set { _text = value; }
         }
 
+        private List<Objects.BaseObject> _inventory;
+
+        public List<Objects.BaseObject> Inventory
+        {
+            get { return _inventory; }
+            set { _inventory = value; }
+        }
+
+
         #endregion properties
 
 
@@ -77,15 +86,10 @@ namespace Zork
         /// </summary>
         /// <param name="name"></param>
         /// <param name="description"></param>
-        public Character(string name, string description)
+        public Character(string name, string description) : this (name, 5, 100, null, description)
         {
-            Name = name;
-            Description = description;
-            Health = 100;
-            Strength = 5;
-            EquippedWeapon = null;
-            setTextTree();
         }
+
         /// <summary>
         /// Character constructor with full options for parameters
         /// </summary>
@@ -102,11 +106,11 @@ namespace Zork
             this.Strength = strength;
             this.Health = health;
             this.EquippedWeapon = weapon;
-            setTextTree();
+            SetTextTree();
         }
 
 
-        private void setTextTree()
+        private void SetTextTree()
         {
 
             this.Text = new TextTree(Name + ".txt");

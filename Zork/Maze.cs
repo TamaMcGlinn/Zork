@@ -22,8 +22,8 @@ namespace Zork
             rng = new Random();
             rooms = new Room[xSize, ySize];
             rooms[StartX, StartY] = new Room("Your house");
-            createNeighbour(new Point(StartX, StartY));
-            addExtraConnections(xSize * ySize);
+            CreateNeighbour(new Point(StartX, StartY));
+            AddExtraConnections(xSize * ySize);
         }
 
         public Room this[int x, int y]
@@ -74,14 +74,14 @@ namespace Zork
             }
         }
 
-        private void addExtraConnections(int extras)
+        private void AddExtraConnections(int extras)
         {
             for (int i = 0; i < extras; ++i)
             {
                 var roomToConnect = new Point(rng.Next(1, Width - 1), rng.Next(1, Height - 1));
                 int neighbourToConnect = rng.Next(0, 4);
                 var neighbourPoint = new Point(roomToConnect.X + (neighbourToConnect % 2) * ((neighbourToConnect / 2) * 2 - 1), roomToConnect.Y + (1 - (neighbourToConnect % 2)) * ((neighbourToConnect / 2) * 2 - 1));
-                connect(roomToConnect, neighbourPoint);
+                Connect(roomToConnect, neighbourPoint);
             }
         }
 
@@ -90,7 +90,7 @@ namespace Zork
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
-        private void connect(Point a, Point b)
+        private void Connect(Point a, Point b)
         {
             if (a.X == b.X)
             {
@@ -127,7 +127,7 @@ namespace Zork
         /// </summary>
         /// <param name="place">The target location to examine</param>
         /// <returns></returns>
-        private List<Point> listEmptyNeighbours(Point place)
+        private List<Point> ListEmptyNeighbours(Point place)
         {
             List<Point> result = new List<Point>();
             if (place.X > 0 && rooms[place.X - 1, place.Y] == null)
@@ -153,17 +153,17 @@ namespace Zork
         /// Create rooms next to the current one as long as there are still null neighbours
         /// </summary>
         /// <param name="fromPoint"></param>
-        private void createNeighbour(Point fromPoint)
+        private void CreateNeighbour(Point fromPoint)
         {
             while (true)
             {
-                List<Point> options = listEmptyNeighbours(fromPoint);
+                List<Point> options = ListEmptyNeighbours(fromPoint);
                 if (options.Count > 0)
                 {
                     Point destPoint = options[rng.Next(0, options.Count)];
                     rooms[destPoint.X, destPoint.Y] = new Room("A busy street in London.");
-                    connect(fromPoint, destPoint);
-                    createNeighbour(destPoint); //recursive step
+                    Connect(fromPoint, destPoint);
+                    CreateNeighbour(destPoint); //recursive step
                 }
                 else
                 {

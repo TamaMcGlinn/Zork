@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 
 namespace Zork.Objects
 {
-    public interface IObject
+    public class Clue : BaseObject
     {
-        string Name { get; set; }
-        string Description { get; set; }
+        public Clue(string name, string description) : base(name, description)
+        {
+        }
     }
 }
