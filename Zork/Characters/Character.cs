@@ -114,6 +114,12 @@ namespace Zork
         /// </summary>
         public void PrintInventory()
         {
+            if (Inventory.Count == 0)
+            {
+                Console.WriteLine("You have no items in your inventory.\n");
+                return;
+            }
+
             Console.WriteLine("You currently have the following items:");
             for (int i = 0; i < Inventory.Count; i++)
             {
