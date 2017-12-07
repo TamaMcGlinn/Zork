@@ -194,7 +194,7 @@ namespace Zork
             }
             else
             {
-                Console.WriteLine("Current weapon: ");
+                Console.WriteLine("Current weapon:");
                 EquippedWeapon.PrintStats();
             }
         }

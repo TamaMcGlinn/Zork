@@ -17,11 +17,48 @@ namespace ZorkUnitTest
         public void WeaponDescriptionIsCorrect()
         {
             Player p = new Player();
-            p.EquippedWeapon = new Weapon("gun", 1, "description");
+            string gunName = "gun";
+            string gunDescription = "description";
+            p.EquippedWeapon = new Weapon(gunName, 1, gunDescription);
             StringWriter consoleOutput = new StringWriter();
             Console.SetOut(consoleOutput);
             p.EquippedWeapon.PrintStats();
-            Assert.AreEqual("gun: description\nStrength: 1\n", consoleOutput.ToString());
+            Assert.AreEqual(gunName + ": " + gunDescription + 
+                "\r\nStrength: " + p.EquippedWeapon.Strength + 
+                "\r\n", consoleOutput.ToString());
+        }
+
+        [TestMethod]
+        public void UnarmedPlayerDescriptionIsCorrect()
+        {
+            Player p = new Player();
+            p.EquippedWeapon = null;
+            StringWriter consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
+            p.PrintStats();
+            Assert.AreEqual(CharacterDefinitions.PlayerCharacter.Name + ": " 
+                + CharacterDefinitions.PlayerCharacter.Description + 
+                "\r\nStrength: " + CharacterDefinitions.PlayerCharacter.Strength + 
+                "\r\nUnarmed.\r\n", consoleOutput.ToString());
+        }
+
+        [TestMethod]
+        public void ArmedPlayerDescriptionIsCorrect()
+        {
+            Player p = new Player();
+            p.EquippedWeapon = new Weapon("gun", 1, "description");
+            using (StringWriter consoleOutput = new StringWriter())
+            {
+                Console.SetOut(consoleOutput);
+                p.PrintStats();
+                string expectedResult = CharacterDefinitions.PlayerCharacter.Name + ": "
+                    + CharacterDefinitions.PlayerCharacter.Description +
+                    "\r\nStrength: " + CharacterDefinitions.PlayerCharacter.Strength +
+                    "\r\nCurrent weapon:" +
+                    "\r\n" + p.EquippedWeapon.Name + ": " + p.EquippedWeapon.Description +
+                    "\r\nStrength: " + p.EquippedWeapon.Strength + "\r\n";
+                Assert.AreEqual(expectedResult, consoleOutput.ToString());
+            }
         }
     }
 }
