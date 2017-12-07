@@ -63,14 +63,13 @@ namespace Zork
             protected set { _text = value; }
         }
 
-        private List<Objects.BaseObject> _inventory;
+        private List<BaseObject> _inventory = new List<BaseObject>();
 
-        public List<Objects.BaseObject> Inventory
+        public List<BaseObject> Inventory
         {
             get { return _inventory; }
             set { _inventory = value; }
         }
-
 
         #endregion properties
 

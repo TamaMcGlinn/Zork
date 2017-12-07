@@ -60,9 +60,10 @@ namespace ZorkUnitTest
             Assert.IsTrue(p.EquippedWeapon == w);
         }
 
+        [TestMethod]
         public void PickupObjectTest()
         {
-            Player p = CharacterDefinitions.PlayerCharacter;
+            Player p = new Player();
             Clue bo = new Clue("pants", "description");
             bo.PickupObject(p);
             Assert.IsTrue(p.Inventory.Contains(bo));
