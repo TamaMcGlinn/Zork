@@ -120,14 +120,14 @@ namespace Zork
             }
             for (int i = 0; i < maze[currentRoom].ObjectsInRoom.Count; i++)
             {
-                Console.WriteLine($"[{i}] to pickup:" + maze[currentRoom].ObjectsInRoom[i].Name);
+                Console.WriteLine($"[{i + 1}] to pickup:" + maze[currentRoom].ObjectsInRoom[i].Name);
             }
             string input = Console.ReadLine();
             int inputInteger;
             int.TryParse(input, out inputInteger);
-            if (inputInteger >= 0 && inputInteger < maze[currentRoom].ObjectsInRoom.Count)
+            if (inputInteger > 0 && inputInteger < maze[currentRoom].ObjectsInRoom.Count)
             {
-                Characters.CharacterDefinitions.PlayerCharacter.PickUp(maze[currentRoom].ObjectsInRoom[inputInteger]);
+                Characters.CharacterDefinitions.PlayerCharacter.PickUp(maze[currentRoom].ObjectsInRoom[inputInteger - 1]);
             }
             else
             {
