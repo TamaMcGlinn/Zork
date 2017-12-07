@@ -86,15 +86,10 @@ namespace Zork
         /// </summary>
         /// <param name="name"></param>
         /// <param name="description"></param>
-        public Character(string name, string description)
+        public Character(string name, string description) : this (name, 5, 100, null, description)
         {
-            Name = name;
-            Description = description;
-            Health = 100;
-            Strength = 5;
-            EquippedWeapon = null;
-            SetTextTree();
         }
+
         /// <summary>
         /// Character constructor with full options for parameters
         /// </summary>
