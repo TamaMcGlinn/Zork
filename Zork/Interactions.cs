@@ -9,12 +9,12 @@ using Zork.Characters;
 
 namespace Zork
 {
-    public class Interactions
+    public static class Interactions
     {
         /// <summary>
         /// Prints a list of characters you can fight and lets you choose a character
         /// </summary>
-        public Character ChooseEnemy(Maze maze, System.Drawing.Point currentRoom)
+        public static Character ChooseEnemy(Maze maze, System.Drawing.Point currentRoom)
         {
             for (int i = 0; i < maze[currentRoom].CharactersInRoom.Count; i++)
             {
@@ -26,7 +26,7 @@ namespace Zork
         }
 
 
-        private Character getEnemyCharacterFromRoom(Maze maze, Point currentRoom, int enemyNumber)
+        private static Character getEnemyCharacterFromRoom(Maze maze, Point currentRoom, int enemyNumber)
         {
             if (enemyNumber >= 0)
             {
@@ -47,7 +47,7 @@ namespace Zork
         /// </summary>
         /// <param name="enemy"></param>
         /// <returns>A boolean indicating wether the player won the fight</returns>
-        public bool Fight(Character enemy, Character player)
+        public static bool Fight(Character enemy, Character player)
         {
             Random turnBonusDamageGenerator = new Random();
             int maxBonusDamage = 10;
@@ -106,7 +106,7 @@ namespace Zork
         /// Lists all items in the room and gives options for the player to pick them up. 
         /// If he chooses a valid item it gets added to the inventory.
         /// </summary>
-        public void PickupItem(Maze maze, Point currentRoom)
+        public static void PickupItem(Maze maze, Point currentRoom)
         {
             if (maze[currentRoom].ObjectsInRoom.Count <= 0)
             {
@@ -130,7 +130,7 @@ namespace Zork
             }
         }
 
-        public int ReadUserInputInteger()
+        public static int ReadUserInputInteger()
         {
             int userInput;
             int.TryParse(Console.ReadLine(), out userInput);

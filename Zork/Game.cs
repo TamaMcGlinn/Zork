@@ -74,7 +74,6 @@ namespace Zork
         /// </summary>
         public void Run()
         {
-            Interactions interactions = new Interactions();
             PrintInstructions();
             while (true) {
                 maze[currentRoom].Print();
@@ -107,7 +106,7 @@ namespace Zork
                         break;
                     case 'p':
                     case 'P':
-                        interactions.PickupItem(maze, currentRoom);
+                        Interactions.PickupItem(maze, currentRoom);
                         break;
                     case 'i':
                     case 'I':
@@ -119,10 +118,10 @@ namespace Zork
                         break;
                     case 'b':
                     case 'B':
-                        Character enemy = interactions.ChooseEnemy(maze, currentRoom);
+                        Character enemy = Interactions.ChooseEnemy(maze, currentRoom);
                         if (enemy != null)
                         {
-                            interactions.Fight(enemy, CharacterDefinitions.PlayerCharacter);
+                            Interactions.Fight(enemy, CharacterDefinitions.PlayerCharacter);
                         }
                         break;
                     default:
