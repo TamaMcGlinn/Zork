@@ -130,40 +130,38 @@ namespace Zork
         /// </summary>
         public void Talk()
         {
-            bool playerIsTalking = false;
             Node currentNode = Text.RootNode;
             while (true)
             {
                 Console.WriteLine(currentNode.Text);
-                if (currentNode.Children.Count == 0)
+                List<Node> options = currentNode.AvailableChildren();
+                if (options.Count == 0)
                 {
                     return;
                 }
 
-                if (!playerIsTalking)
+                int responseNumber = 1;
+                foreach (Node child in options)
                 {
-                    int responseNumber = 1;
-                    foreach (Node child in currentNode.Children)
-                    {
-                        Console.WriteLine(responseNumber + "> " + child.Text);
-                        ++responseNumber;
-                    }
+                    Console.WriteLine(responseNumber + "> " + child.Text);
+                    ++responseNumber;
+                }
+                Console.Write("> ");
+                int chosenResponse = -1;
+                while (Int32.TryParse(Console.ReadLine(), out chosenResponse) == false || chosenResponse < 0 || chosenResponse > currentNode.Children.Count)
+                {
+                    Console.WriteLine("Write a number for one of the responses");
                     Console.Write("> ");
-                    int chosenResponse = -1;
-                    while (Int32.TryParse(Console.ReadLine(), out chosenResponse) == false || chosenResponse < 0 || chosenResponse > currentNode.Children.Count)
-                    {
-                        Console.WriteLine("Write a number for one of the responses");
-                    }
-                    Node playerResponse = currentNode.Children[chosenResponse - 1];
-                    Console.WriteLine("> " + playerResponse.Text);
-                    if (playerResponse.Children.Count == 1)
-                    {
-                        currentNode = playerResponse.Children.First();
-                    } else
-                    {
-                        Debug.Assert(playerResponse.Children.Count == 0);
-                        return;
-                    }
+                }
+                Node playerResponse = options[chosenResponse - 1];
+                Console.WriteLine("> " + playerResponse.Text);
+                List<Node> npcResponses = playerResponse.AvailableChildren();
+                if (npcResponses.Count > 0)
+                {
+                    currentNode = npcResponses.First();
+                } else
+                {
+                    return;
                 }
             }
         }

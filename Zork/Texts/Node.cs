@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Zork.Texts
 {
@@ -16,8 +17,9 @@ namespace Zork.Texts
             set { _text = value; }
         }
 
-        private List<Node> _children;
         private List<string> _conditions;
+
+        private List<Node> _children;
 
         public List<Node> Children
         {
@@ -31,5 +33,21 @@ namespace Zork.Texts
             _conditions = conditions;
         }
 
+        private bool IsAvailable()
+        {
+            foreach(string condition in _conditions)
+            {
+                if (!Characters.CharacterDefinitions.PlayerCharacter.Clues.Contains(condition))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
+
+        public List<Node> AvailableChildren()
+        {
+            return Children.Where((Node n) => { return n.IsAvailable(); }).ToList();
+        }
     }
 }
