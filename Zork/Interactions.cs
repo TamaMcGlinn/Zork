@@ -77,7 +77,7 @@ namespace Zork
                 Console.Write("You hit for: " + playerDamage);
                 if (player.EquippedWeapon != null)
                 {
-                    Console.Write($" with you mighty {player.EquippedWeapon.Name}");
+                    Console.Write($" with your mighty {player.EquippedWeapon.Name}");
                 }
                 Console.WriteLine();
                 Console.Write($"{enemy.Name} hits you for:" + enemyDamage);
