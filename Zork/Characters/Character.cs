@@ -116,6 +116,7 @@ namespace Zork
 
         /// <summary>
         /// picks up items, if its a weapon it equips the weapon
+        /// This method can alternatively be used to add items to the inventory of the character
         /// </summary>
         /// <param name="objectToPickUp"></param>
         public void PickUp(BaseObject objectToPickUp)
