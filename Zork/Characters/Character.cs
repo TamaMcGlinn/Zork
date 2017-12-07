@@ -114,6 +114,7 @@ namespace Zork
         /// </summary>
         public void PrintInventory()
         {
+            Console.WriteLine("You currently have the following items:");
             for (int i = 0; i < Inventory.Count; i++)
             {
                 Console.WriteLine($"{Inventory[i].Name} : {Inventory[i].Description}");
