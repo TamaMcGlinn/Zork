@@ -9,7 +9,16 @@ namespace Zork.Characters
 {
     public class Player : Character
     {
+        #region properties
         private static readonly int MaxHealth = 100;
+
+        private List<string> _cluesFound = new List<string>();
+
+        public List<string> Clues
+        {
+            get { return _cluesFound; }
+        }
+        #endregion 
 
         public Player() : base()
         {

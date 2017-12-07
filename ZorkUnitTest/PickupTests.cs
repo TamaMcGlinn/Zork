@@ -68,5 +68,14 @@ namespace ZorkUnitTest
             bo.PickupObject(p);
             Assert.IsTrue(p.Inventory.Contains(bo));
         }
+
+        [TestMethod]
+        public void TestClues()
+        {
+            string clue = "c";
+            Player p = new Player();
+            p.Clues.Add(clue);
+            Assert.IsTrue(p.Clues.Contains(clue));
+        }
     }
 }
