@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing;
 using System.Diagnostics;
+using Zork.Objects;
 
 namespace Zork
 {
@@ -35,7 +36,17 @@ namespace Zork
         {
             get { return this[p.X, p.Y]; }
         }
-        
+
+        public void AddItemToRandomRoom(BaseObject obj)
+        {
+            GetRandomRoom().ObjectsInRoom.Add(obj);
+        }
+
+        public Room GetRandomRoom()
+        {
+            return this[rng.Next(0, Width), rng.Next(0, Height)];
+        }
+
         public void Print()
         {
             for (int yi = 0; yi < Height; ++yi)
