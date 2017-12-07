@@ -55,6 +55,7 @@
     <Compile Include="Objects\Clue.cs" />
     <Compile Include="Objects\HealthPickup.cs" />
     <Compile Include="Objects\Weapon.cs" />
+    <Compile Include="PointExtensions.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Room.cs" />

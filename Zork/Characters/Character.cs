@@ -63,14 +63,17 @@ namespace Zork
             protected set { _text = value; }
         }
 
+<<<<<<< HEAD
         private List<Objects.BaseObject> _inventory = new List<BaseObject>();
+=======
+        private List<BaseObject> _inventory = new List<BaseObject>();
+>>>>>>> develop
 
-        public List<Objects.BaseObject> Inventory
+        public List<BaseObject> Inventory
         {
             get { return _inventory; }
             set { _inventory = value; }
         }
-
 
         #endregion properties
 
@@ -119,7 +122,16 @@ namespace Zork
                 Console.WriteLine($"{Inventory[i].Name} : {Inventory[i].Description}");
             };
         }
-
+        
+        /// Take the specified damage, return whether we are still alive
+        /// </summary>
+        /// <param name="damage">hitpoints to remove</param>
+        /// <returns>whether we are still alive</returns>
+        public bool takeDamage(int damage)
+        {
+            Health -= damage;
+            return Health > 0;
+        }
 
         private void SetTextTree()
         {

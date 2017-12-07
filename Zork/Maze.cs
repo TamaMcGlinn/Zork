@@ -8,7 +8,7 @@ using System.Diagnostics;
 
 namespace Zork
 {
-    class Maze
+    public class Maze
     {
         Room[,] rooms;
         Random rng;
