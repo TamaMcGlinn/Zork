@@ -12,8 +12,10 @@ namespace Zork
 {
     public abstract class Character
     {
-
         #region properties
+
+        protected int MaxHealth = 100;
+
         private string _name;
 
         public string Name
@@ -82,19 +84,7 @@ namespace Zork
 
         #endregion properties
 
-
-
-        public Character()
-        {
-
-        }
-
-        /// <summary>
-        /// Ctor with all default values except name and description
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
-        public Character(string name, string description) : this (name, 5, 100, null, description)
+        public Character(string name, string description, int strength, int startHealth, Weapon weapon = null) : this(name, description, strength, startHealth, startHealth, weapon)
         {
         }
 
@@ -107,12 +97,13 @@ namespace Zork
         /// <param name="weapon">The weapon the character has equipped</param>
         /// <param name="location">Current location of the character</param>
         /// <param name="description">a description of what the character looks like</param>
-        public Character(string name, int strength, int health, Weapon weapon, string description)
+        public Character(string name, string description, int strength, int startHealth, int maxHealth, Weapon weapon = null)
         {
             this.Name = name;
             this.Description = description;
             this.Strength = strength;
-            this.Health = health;
+            this.MaxHealth = maxHealth;
+            this.Health = Math.Min(maxHealth, startHealth);
             this.EquippedWeapon = weapon;
             SetTextTree();
         }
@@ -205,6 +196,28 @@ namespace Zork
             {
                 Console.WriteLine("Current weapon:");
                 EquippedWeapon.PrintStats();
+            }
+        }
+
+        /// <summary>
+        /// Attempt to go from the from point to the towards point.
+        /// </summary>
+        /// <param name="from">From point</param>
+        /// <param name="towards">Destination point</param>
+        /// <param name="direction">Direction from from to towards</param>
+        public void TryGo(Maze maze, Point towards, Direction direction)
+        {
+            if (towards.X < 0 || towards.X == maze.Width || towards.Y < 0 || towards.Y == maze.Height)
+            {
+                Console.WriteLine("You attempt to go " + direction.ToString().ToLower() + " but face the end of the world.");
+            }
+            else if (maze[_location].CanGoThere[direction])
+            {
+                _location = towards;
+            }
+            else
+            {
+                Console.WriteLine("You cannot go " + direction.ToString().ToLower());
             }
         }
     }

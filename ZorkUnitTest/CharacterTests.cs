@@ -19,7 +19,7 @@ namespace ZorkUnitTest
         public void characterConstructorTest()
         {
             Weapon longSword = CreateWeapon();
-            Character character1 = new NPC("sherrif_barney", 4, 100, longSword, "This man has a long beard.");
+            Character character1 = new NPC("sherrif_barney", "This man has a long beard.", 4, 100, longSword);
             if (character1.Name != "sherrif_barney")
             {
                 Assert.Fail("The name of the character is not correct");
@@ -119,7 +119,7 @@ namespace ZorkUnitTest
         /// <returns>A character equipped with a longsword</returns>
         private Character CreateCharacter()
         {
-            return new NPC("sherrif_barney", 4, 100, CreateWeapon(), "This man has a long beard.");
+            return new NPC("sherrif_barney", "This man has a long beard.", 4, 100, CreateWeapon());
         }
 
         private List<BaseObject> CreateListOfThreeWeaponObjects()
@@ -133,8 +133,14 @@ namespace ZorkUnitTest
 
         private Character CreateCharacterWithoutWeapon()
         {
-            return new NPC("sherrif_barney", 4, 100, null, "This man has a long beard.");
+            return new NPC("sherrif_barney", "This man has a long beard.", 4, 100);
         }
 
+        [TestMethod]
+        public void CharacterMovesAround()
+        {
+            NPC dude = new NPC("dude", "A dude", 5, 100);
+            
+        }
     }
 }

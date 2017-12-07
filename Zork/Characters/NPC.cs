@@ -9,12 +9,11 @@ namespace Zork.Characters
 {
     public class NPC : Character
     {
-        
-        public NPC(string name, string description) : base(name, description)
+        public NPC(string name, string description, int strength, int startHealth, Weapon weapon = null) : this(name, description, strength, startHealth, startHealth, weapon)
         {
         }
 
-        public NPC(string name, int strength, int health, Weapon weapon, string description) : base(name, strength, health, weapon, description)
+        public NPC(string name, string description, int strength, int startHealth, int maxHealth, Weapon weapon = null) : base(name, description, strength, startHealth, maxHealth, weapon)
         {
         }
     }

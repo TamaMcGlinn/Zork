@@ -16,7 +16,7 @@ namespace Zork.Characters
         }
 
         private static List<NPC> _npcs = new List<NPC>() {
-            new NPC("sherrif_barney", 3, 100, null, "A fat man in a prim black sherrif's uniform. He has a mustache and short brown hair.")
+            new NPC("sherrif_barney", "A fat man in a prim black sherrif's uniform. He has a mustache and short brown hair.", 3, 100)
         };
 
         public static List<NPC> NPCS
