@@ -44,7 +44,7 @@ namespace Zork
         public Weapon EquippedWeapon
         {
             get { return _weapon; }
-            protected set { _weapon = value; }
+            set { _weapon = value; }
         }
 
         private string _description;
@@ -107,23 +107,6 @@ namespace Zork
             this.Health = health;
             this.EquippedWeapon = weapon;
             SetTextTree();
-        }
-
-        /// <summary>
-        /// picks up items, if its a weapon it equips the weapon
-        /// This method can alternatively be used to add items to the inventory of the character
-        /// </summary>
-        /// <param name="objectToPickUp"></param>
-        public void PickUp(BaseObject objectToPickUp)
-        {
-            if(objectToPickUp is Weapon)
-            {
-                EquippedWeapon = (objectToPickUp as Weapon);
-            }
-            else
-            {
-                Inventory.Add(objectToPickUp);
-            }
         }
 
 

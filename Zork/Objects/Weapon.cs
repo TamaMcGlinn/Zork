@@ -23,7 +23,12 @@ namespace Zork.Objects
             Strength = strength;
         }
 
+        public override void PickupObject(Character character)
+        {
+            character.EquippedWeapon = this;
+        }
 
-       
+
+
     }
 }

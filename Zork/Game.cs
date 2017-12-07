@@ -127,7 +127,7 @@ namespace Zork
             int.TryParse(input, out inputInteger);
             if (inputInteger > 0 && inputInteger < maze[currentRoom].ObjectsInRoom.Count)
             {
-                Characters.CharacterDefinitions.PlayerCharacter.PickUp(maze[currentRoom].ObjectsInRoom[inputInteger - 1]);
+                (maze[currentRoom].ObjectsInRoom[inputInteger - 1]).PickupObject(Characters.CharacterDefinitions.PlayerCharacter);
             }
             else
             {

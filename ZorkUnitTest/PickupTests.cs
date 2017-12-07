@@ -44,7 +44,7 @@ namespace ZorkUnitTest
         {
             Player p = CharacterDefinitions.PlayerCharacter;
             Weapon w = new Weapon("Longsword", 5, "a big sword");
-            p.PickUp(w);
+            w.PickupObject(p);
             Assert.IsTrue(p.EquippedWeapon == w);
         }
 
@@ -52,7 +52,7 @@ namespace ZorkUnitTest
         {
             Player p = CharacterDefinitions.PlayerCharacter;
             Clue bo = new Clue("pants", "description");
-            p.PickUp(bo);
+            bo.PickupObject(p);
             Assert.IsTrue(p.Inventory.Contains(bo));
         }
     }

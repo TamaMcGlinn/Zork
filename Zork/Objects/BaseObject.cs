@@ -29,5 +29,14 @@ namespace Zork.Objects
             _name = name;
             _description = description;
         }
+
+        /// <summary>
+        /// Default puts the object in the specified character inventory.
+        /// </summary>
+        /// <param name="character"></param>
+        public virtual void PickupObject(Character character)
+        {
+            character.Inventory.Add(this);
+        }
     }
 }
