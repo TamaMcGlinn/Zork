@@ -13,8 +13,7 @@ namespace ZorkUnitTest
         public void ChooseEnemyTest()
         {
             //TODO: ask how to test private methods and user input from console. (console.readlines)
-            Interactions i = new Interactions();
-            i.ChooseEnemy(new Maze(1,1,0,0), new System.Drawing.Point(0,0));
+            Interactions.ChooseEnemy(new Maze(1,1,0,0), new System.Drawing.Point(0,0));
             Assert.Fail();
         }
 
@@ -22,18 +21,14 @@ namespace ZorkUnitTest
         public void FightStrongEnemyTest()
         {
             //TODO: ask how to test private methods
-            Interactions i = new Interactions();
-            Assert.IsFalse(i.Fight(new NPC("sherrif_barney", 30, 100, new Weapon("Strong weapon", 10, "desc"), "desc"), new Player()));
+            Assert.IsFalse(Interactions.Fight(new NPC("sherrif_barney", 30, 100, new Weapon("Strong weapon", 10, "desc"), "desc"), new Player()));
         }
 
         [TestMethod]
         public void FightweakEnemyTest()
         {
             //TODO: ask how to test private methods
-           
-            Interactions i = new Interactions();
-
-            Assert.IsTrue(i.Fight(new NPC("sherrif_barney", 1, 10, null, "desc"), new Player()));
+            Assert.IsTrue(Interactions.Fight(new NPC("sherrif_barney", 1, 10, null, "desc"), new Player()));
         }
     }
 }
