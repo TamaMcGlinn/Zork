@@ -116,7 +116,7 @@ namespace Zork
         {
             if (Inventory.Count == 0)
             {
-                Console.WriteLine("You have no items in your inventory.\n");
+                Console.WriteLine("\nYou have no items in your inventory.\n");
                 return;
             }
 
