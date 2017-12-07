@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Zork.Extensions;
+using Zork.Objects;
 
 namespace Zork
 {
@@ -33,7 +34,7 @@ namespace Zork
         /// <param name="from">From point</param>
         /// <param name="towards">Destination point</param>
         /// <param name="direction">Direction from from to towards</param>
-        private void tryGo(Point from, Point towards, Direction direction)
+        private void TryGo(Point from, Point towards, Direction direction)
         {
             if( towards.X < 0 || towards.X == Width || towards.Y < 0 || towards.Y == Height)
             {
@@ -69,29 +70,29 @@ namespace Zork
         /// <summary>
         /// Print the room, get user input to accept commands
         /// </summary>
-        public void run()
+        public void Run()
         {
-            printInstructions();
+            PrintInstructions();
             while (true) {
-                maze[currentRoom].print();
+                maze[currentRoom].Print();
                 string userInput = Console.ReadLine();
                 switch (userInput[0])
                 {
                     case 'n':
                     case 'N':
-                        tryGo(currentRoom, new Point(currentRoom.X, currentRoom.Y-1), Direction.North);
+                        TryGo(currentRoom, new Point(currentRoom.X, currentRoom.Y-1), Direction.North);
                         break;
                     case 's':
                     case 'S':
-                        tryGo(currentRoom, new Point(currentRoom.X, currentRoom.Y + 1), Direction.South);
+                        TryGo(currentRoom, new Point(currentRoom.X, currentRoom.Y + 1), Direction.South);
                         break;
                     case 'e':
                     case 'E':
-                        tryGo(currentRoom, new Point(currentRoom.X + 1, currentRoom.Y), Direction.East);
+                        TryGo(currentRoom, new Point(currentRoom.X + 1, currentRoom.Y), Direction.East);
                         break;
                     case 'w':
                     case 'W':
-                        tryGo(currentRoom, new Point(currentRoom.X - 1, currentRoom.Y), Direction.West);
+                        TryGo(currentRoom, new Point(currentRoom.X - 1, currentRoom.Y), Direction.West);
                         break;
                     case 'L':
                     case 'l':
@@ -101,16 +102,48 @@ namespace Zork
                     case 'T':
                         tryTalk(userInput);
                         break;
+                    case 'p':
+                    case 'P':
+                        PickupItem();
+                        break;
                     default:
-                        printInstructions();
+                        PrintInstructions();
                         break;
                 }
             }
         }
 
-        private void printInstructions()
+        /// <summary>
+        /// Lists all items in the room and gives options for the player to pick them up. 
+        /// If he chooses a valid item it gets added to the inventory.
+        /// </summary>
+        private void PickupItem()
         {
-            Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around, [L] to look around");
+            if (maze[currentRoom].ObjectsInRoom.Count <= 0)
+            {
+                Console.WriteLine("There are no items to pickup in this room.");
+                return;
+            }
+            for (int i = 0; i < maze[currentRoom].ObjectsInRoom.Count; i++)
+            {
+                Console.WriteLine($"[{i + 1}] to pickup:" + maze[currentRoom].ObjectsInRoom[i].Name);
+            }
+            string input = Console.ReadLine();
+            int inputInteger;
+            int.TryParse(input, out inputInteger);
+            if (inputInteger > 0 && inputInteger < maze[currentRoom].ObjectsInRoom.Count)
+            {
+                (maze[currentRoom].ObjectsInRoom[inputInteger - 1]).PickupObject(Characters.CharacterDefinitions.PlayerCharacter);
+            }
+            else
+            {
+                Console.WriteLine("Cannot pick that item up.");
+            }
+        }
+
+        private void PrintInstructions()
+        {
+            Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around, [L] to look around, [P] to pick up an item");
         }
     }
 }

@@ -9,14 +9,13 @@ namespace Zork.Characters
 {
     public class Player : Character
     {
-
-      public Player() : base()
-       {
+        public Player() : base()
+        {
             Name = "Sherlock Holmes";
             Description = "A very good investigator.";
             EquippedWeapon = null;
             Strength = 10;
             Health = 100;
-       }
+        }        
     }
 }
