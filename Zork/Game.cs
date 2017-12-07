@@ -25,7 +25,52 @@ namespace Zork
             currentRoom = new Point(StartX, StartY);
             maze = new Maze(Width, Height, StartX, StartY);
             maze.Print();
-            maze[StartX, StartY].CharactersInRoom.Add(Characters.CharacterDefinitions.NPCS.FindNPC("sherrif_barney"));
+            AddCharacters();
+            AddItems();
+        }
+
+        private void AddCharacters()
+        {
+            foreach(Character npc in Characters.CharacterDefinitions.NPCS)
+            {
+                maze[GetRandomRoom()].CharactersInRoom.Add(npc);
+            }
+        }
+
+        private Point GetRandomRoom()
+        {
+            return new Point(rng.Next(0, Width), rng.Next(0, Height));
+        }
+
+        private void AddItemToRandomRoom(BaseObject obj)
+        {
+            maze[GetRandomRoom()].ObjectsInRoom.Add(obj);
+        }
+
+        private void AddItems()
+        {
+            AddItemToRandomRoom(new Clue("Chesspiece", "A white wooden rook"));
+            AddItemToRandomRoom(new Weapon("Longsword", 40, "Best suited to spilling the blood of your enemies."));
+            AddItemToRandomRoom(new Weapon("Knife", 20, "Crude, but will probably get the job done."));
+            AddItemToRandomRoom(new Weapon("Butterknife", 5, "Very lethal if you happen to encounter someone made of butter."));
+            AddItemToRandomRoom(new Weapon("Broom", 8, "A long wooden handle with straw bound in rope."));
+            AddItemToRandomRoom(new Weapon("Hammer", 25, "The heavy sort; could probably kill a human fairly quickly."));
+            AddItemToRandomRoom(new Weapon("Pan", 10, "A cast-iron skillet, quite heavy."));
+            AddItemToRandomRoom(new HealthPickup("Green vial", 50, "Some sort of potion; might be toxic."));
+            AddItemToRandomRoom(new HealthPickup("Green vial", -50, "Some sort of potion; might be toxic."));
+            AddItemToRandomRoom(new HealthPickup("Red vial", -90, "Wonderful life-saving stuff. Probably."));
+            for (int i = 0; i < 25; ++i)
+            {
+                AddItemToRandomRoom(new HealthPickup("Apple", 5, "Looks ripe."));
+            }
+            for (int i = 0; i < 10; ++i)
+            {
+                AddItemToRandomRoom(new HealthPickup("Bandage", 40, "Could save your life."));
+            }
+            for (int i = 0; i < 15; ++i)
+            {
+                AddItemToRandomRoom(new HealthPickup("Brown rag", 20, "Just what you need when you're bleeding."));
+            }
         }
 
         /// <summary>
@@ -135,7 +180,7 @@ namespace Zork
             string input = Console.ReadLine();
             int inputInteger;
             int.TryParse(input, out inputInteger);
-            if (inputInteger > 0 && inputInteger < maze[currentRoom].ObjectsInRoom.Count)
+            if (inputInteger > 0 && inputInteger < maze[currentRoom].ObjectsInRoom.Count + 1)
             {
                 (maze[currentRoom].ObjectsInRoom[inputInteger - 1]).PickupObject(Characters.CharacterDefinitions.PlayerCharacter);
             }
