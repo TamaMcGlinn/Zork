@@ -63,7 +63,7 @@ namespace Zork
             protected set { _text = value; }
         }
 
-        private List<Objects.BaseObject> _inventory;
+        private List<Objects.BaseObject> _inventory = new List<BaseObject>();
 
         public List<Objects.BaseObject> Inventory
         {
@@ -107,6 +107,17 @@ namespace Zork
             this.Health = health;
             this.EquippedWeapon = weapon;
             SetTextTree();
+        }
+
+        /// <summary>
+        /// Lists all items in the character's inventory
+        /// </summary>
+        public void PrintInventory()
+        {
+            for (int i = 0; i < Inventory.Count; i++)
+            {
+                Console.WriteLine($"{Inventory[i].Name} : {Inventory[i].Description}");
+            };
         }
 
 

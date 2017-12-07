@@ -5,6 +5,7 @@ using Zork.Objects;
 using System.Drawing;
 using System.Collections.Generic;
 using Zork.Characters;
+using System.IO;
 
 namespace ZorkUnitTest
 {
@@ -90,6 +91,17 @@ namespace ZorkUnitTest
                 Assert.IsTrue(lookAroundTextList[i].Contains(CreateWeapon().Description), "The objects do not match the right description");
             }
         }
+        [TestMethod]
+        public void PrintInventoryTest()
+        {
+            StringWriter consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
+            CharacterDefinitions.PlayerCharacter.Inventory = new List<BaseObject>();
+            Clue clue = new Clue("Red pants", "very nice pants");
+            CharacterDefinitions.PlayerCharacter.Inventory.Add(clue);
+            CharacterDefinitions.PlayerCharacter.PrintInventory();
+            Assert.IsTrue(consoleOutput.ToString().Contains($"{clue.Name} : {clue.Description}"));
+        }
 
         /// <summary>
         /// Creates a weapon objects for testing purposes
@@ -123,5 +135,6 @@ namespace ZorkUnitTest
         {
             return new NPC("sherrif_barney", 4, 100, null, "This man has a long beard.");
         }
+
     }
 }

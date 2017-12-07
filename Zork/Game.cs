@@ -106,6 +106,10 @@ namespace Zork
                     case 'P':
                         PickupItem();
                         break;
+                    case 'i':
+                    case 'I':
+                        Characters.CharacterDefinitions.PlayerCharacter.PrintInventory();
+                        break;
                     default:
                         PrintInstructions();
                         break;
@@ -143,7 +147,7 @@ namespace Zork
 
         private void PrintInstructions()
         {
-            Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around, [L] to look around, [P] to pick up an item");
+            Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around, [L] to look around, [P] to pick up an item, [I] Inventory");
         }
     }
 }

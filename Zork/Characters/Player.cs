@@ -16,6 +16,6 @@ namespace Zork.Characters
             EquippedWeapon = null;
             Strength = 10;
             Health = 100;
-        }        
+        }
     }
 }
