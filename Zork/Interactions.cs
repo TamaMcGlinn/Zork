@@ -16,13 +16,25 @@ namespace Zork
         /// </summary>
         public Character ChooseEnemy(Maze maze, System.Drawing.Point currentRoom)
         {
-            for (int i = 0; i < maze[currentRoom].CharactersInRoom.Count; i++)
+            if (maze[currentRoom].CharactersInRoom.Count > 0)
             {
-                Console.WriteLine($"[{i + 1}] {maze[currentRoom].CharactersInRoom[i].Name}");
+                for (int i = 0; i < maze[currentRoom].CharactersInRoom.Count; i++)
+                {
+                    Console.WriteLine($"[{i + 1}] {maze[currentRoom].CharactersInRoom[i].Name}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("\nThere's no one here\n");
+                return null;
             }
 
-            int enemyNumber = ReadUserInputInteger();
-            return getEnemyCharacterFromRoom(maze, currentRoom, enemyNumber); ;
+            int enemyNumber;
+            if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber >= 0)
+            {
+                return getEnemyCharacterFromRoom(maze, currentRoom, enemyNumber); ;
+            }
+            return null;
         }
 
 
@@ -130,12 +142,8 @@ namespace Zork
             }
         }
 
-        public int ReadUserInputInteger()
-        {
-            int userInput;
-            int.TryParse(Console.ReadLine(), out userInput);
-            return userInput;
-        }
+     
+        
 
 
     }
