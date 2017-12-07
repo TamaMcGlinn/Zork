@@ -183,5 +183,20 @@ namespace Zork
                 }
             }
         }
+
+        public void PrintStats()
+        {
+            Console.WriteLine(Name + ": " + Description);
+            Console.WriteLine("Strength: " + Strength);
+            if (EquippedWeapon == null)
+            {
+                Console.WriteLine("Unarmed.");
+            }
+            else
+            {
+                Console.WriteLine("Current weapon: ");
+                EquippedWeapon.PrintStats();
+            }
+        }
     }
 }

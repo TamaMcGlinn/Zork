@@ -28,7 +28,10 @@ namespace Zork.Objects
             character.EquippedWeapon = this;
         }
 
-
-
+        public void PrintStats()
+        {
+            Console.WriteLine(Name + ": " + Description);
+            Console.WriteLine("Strength: " + Strength);
+        }
     }
 }

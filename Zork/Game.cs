@@ -112,13 +112,17 @@ namespace Zork
                     case 'I':
                         CharacterDefinitions.PlayerCharacter.PrintInventory();
                         break;
+                    case 'c':
+                    case 'C':
+                        CharacterDefinitions.PlayerCharacter.PrintStats();
+                        break;
                     default:
                         PrintInstructions();
                         break;
                 }
             }
         }
-
+        
         /// <summary>
         /// Lists all items in the room and gives options for the player to pick them up. 
         /// If he chooses a valid item it gets added to the inventory.
@@ -149,7 +153,9 @@ namespace Zork
 
         private void PrintInstructions()
         {
-            Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around, [L] to look around, [P] to pick up an item, [I] Inventory");
+            Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around.");
+            Console.WriteLine("[L] to look around, [P] to pick up an item, [I] Inventory");
+            Console.WriteLine("[C] to view stats");
         }
     }
 }
