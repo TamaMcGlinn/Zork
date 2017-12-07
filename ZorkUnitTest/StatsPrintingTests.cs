@@ -37,7 +37,8 @@ namespace ZorkUnitTest
             Console.SetOut(consoleOutput);
             p.PrintStats();
             Assert.AreEqual(CharacterDefinitions.PlayerCharacter.Name + ": " 
-                + CharacterDefinitions.PlayerCharacter.Description + 
+                + CharacterDefinitions.PlayerCharacter.Description +
+                "\r\nHealth: 100" +
                 "\r\nStrength: " + CharacterDefinitions.PlayerCharacter.Strength + 
                 "\r\nUnarmed.\r\n", consoleOutput.ToString());
         }
@@ -53,6 +54,7 @@ namespace ZorkUnitTest
                 p.PrintStats();
                 string expectedResult = CharacterDefinitions.PlayerCharacter.Name + ": "
                     + CharacterDefinitions.PlayerCharacter.Description +
+                    "\r\nHealth: 100" +
                     "\r\nStrength: " + CharacterDefinitions.PlayerCharacter.Strength +
                     "\r\nCurrent weapon:" +
                     "\r\n" + p.EquippedWeapon.Name + ": " + p.EquippedWeapon.Description +

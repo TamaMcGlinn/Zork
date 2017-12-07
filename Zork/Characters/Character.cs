@@ -187,6 +187,7 @@ namespace Zork
         public void PrintStats()
         {
             Console.WriteLine(Name + ": " + Description);
+            Console.WriteLine("Health: " + Health);
             Console.WriteLine("Strength: " + Strength);
             if (EquippedWeapon == null)
             {
