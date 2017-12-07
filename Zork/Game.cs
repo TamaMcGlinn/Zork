@@ -47,6 +47,25 @@ namespace Zork
             }
         }
 
+        private void tryTalk(string userInput)
+        {
+            var talkCommand = userInput.Split(' ');
+            if (talkCommand.Length >= 3 && talkCommand[1] == "to")
+            {
+                string charactername = string.Join("_", talkCommand.Skip(2)).ToLower();
+                Character talkTarget = maze[currentRoom].CharactersInRoom.Find((Character c) => { return c.Name == charactername; });
+                if (talkTarget == null)
+                {
+                    Console.WriteLine("There is nobody called " + charactername + " here.");
+                }
+                talkTarget.Talk();
+            }
+            else
+            {
+                Console.WriteLine("Did you mean; \"Talk to [character name]\"?");
+            }
+        }
+
         /// <summary>
         /// Print the room, get user input to accept commands
         /// </summary>
@@ -80,20 +99,7 @@ namespace Zork
                         break;
                     case 't':
                     case 'T':
-                        var talkCommand = userInput.Split(' ');
-                        if (talkCommand.Length >= 3 && talkCommand[1] == "to")
-                        {
-                            string charactername = string.Join("_", talkCommand.Skip(2)).ToLower();
-                            Character talkTarget = maze[currentRoom].CharactersInRoom.Find((Character c) => { return c.Name == charactername; });
-                            if(talkTarget == null)
-                            {
-                                Console.WriteLine("There is nobody called " + charactername + " here.");
-                            }
-                            talkTarget.Talk();
-                        } else
-                        {
-                            Console.WriteLine("Did you mean; \"Talk to [character name]\"?");
-                        }
+                        tryTalk(userInput);
                         break;
                     default:
                         printInstructions();
