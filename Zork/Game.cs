@@ -34,7 +34,7 @@ namespace Zork
         /// <param name="from">From point</param>
         /// <param name="towards">Destination point</param>
         /// <param name="direction">Direction from from to towards</param>
-        private void tryGo(Point from, Point towards, Direction direction)
+        private void TryGo(Point from, Point towards, Direction direction)
         {
             if( towards.X < 0 || towards.X == Width || towards.Y < 0 || towards.Y == Height)
             {
@@ -51,29 +51,29 @@ namespace Zork
         /// <summary>
         /// Print the room, get user input to accept commands
         /// </summary>
-        public void run()
+        public void Run()
         {
-            printInstructions();
+            PrintInstructions();
             while (true) {
-                maze[currentRoom].print();
+                maze[currentRoom].Print();
                 string userInput = Console.ReadLine();
                 switch (userInput[0])
                 {
                     case 'n':
                     case 'N':
-                        tryGo(currentRoom, new Point(currentRoom.X, currentRoom.Y-1), Direction.North);
+                        TryGo(currentRoom, new Point(currentRoom.X, currentRoom.Y-1), Direction.North);
                         break;
                     case 's':
                     case 'S':
-                        tryGo(currentRoom, new Point(currentRoom.X, currentRoom.Y + 1), Direction.South);
+                        TryGo(currentRoom, new Point(currentRoom.X, currentRoom.Y + 1), Direction.South);
                         break;
                     case 'e':
                     case 'E':
-                        tryGo(currentRoom, new Point(currentRoom.X + 1, currentRoom.Y), Direction.East);
+                        TryGo(currentRoom, new Point(currentRoom.X + 1, currentRoom.Y), Direction.East);
                         break;
                     case 'w':
                     case 'W':
-                        tryGo(currentRoom, new Point(currentRoom.X - 1, currentRoom.Y), Direction.West);
+                        TryGo(currentRoom, new Point(currentRoom.X - 1, currentRoom.Y), Direction.West);
                         break;
                     case 'L':
                     case 'l':
@@ -98,19 +98,20 @@ namespace Zork
                         break;
                     case 'p':
                     case 'P':
-                        pickupItem();
+                        PickupItem();
                         break;
                     default:
-                        printInstructions();
+                        PrintInstructions();
                         break;
                 }
             }
         }
 
         /// <summary>
-        /// Lists all items in the room and gives options for the player to pick them up. If he chooses a valid     item it gets added to the inventory
+        /// Lists all items in the room and gives options for the player to pick them up. 
+        /// If he chooses a valid item it gets added to the inventory.
         /// </summary>
-        private void pickupItem()
+        private void PickupItem()
         {
             if (maze[currentRoom].ObjectsInRoom.Count <= 0)
             {
@@ -134,7 +135,7 @@ namespace Zork
             }
         }
 
-        private void printInstructions()
+        private void PrintInstructions()
         {
             Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around, [L] to look around, [P] to pick up an item");
         }

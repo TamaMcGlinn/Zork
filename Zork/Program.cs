@@ -10,7 +10,7 @@ namespace Zork
             Game gameObject = new Game();
             try
             {
-                gameObject.run();
+                gameObject.Run();
             }
             catch (StackOverflowException e)
             {

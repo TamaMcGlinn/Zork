@@ -17,7 +17,7 @@ namespace ZorkUnitTest
         [TestMethod]
         public void characterConstructorTest()
         {
-            Weapon longSword = createWeapon();
+            Weapon longSword = CreateWeapon();
             Character character1 = new NPC("sherrif_barney", 4, 100, longSword, "This man has a long beard.");
             if (character1.Name != "sherrif_barney")
             {
@@ -45,7 +45,7 @@ namespace ZorkUnitTest
         [TestMethod]
         public void characterWithoutWeaponTest()
         {
-            Character character1 = createCharacterWithoutWeapon();
+            Character character1 = CreateCharacterWithoutWeapon();
             if (character1.EquippedWeapon != null)
             {
                 Assert.Fail("Somehow the character has a weapon");
@@ -57,12 +57,12 @@ namespace ZorkUnitTest
         /// objects created are 3x createWeapon, then this method checks if the lookAroundText contains the right text to be printed to the console.
         /// </summary>
         [TestMethod]
-        public void lookAroundTest()
+        public void LookAroundTest()
         {
             Room room = new Room("A place");
-            Character character = createCharacter();
+            Character character = CreateCharacter();
             room.CharactersInRoom.Add(character);
-            room.ObjectsInRoom = createListOfThreeWeaponObjects();
+            room.ObjectsInRoom = CreateListOfThreeWeaponObjects();
             string lookAroundTextString = room.LookAround();
             string[] lookAroundTextList = lookAroundTextString.Split('\n');
 
@@ -87,7 +87,7 @@ namespace ZorkUnitTest
             //checks if lines 4, 5, 6 are the description of the three weapons (the objects in the room)
             for (int i = 4; i < 7; i++)
             {
-                Assert.IsTrue(lookAroundTextList[i].Contains(createWeapon().Description), "The objects do not match the right description");
+                Assert.IsTrue(lookAroundTextList[i].Contains(CreateWeapon().Description), "The objects do not match the right description");
             }
         }
 
@@ -95,7 +95,7 @@ namespace ZorkUnitTest
         /// Creates a weapon objects for testing purposes
         /// </summary>
         /// <returns></returns>
-        private Weapon createWeapon()
+        private Weapon CreateWeapon()
         {
             return new Weapon("Longsword", 16, "a heavy longsword");
            
@@ -105,21 +105,21 @@ namespace ZorkUnitTest
         /// Creates a character holding a weapon for testing purposes
         /// </summary>
         /// <returns>A character equipped with a longsword</returns>
-        private Character createCharacter()
+        private Character CreateCharacter()
         {
-            return new NPC("sherrif_barney", 4, 100, createWeapon(), "This man has a long beard.");
+            return new NPC("sherrif_barney", 4, 100, CreateWeapon(), "This man has a long beard.");
         }
 
-        private List<BaseObject> createListOfThreeWeaponObjects()
+        private List<BaseObject> CreateListOfThreeWeaponObjects()
         {
             List<BaseObject> objectsInRoom = new List<BaseObject>();
-            objectsInRoom.Add(createWeapon());
-            objectsInRoom.Add(createWeapon());
-            objectsInRoom.Add(createWeapon());
+            objectsInRoom.Add(CreateWeapon());
+            objectsInRoom.Add(CreateWeapon());
+            objectsInRoom.Add(CreateWeapon());
             return objectsInRoom;
         }
 
-        private Character createCharacterWithoutWeapon()
+        private Character CreateCharacterWithoutWeapon()
         {
             return new NPC("sherrif_barney", 4, 100, null, "This man has a long beard.");
         }

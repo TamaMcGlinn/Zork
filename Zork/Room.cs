@@ -57,7 +57,7 @@ namespace Zork
             };
         }
 
-        public void print() {
+        public void Print() {
             Console.WriteLine(Description);
             Console.WriteLine("You can go:");
             foreach (var kvp in CanGoThere)
@@ -73,7 +73,7 @@ namespace Zork
         /// Prints a string containing all the objects in the room
         /// </summary>
         /// <returns>The string which is printed</returns>
-        public string printObjectsInRoom()
+        public string PrintObjectsInRoom()
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < ObjectsInRoom.Count; i++)
@@ -89,7 +89,7 @@ namespace Zork
         /// Prints a string containing all the characters in the room
         /// </summary>
         /// <returns>The string which is printed</returns>
-        public string printCharactersInRoom()
+        public string PrintCharactersInRoom()
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < CharactersInRoom.Count; i++)
@@ -113,11 +113,11 @@ namespace Zork
 
             //prints all characters
             sb.AppendLine("The following characters are in this room:");
-            sb.Append(printCharactersInRoom());
+            sb.Append(PrintCharactersInRoom());
 
             //prints all objects
             sb.AppendLine("You see the following objects laying around:");
-            sb.Append(printObjectsInRoom());
+            sb.Append(PrintObjectsInRoom());
             Console.WriteLine(sb.ToString());
             return sb.ToString();
         }

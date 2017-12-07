@@ -93,7 +93,7 @@ namespace Zork
             Health = 100;
             Strength = 5;
             EquippedWeapon = null;
-            setTextTree();
+            SetTextTree();
         }
         /// <summary>
         /// Character constructor with full options for parameters
@@ -111,7 +111,7 @@ namespace Zork
             this.Strength = strength;
             this.Health = health;
             this.EquippedWeapon = weapon;
-            setTextTree();
+            SetTextTree();
         }
 
         /// <summary>
@@ -132,7 +132,7 @@ namespace Zork
         }
 
 
-        private void setTextTree()
+        private void SetTextTree()
         {
 
             this.Text = new TextTree(Name + ".txt");
