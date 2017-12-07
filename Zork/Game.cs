@@ -73,6 +73,7 @@ namespace Zork
         /// </summary>
         public void Run()
         {
+            Interactions interactions = new Interactions();
             PrintInstructions();
             while (true) {
                 maze[currentRoom].Print();
@@ -105,7 +106,7 @@ namespace Zork
                         break;
                     case 'p':
                     case 'P':
-                        PickupItem();
+                        interactions.PickupItem(maze, currentRoom);
                         break;
                     case 'i':
                     case 'I':
@@ -113,127 +114,16 @@ namespace Zork
                         break;
                     case 'b':
                     case 'B':
-                        Character enemy = ChooseEnemy();
+                        Character enemy = interactions.ChooseEnemy(maze, currentRoom);
                         if (enemy != null)
                         {
-                            Fight(enemy);
+                            interactions.Fight(enemy);
                         }
-                        Console.Read();
                         break;
                     default:
                         PrintInstructions();
                         break;
                 }
-            }
-        }
-
-        private bool Fight(Character enemy)
-        {
-            Player player = Characters.CharacterDefinitions.PlayerCharacter;
-            Random turnBonusDamageGenerator = new Random();
-            int maxBonusDamage = 10;
-            
-            while(player.Health > 0 && enemy.Health > 0)
-            {
-                int playerBonusDamage = turnBonusDamageGenerator.Next(0, maxBonusDamage);
-                int enemyBonusDamage = turnBonusDamageGenerator.Next(0, maxBonusDamage);
-
-                int playerDamage = playerBonusDamage + player.Strength;
-                int enemyDamage = enemyBonusDamage + enemy.Strength;
-
-                if (player.EquippedWeapon != null)
-                {
-                    playerDamage += player.EquippedWeapon.Strength;
-                }
-                if (enemy.EquippedWeapon != null)
-                {
-                    enemyDamage += enemy.EquippedWeapon.Strength;
-                }
-
-                Console.WriteLine("You hit eachother...");
-                player.TakeDamage(enemyDamage);
-                enemy.TakeDamage(playerDamage);
-
-
-                Console.Write("You hit for: " + playerDamage);
-                if (player.EquippedWeapon != null) {
-                    Console.Write($" with you mighty {player.EquippedWeapon.Name}");
-                }
-                Console.WriteLine(); 
-                Console.Write($"{enemy.Name} hits you for:" + enemyDamage);
-                if (enemy.EquippedWeapon != null)
-                {
-                    Console.Write($" with his stupid {enemy.EquippedWeapon}");
-                }
-                Console.WriteLine();
-                Console.WriteLine($"You have {player.Health} hp left, he has {enemy.Health} hp left.");
-            }
-            if (player.Health < 0)
-            {
-                player.Inventory.Clear();
-                Console.WriteLine("You died! But luckily you've returned without items.");
-                return false;
-            }
-            else
-            {
-                Console.WriteLine($"You've won! You've picked up all {enemy.Name}'s items, check your inventory!");
-                return true;
-            }
-        }
-
-        /// <summary>
-        /// Prints a list of characters you can fight and lets you choose a character
-        /// </summary>
-        private Character ChooseEnemy()
-        {
-            int charactersInRoomCount = maze[currentRoom].CharactersInRoom.Count;
-
-            for (int i = 0; i < maze[currentRoom].CharactersInRoom.Count; i++)
-            {
-                Console.WriteLine($"[{i + 1}] {maze[currentRoom].CharactersInRoom[i].Name}");
-            }
-
-            int enemyNumber;
-            
-            if (int.TryParse(Console.ReadLine(), out enemyNumber) )
-            {
-                if (enemyNumber < charactersInRoomCount + 1)
-                {
-                    return maze[currentRoom].CharactersInRoom[enemyNumber - 1];
-                }
-                else
-                {
-                    Console.WriteLine("That enemy is not available.");
-                }
-            }
-            return null;
-        }
-
-        /// <summary>
-        /// Lists all items in the room and gives options for the player to pick them up. 
-        /// If he chooses a valid item it gets added to the inventory.
-        /// </summary>
-        private void PickupItem()
-        {
-            if (maze[currentRoom].ObjectsInRoom.Count <= 0)
-            {
-                Console.WriteLine("There are no items to pickup in this room.");
-                return;
-            }
-            for (int i = 0; i < maze[currentRoom].ObjectsInRoom.Count; i++)
-            {
-                Console.WriteLine($"[{i + 1}] to pickup:" + maze[currentRoom].ObjectsInRoom[i].Name);
-            }
-            string input = Console.ReadLine();
-            int inputInteger;
-            int.TryParse(input, out inputInteger);
-            if (inputInteger > 0 && inputInteger < maze[currentRoom].ObjectsInRoom.Count)
-            {
-                (maze[currentRoom].ObjectsInRoom[inputInteger - 1]).PickupObject(Characters.CharacterDefinitions.PlayerCharacter);
-            }
-            else
-            {
-                Console.WriteLine("Cannot pick that item up.");
             }
         }
 
