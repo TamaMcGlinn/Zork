@@ -26,10 +26,22 @@ namespace ZorkUnitTest
         }
 
         [TestMethod]
-        public void HealthIncreases()
+        public void HealthLimited()
         {
             var health = makeVial();
-            //Player p = new Player();
+            Player p = new Player();
+            p.UseHealthPickup(health);
+            Assert.AreEqual(p.Health, 100);
+        }
+
+        [TestMethod]
+        public void CanHeal()
+        {
+            var health = makeVial();
+            Player p = new Player();
+            p.takeDamage(50);
+            p.UseHealthPickup(health);
+            Assert.AreEqual(p.Health, 80);
         }
 
         [TestMethod]
@@ -39,7 +51,7 @@ namespace ZorkUnitTest
 
         }
 
-        [Microsoft.VisualStudio.TestTools.UnitTesting.TestMethod]
+        [TestMethod]
         public void PickUpWeaponTest()
         {
             Player p = CharacterDefinitions.PlayerCharacter;
