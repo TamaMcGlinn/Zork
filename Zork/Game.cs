@@ -14,7 +14,6 @@ namespace Zork
     public class Game
     {
         Maze maze;
-        Point currentRoom;
         const int Width = 20;
         const int Height = 20;
         const int StartX = 1;
@@ -23,31 +22,10 @@ namespace Zork
 
         public Game()
         {
-            currentRoom = new Point(StartX, StartY);
             maze = new Maze(Width, Height, StartX, StartY);
             maze.Print();
             CharacterDefinitions.AddCharacters(maze);
             ObjectDefinitions.AddItems(maze);
-        }
-
-        /// <summary>
-        /// Attempt to go from the from point to the towards point.
-        /// </summary>
-        /// <param name="from">From point</param>
-        /// <param name="towards">Destination point</param>
-        /// <param name="direction">Direction from from to towards</param>
-        private void TryGo(Point from, Point towards, Direction direction)
-        {
-            if( towards.X < 0 || towards.X == Width || towards.Y < 0 || towards.Y == Height)
-            {
-                Console.WriteLine("You attempt to go " + direction.ToString().ToLower() + " but face the end of the world.");
-            } else if( maze[from].CanGoThere[direction])
-            {
-                currentRoom = towards;
-            } else
-            {
-                Console.WriteLine("You cannot go " + direction.ToString().ToLower());
-            }
         }
 
         private void tryTalk(string userInput)
@@ -56,6 +34,7 @@ namespace Zork
             if (talkCommand.Length >= 3 && talkCommand[1] == "to")
             {
                 string charactername = string.Join("_", talkCommand.Skip(2)).ToLower();
+                Point currentRoom = CharacterDefinitions.PlayerCharacter.Location;
                 Character talkTarget = maze[currentRoom].CharactersInRoom.Find((Character c) => { return c.Name == charactername; });
                 if (talkTarget == null)
                 {
@@ -76,25 +55,27 @@ namespace Zork
         {
             PrintInstructions();
             while (true) {
+                Player player = CharacterDefinitions.PlayerCharacter;
+                Point currentRoom = player.Location;
                 maze[currentRoom].Print();
                 string userInput = Console.ReadLine();
                 switch (userInput[0])
                 {
                     case 'n':
                     case 'N':
-                        TryGo(currentRoom, new Point(currentRoom.X, currentRoom.Y-1), Direction.North);
+                        player.TryGo(maze, new Point(currentRoom.X, currentRoom.Y-1), Direction.North);
                         break;
                     case 's':
                     case 'S':
-                        TryGo(currentRoom, new Point(currentRoom.X, currentRoom.Y + 1), Direction.South);
+                        player.TryGo(maze, new Point(currentRoom.X, currentRoom.Y + 1), Direction.South);
                         break;
                     case 'e':
                     case 'E':
-                        TryGo(currentRoom, new Point(currentRoom.X + 1, currentRoom.Y), Direction.East);
+                        player.TryGo(maze, new Point(currentRoom.X + 1, currentRoom.Y), Direction.East);
                         break;
                     case 'w':
                     case 'W':
-                        TryGo(currentRoom, new Point(currentRoom.X - 1, currentRoom.Y), Direction.West);
+                        player.TryGo(maze, new Point(currentRoom.X - 1, currentRoom.Y), Direction.West);
                         break;
                     case 'L':
                     case 'l':
@@ -129,6 +110,7 @@ namespace Zork
         /// </summary>
         private void PickupItem()
         {
+            Point currentRoom = CharacterDefinitions.PlayerCharacter.Location;
             if (maze[currentRoom].ObjectsInRoom.Count <= 0)
             {
                 Console.WriteLine("There are no items to pickup in this room.");

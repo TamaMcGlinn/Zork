@@ -13,8 +13,8 @@ namespace Zork
     {
         Room[,] rooms;
         Random rng;
-        private int Width;
-        private int Height;
+        public readonly int Width;
+        public readonly int Height;
 
         public Maze(int xSize, int ySize, int StartX, int StartY)
         {
