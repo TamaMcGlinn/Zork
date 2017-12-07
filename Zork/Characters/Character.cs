@@ -62,8 +62,9 @@ namespace Zork
             get { return _text; }
             protected set { _text = value; }
         }
+        
+        private List<Objects.BaseObject> _inventory = new List<BaseObject>();
 
-        private List<BaseObject> _inventory = new List<BaseObject>();
 
         public List<BaseObject> Inventory
         {
@@ -109,6 +110,23 @@ namespace Zork
         }
 
         /// <summary>
+        /// Lists all items in the character's inventory
+        /// </summary>
+        public void PrintInventory()
+        {
+            if (Inventory.Count == 0)
+            {
+                Console.WriteLine("\nYou have no items in your inventory.\n");
+                return;
+            }
+
+            Console.WriteLine("You currently have the following items:");
+            for (int i = 0; i < Inventory.Count; i++)
+            {
+                Console.WriteLine($"{Inventory[i].Name} : {Inventory[i].Description}");
+            };
+        }
+        
         /// Take the specified damage, return whether we are still alive
         /// </summary>
         /// <param name="damage">hitpoints to remove</param>
