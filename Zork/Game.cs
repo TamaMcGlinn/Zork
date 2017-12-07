@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using Zork.Characters;
 using Zork.Extensions;
 using Zork.Objects;
 
@@ -110,11 +111,102 @@ namespace Zork
                     case 'I':
                         Characters.CharacterDefinitions.PlayerCharacter.PrintInventory();
                         break;
+                    case 'b':
+                    case 'B':
+                        Character enemy = ChooseEnemy();
+                        if (enemy != null)
+                        {
+                            Fight(enemy);
+                        }
+                        Console.Read();
+                        break;
                     default:
                         PrintInstructions();
                         break;
                 }
             }
+        }
+
+        private bool Fight(Character enemy)
+        {
+            Player player = Characters.CharacterDefinitions.PlayerCharacter;
+            Random turnBonusDamageGenerator = new Random();
+            int maxBonusDamage = 10;
+            
+            while(player.Health > 0 && enemy.Health > 0)
+            {
+                int playerBonusDamage = turnBonusDamageGenerator.Next(0, maxBonusDamage);
+                int enemyBonusDamage = turnBonusDamageGenerator.Next(0, maxBonusDamage);
+
+                int playerDamage = playerBonusDamage + player.Strength;
+                int enemyDamage = enemyBonusDamage + enemy.Strength;
+
+                if (player.EquippedWeapon != null)
+                {
+                    playerDamage += player.EquippedWeapon.Strength;
+                }
+                if (enemy.EquippedWeapon != null)
+                {
+                    enemyDamage += enemy.EquippedWeapon.Strength;
+                }
+
+                Console.WriteLine("You hit eachother...");
+                player.TakeDamage(enemyDamage);
+                enemy.TakeDamage(playerDamage);
+
+
+                Console.Write("You hit for: " + playerDamage);
+                if (player.EquippedWeapon != null) {
+                    Console.Write($" with you mighty {player.EquippedWeapon.Name}");
+                }
+                Console.WriteLine(); 
+                Console.Write($"{enemy.Name} hits you for:" + enemyDamage);
+                if (enemy.EquippedWeapon != null)
+                {
+                    Console.Write($" with his stupid {enemy.EquippedWeapon}");
+                }
+                Console.WriteLine();
+                Console.WriteLine($"You have {player.Health} hp left, he has {enemy.Health} hp left.");
+            }
+            if (player.Health < 0)
+            {
+                player.Inventory.Clear();
+                Console.WriteLine("You died! But luckily you've returned without items.");
+                return false;
+            }
+            else
+            {
+                Console.WriteLine($"You've won! You've picked up all {enemy.Name}'s items, check your inventory!");
+                return true;
+            }
+        }
+
+        /// <summary>
+        /// Prints a list of characters you can fight and lets you choose a character
+        /// </summary>
+        private Character ChooseEnemy()
+        {
+            int charactersInRoomCount = maze[currentRoom].CharactersInRoom.Count;
+
+            for (int i = 0; i < maze[currentRoom].CharactersInRoom.Count; i++)
+            {
+                Console.WriteLine($"[{i + 1}] {maze[currentRoom].CharactersInRoom[i].Name}");
+            }
+
+            int enemyNumber;
+            
+            if (int.TryParse(Console.ReadLine(), out enemyNumber) )
+            {
+                if (enemyNumber < charactersInRoomCount + 1)
+                {
+                    return maze[currentRoom].CharactersInRoom[enemyNumber - 1];
+                }
+                else
+                {
+                    Console.WriteLine("That enemy is not available.");
+                }
+            }
+            return null;
         }
 
         /// <summary>
@@ -147,7 +239,7 @@ namespace Zork
 
         private void PrintInstructions()
         {
-            Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around, [L] to look around, [P] to pick up an item, [I] Inventory");
+            Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around, [L] to look around, [P] to pick up an item, [I]nventory, [B]attle someone");
         }
     }
 }

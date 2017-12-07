@@ -131,7 +131,7 @@ namespace Zork
         /// </summary>
         /// <param name="damage">hitpoints to remove</param>
         /// <returns>whether we are still alive</returns>
-        public bool takeDamage(int damage)
+        public bool TakeDamage(int damage)
         {
             Health -= damage;
             return Health > 0;
