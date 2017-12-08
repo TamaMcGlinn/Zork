@@ -7,11 +7,12 @@ namespace Zork
         
         static void Main(string[] args)
         {
-            Game g = new Game();
+            Game gameObject = new Game();
             try
             {
-                g.Run();
-            } catch(Exception e)
+                gameObject.Run();
+            }
+            catch (Exception e)
             {
                 Console.WriteLine(e.Message);
             }

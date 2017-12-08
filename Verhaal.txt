@@ -1,0 +1,46 @@
+Het verhaal speelt zich af in 18e eeuws verhaal de setting is london, stedelijk en business
+
+Sherlock 
+	Dit ben je zelf, je vrouw is vermoord en je gaat op zoek naar de moordenaar
+
+Sherrif barney
+	- Hij is behulpzaam, hij zoekt mee naar de moordenaar en heeft een hint voor je
+	{
+		>Hoe gaat het
+			< Goed, ik ben op onderzoek geweeest
+			>En, iets gevonden? 
+				<Ja je vrouw was gokverslaafd
+			>Waarnaar heb je onderzoek gedaan?
+				<Naar de moord op je vrouw
+				>En iets gevonden?
+					<Ja, ze was gokverslaafd
+		>Wat is er gebeurd
+			<Je vrouw is vermoord
+			<
+		>Kun je helpen zoeken
+		
+	}
+	
+Buurvrouw Cindy
+	{
+		>Dag buurvrouw!
+			<Hallo jongen
+			>Is u iets opgevallen?
+				<Nee
+		>Waarom was de sherrif hier gisteren?
+			<Hij is op onderzoek, waarnaar weet ik niet.
+	}
+	
+Moordenaar:
+Henry, hij heeft je vrouw vermoord omdat ze uit zijn winkel gestolen had en hij is eigenaar van een casino.
+	>Hey, hoe gaat het?
+		<Goed, niks bijzonders.
+		[Gesprek eindigt en moordenaar is in andere kamer]
+	>Heb jij mijn vrouw vermoord?
+		<Ja dat was ik, ze heeft van me gestolen!
+		{ENTER FIGHT]
+		
+
+
+
+	
