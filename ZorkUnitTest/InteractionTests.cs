@@ -1,10 +1,10 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Zork;
-using Zork.Objects;
-using Zork.Characters;
-using System.IO;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Drawing;
+using System.IO;
+using Zork;
+using Zork.Characters;
+using Zork.Objects;
 
 namespace ZorkUnitTest
 {
