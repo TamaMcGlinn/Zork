@@ -28,7 +28,9 @@ namespace ZorkUnitTest
         public void FightStrongEnemyTest()
         {
             //TODO: ask how to test private methods
-            Assert.IsFalse(Interactions.Fight(new NPC("sherrif_barney", "desc", 30, 100, new Weapon("Strong weapon", 10, "desc")), new Player()));
+            Character enemy = new NPC("sherrif_barney", "desc", 30, 100, new Weapon("Strong weapon", 10, "desc"));
+            Character player = new Player();
+            Assert.IsFalse(Interactions.Fight(enemy, player));
         }
 
         [TestMethod]
