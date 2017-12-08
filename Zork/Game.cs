@@ -61,18 +61,25 @@ namespace Zork
             var talkCommand = userInput.Split(' ');
             if (talkCommand.Length >= 3 && talkCommand[1] == "to")
             {
-                string charactername = string.Join("_", talkCommand.Skip(2)).ToLower();
-                Character talkTarget = maze[currentRoom].CharactersInRoom.Find((Character c) => { return c.Name == charactername; });
-                if (talkTarget == null)
-                {
-                    Console.WriteLine("There is nobody called " + charactername + " here.");
-                }
-                talkTarget.Talk();
+                TalkTo(String.Join("_", talkCommand.Skip(2)).ToLower());
             }
             else
             {
                 Console.WriteLine("Did you mean; \"Talk to [character name]\"?");
             }
+        }
+
+        private void TalkTo(string charactername)
+        {
+            Character talkTarget = maze[currentRoom].CharactersInRoom.Find((Character c) => {
+                return c.Name == charactername;
+            });
+            if (talkTarget == null)
+            {
+                Console.WriteLine("There is nobody called " + charactername + " here.");
+                return;
+            }
+            talkTarget.Talk();
         }
 
         /// <summary>
