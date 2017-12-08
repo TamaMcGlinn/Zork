@@ -55,15 +55,20 @@ namespace Zork
                 {
                     PrintHorizontal(xi, yi);
                 }
-                Console.Write("\n");
-                if (yi < Height - 1)
+                PrintLowerHalf(yi);
+            }
+        }
+
+        private void PrintLowerHalf(int yi)
+        {
+            Console.Write("\n");
+            if (yi < Height - 1)
+            {
+                for (int xi = 0; xi < Width; ++xi)
                 {
-                    for (int xi = 0; xi < Width; ++xi)
-                    {
-                        PrintVertical(xi, yi);
-                    }
-                    Console.Write("\n");
+                    PrintVertical(xi, yi);
                 }
+                Console.Write("\n");
             }
         }
 
