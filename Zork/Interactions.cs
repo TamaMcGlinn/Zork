@@ -16,16 +16,34 @@ namespace Zork
         /// </summary>
         public static Character ChooseEnemy(Maze maze, System.Drawing.Point currentRoom)
         {
-            for (int i = 0; i < maze[currentRoom].CharactersInRoom.Count; i++)
+            if (maze[currentRoom].CharactersInRoom.Count > 0)
             {
-                Console.WriteLine($"[{i + 1}] {maze[currentRoom].CharactersInRoom[i].Name}");
+                for (int i = 0; i < maze[currentRoom].CharactersInRoom.Count; i++)
+                {
+                    Console.WriteLine($"[{i + 1}] {maze[currentRoom].CharactersInRoom[i].Name}");
+                }
+            }
+            else
+            {
+                Console.WriteLine("\nThere's no one here\n");
+                return null;
             }
 
-            int enemyNumber = ReadUserInputInteger();
-            return getEnemyCharacterFromRoom(maze, currentRoom, enemyNumber); ;
+            int enemyNumber;
+            if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber >= 0)
+            {
+                return getEnemyCharacterFromRoom(maze, currentRoom, enemyNumber); ;
+            }
+            return null;
         }
 
-
+        /// <summary>
+        /// Gets an enemy from the current room of the user depending on userinput
+        /// </summary>
+        /// <param name="maze"></param>
+        /// <param name="currentRoom"></param>
+        /// <param name="enemyNumber"></param>
+        /// <returns></returns>
         private static Character getEnemyCharacterFromRoom(Maze maze, Point currentRoom, int enemyNumber)
         {
             if (enemyNumber >= 0)
@@ -130,14 +148,11 @@ namespace Zork
                 Console.WriteLine("Cannot pick that item up.");
             }
         }
-
         public static int ReadUserInputInteger()
         {
             int userInput;
             int.TryParse(Console.ReadLine(), out userInput);
             return userInput;
         }
-
-
     }
 }
