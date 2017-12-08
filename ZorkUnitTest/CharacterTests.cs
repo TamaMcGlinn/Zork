@@ -40,6 +40,15 @@ namespace ZorkUnitTest
                 Assert.Fail("The weapon of the character is not correct");
             }
         }
+
+
+        [TestMethod]
+        public void NonExistingCharacterTest()
+        {
+            NPC npc = new NPC("sdqoiwqjd", "Highly valuable person");
+            Assert.IsTrue(npc.Text.RootNode == null);
+        }
+
         /// <summary>
         /// Tests if it is possible to have a character without location
         /// </summary>

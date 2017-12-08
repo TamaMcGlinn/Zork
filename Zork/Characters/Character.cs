@@ -147,7 +147,6 @@ namespace Zork
 
         private void SetTextTree()
         {
-
             this.Text = new TextTree(Name + ".txt");
         }
 

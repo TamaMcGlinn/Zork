@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 
 namespace Zork.Texts
@@ -27,7 +28,14 @@ namespace Zork.Texts
 
         public TextTree(string filename)
         {
-            string text = System.IO.File.ReadAllText("../../../data/story/" + filename);
+            string text = "";
+            string path = "../../../data/story/" + filename;
+            if (!File.Exists(path))
+            {
+                _rootNode = null;
+                return;
+            }
+            text = System.IO.File.ReadAllText(path);
             var lines = text.Split('\n');
             Name = lines[0];
             _rootNode = readNode(lines, 1);
