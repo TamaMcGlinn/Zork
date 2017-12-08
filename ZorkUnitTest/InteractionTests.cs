@@ -3,6 +3,8 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Zork;
 using Zork.Objects;
 using Zork.Characters;
+using System.IO;
+using System.Drawing;
 
 namespace ZorkUnitTest
 {
@@ -13,8 +15,13 @@ namespace ZorkUnitTest
         public void ChooseEnemyTest()
         {
             //TODO: ask how to test private methods and user input from console. (console.readlines)
-            Interactions.ChooseEnemy(new Maze(1,1,0,0), new System.Drawing.Point(0,0));
-            Assert.Fail();
+            StringWriter writer = new StringWriter();
+            Console.SetOut(writer);
+            Point currentRoom = new Point(0, 0);
+            Maze maze = new Maze(1, 1, currentRoom.X, currentRoom.Y);
+            maze[currentRoom.X, currentRoom.Y].CharactersInRoom.Add(CharacterDefinitions.NPCS[0]);
+            Interactions.ChooseEnemyMessage(maze, currentRoom);
+            Assert.IsTrue(writer.ToString().Contains($"[{0 + 1}] {maze[currentRoom].CharactersInRoom[0].Name}"));
         }
 
         [TestMethod]

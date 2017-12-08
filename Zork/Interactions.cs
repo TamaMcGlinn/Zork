@@ -11,28 +11,40 @@ namespace Zork
 {
     public static class Interactions
     {
+
+        public static void Battle(Maze maze, Point currentRoom)
+        {
+            Character enemy = null;
+            ChooseEnemyMessage(maze, currentRoom);
+            int enemyNumber;
+            if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber >= 0)
+            {
+                enemy = maze[currentRoom].CharactersInRoom[enemyNumber];
+            }
+            if (enemy != null)
+            {
+                Interactions.Fight(enemy, CharacterDefinitions.PlayerCharacter);
+            }
+        }
         /// <summary>
         /// Prints a list of characters you can fight and lets you choose a character
         /// </summary>
-        public static Character ChooseEnemy(Maze maze, System.Drawing.Point currentRoom)
+        public static void ChooseEnemyMessage(Maze maze, System.Drawing.Point currentRoom)
         {
-            if (maze[currentRoom].CharactersInRoom.Count == 0)
+            if (maze[currentRoom].CharactersInRoom.Count > 0)
+            {
+                for (int i = 0; i < maze[currentRoom].CharactersInRoom.Count; i++)
+                {
+                    Console.WriteLine($"[{i + 1}] {maze[currentRoom].CharactersInRoom[i].Name}");
+                }
+            }
+            else
             {
                 Console.WriteLine("\nThere's no one here\n");
-                return null;
-            }
-            for (int i = 0; i < maze[currentRoom].CharactersInRoom.Count; i++)
-            {
-                Console.WriteLine($"[{i + 1}] {maze[currentRoom].CharactersInRoom[i].Name}");
-            }
 
-            int enemyNumber;
-            if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber >= 0 && enemyNumber < maze[currentRoom].CharactersInRoom.Count)
-            {
-                return getEnemyCharacterFromRoom(maze, currentRoom, enemyNumber); ;
             }
-            return null;
         }
+    
 
         /// <summary>
         /// Gets an enemy from the current room of the user depending on userinput
@@ -43,7 +55,7 @@ namespace Zork
         /// <returns></returns>
         private static Character getEnemyCharacterFromRoom(Maze maze, Point currentRoom, int enemyNumber)
         {
-            if (enemyNumber >= 0)
+            if (enemyNumber >= 0 && enemyNumber < maze[currentRoom].CharactersInRoom.Count)
             {
                 if (enemyNumber < maze[currentRoom].CharactersInRoom.Count + 1)
                 {
