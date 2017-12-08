@@ -121,41 +121,6 @@ namespace Zork
             }
         }
 
-        /// <summary>
-        /// Lists all items in the room and gives options for the player to pick them up. 
-        /// If he chooses a valid item it gets added to the inventory.
-        /// </summary>
-        private void PickupItem()
-        {
-            if (maze[currentRoom].ObjectsInRoom.Count <= 0)
-            {
-                Console.WriteLine("There are no items to pickup in this room.");
-                return;
-            }
-            for (int i = 0; i < maze[currentRoom].ObjectsInRoom.Count; i++)
-            {
-                Console.WriteLine($"[{i + 1}] to pickup:" + maze[currentRoom].ObjectsInRoom[i].Name);
-            }
-            string input = Console.ReadLine();
-            int inputInteger;
-            int.TryParse(input, out inputInteger);
-            TryPickUp(inputInteger - 1);
-        }
-
-        private void TryPickUp(int choiceIndex)
-        {
-            if (choiceIndex >= 0 && choiceIndex < maze[currentRoom].ObjectsInRoom.Count)
-            {
-                var obj = maze[currentRoom].ObjectsInRoom[choiceIndex];
-                maze[currentRoom].ObjectsInRoom.Remove(obj);
-                obj.PickupObject(CharacterDefinitions.PlayerCharacter);
-            }
-            else
-            {
-                Console.WriteLine("Cannot pick that item up.");
-            }
-        }
-
         private void PrintInstructions()
         {
             Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around.");

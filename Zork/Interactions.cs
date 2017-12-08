@@ -156,15 +156,23 @@ namespace Zork
             string input = Console.ReadLine();
             int inputInteger;
             int.TryParse(input, out inputInteger);
-            if (inputInteger > 0 && inputInteger < maze[currentRoom].ObjectsInRoom.Count)
+            TryPickUp(maze, currentRoom, inputInteger - 1);
+        }
+
+        private static void TryPickUp(Maze maze, Point currentRoom, int choiceIndex)
+        {
+            if (choiceIndex >= 0 && choiceIndex < maze[currentRoom].ObjectsInRoom.Count)
             {
-                (maze[currentRoom].ObjectsInRoom[inputInteger - 1]).PickupObject(Characters.CharacterDefinitions.PlayerCharacter);
+                var obj = maze[currentRoom].ObjectsInRoom[choiceIndex];
+                maze[currentRoom].ObjectsInRoom.Remove(obj);
+                obj.PickupObject(CharacterDefinitions.PlayerCharacter);
             }
             else
             {
                 Console.WriteLine("Cannot pick that item up.");
             }
         }
+
         public static int ReadUserInputInteger()
         {
             int userInput;
