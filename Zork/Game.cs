@@ -14,6 +14,7 @@ namespace Zork
     public class Game
     {
         Maze maze;
+        private Point currentRoom;
         const int Width = 20;
         const int Height = 20;
         const int StartX = 1;
@@ -25,16 +26,17 @@ namespace Zork
             { 'e', (Game g, string s) => { g.TryGo(Direction.East); } },
             { 's', (Game g, string s) => { g.TryGo(Direction.South); } },
             { 'w', (Game g, string s) => { g.TryGo(Direction.West); } },
-            { 'l', (Game g, string s) => { Console.Write(g.maze[CharacterDefinitions.PlayerCharacter.Location].LookAround()); } },
+            { 'l', (Game g, string s) => { Console.Write(g.maze[g.currentRoom].LookAround()); } },
             { 't', (Game g, string s) => { g.tryTalk(s); } },
-            { 'p', (Game g, string s) => { Interactions.PickupItem(g.maze, CharacterDefinitions.PlayerCharacter.Location); } },
+            { 'p', (Game g, string s) => { Interactions.PickupItem(g.maze, g.currentRoom); } },
             { 'i', (Game g, string s) => { CharacterDefinitions.PlayerCharacter.PrintInventory(); } },
             { 'c', (Game g, string s) => { CharacterDefinitions.PlayerCharacter.PrintStats(); } },
-            { 'b', (Game g, string s) => { Interactions.Battle(g.maze, CharacterDefinitions.PlayerCharacter.Location); } }
+            { 'b', (Game g, string s) => { Interactions.Battle(g.maze, g.currentRoom); } }
         };
 
         public Game()
         {
+            currentRoom = new Point(StartX, StartY);
             maze = new Maze(Width, Height, StartX, StartY);
             maze.Print();
             CharacterDefinitions.AddCharacters(maze);
@@ -49,7 +51,7 @@ namespace Zork
             PrintInstructions();
             while (true)
             {
-                maze[CharacterDefinitions.PlayerCharacter.Location].Print();
+                maze[currentRoom].Print();
                 ProcessInput(Console.ReadLine());
             }
         }
@@ -69,7 +71,6 @@ namespace Zork
 
         private void TalkTo(string charactername)
         {
-            Point currentRoom = CharacterDefinitions.PlayerCharacter.Location;
             NPC talkTarget = maze[currentRoom].NPCsInRoom.Find((NPC c) => {
                 return c.Name == charactername;
             });
@@ -88,7 +89,6 @@ namespace Zork
         /// <param name="direction">The direction to go in</param>
         private void TryGo(Direction direction)
         {
-            Point currentRoom = CharacterDefinitions.PlayerCharacter.Location;
             Point towards = currentRoom.Add(direction);
             if (towards.X < 0 || towards.X == Width || towards.Y < 0 || towards.Y == Height)
             {

@@ -24,14 +24,6 @@ namespace Zork
             protected set { _name = value; }
         }
 
-        protected Point _location;
-
-        public Point Location
-        {
-            get { return _location; }
-        }
-
-
         private int _strength;
 
         public int Strength
@@ -47,7 +39,6 @@ namespace Zork
             get { return _health; }
             protected set { _health = value; }
         }
-
 
         private Weapon _weapon;
 
