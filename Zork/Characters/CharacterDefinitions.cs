@@ -26,9 +26,9 @@ namespace Zork.Characters
         
         public static void AddCharacters(Maze maze)
         {
-            foreach (Character npc in NPCS)
+            foreach (NPC npc in NPCS)
             {
-                maze.GetRandomRoom().CharactersInRoom.Add(npc);
+                maze.GetRandomRoom().NPCsInRoom.Add(npc);
             }
         }
     }

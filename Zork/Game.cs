@@ -18,7 +18,20 @@ namespace Zork
         const int Height = 20;
         const int StartX = 1;
         const int StartY = 1;
-        Random rng = new Random();
+
+        Dictionary<char, Action<Game, string>> Commands = new Dictionary<char, Action<Game, string>>()
+        {
+            { 'n', (Game g, string s) => { g.TryGo(Direction.North); } },
+            { 'e', (Game g, string s) => { g.TryGo(Direction.East); } },
+            { 's', (Game g, string s) => { g.TryGo(Direction.South); } },
+            { 'w', (Game g, string s) => { g.TryGo(Direction.West); } },
+            { 'l', (Game g, string s) => { Console.Write(g.maze[CharacterDefinitions.PlayerCharacter.Location].LookAround()); } },
+            { 't', (Game g, string s) => { g.tryTalk(s); } },
+            { 'p', (Game g, string s) => { Interactions.PickupItem(g.maze, CharacterDefinitions.PlayerCharacter.Location); } },
+            { 'i', (Game g, string s) => { CharacterDefinitions.PlayerCharacter.PrintInventory(); } },
+            { 'c', (Game g, string s) => { CharacterDefinitions.PlayerCharacter.PrintStats(); } },
+            { 'b', (Game g, string s) => { Interactions.Battle(g.maze, CharacterDefinitions.PlayerCharacter.Location); } }
+        };
 
         public Game()
         {
@@ -27,20 +40,26 @@ namespace Zork
             CharacterDefinitions.AddCharacters(maze);
             ObjectDefinitions.AddItems(maze);
         }
-
+        
+        /// <summary>
+        /// Print the room, get user input to accept commands
+        /// </summary>
+        public void Run()
+        {
+            PrintInstructions();
+            while (true)
+            {
+                maze[CharacterDefinitions.PlayerCharacter.Location].Print();
+                ProcessInput(Console.ReadLine());
+            }
+        }
+        
         private void tryTalk(string userInput)
         {
             var talkCommand = userInput.Split(' ');
             if (talkCommand.Length >= 3 && talkCommand[1] == "to")
             {
-                string charactername = string.Join("_", talkCommand.Skip(2)).ToLower();
-                Point currentRoom = CharacterDefinitions.PlayerCharacter.Location;
-                Character talkTarget = maze[currentRoom].CharactersInRoom.Find((Character c) => { return c.Name == charactername; });
-                if (talkTarget == null)
-                {
-                    Console.WriteLine("There is nobody called " + charactername + " here.");
-                }
-                talkTarget.Talk();
+                TalkTo(String.Join("_", talkCommand.Skip(2)).ToLower());
             }
             else
             {
@@ -48,97 +67,62 @@ namespace Zork
             }
         }
 
-        /// <summary>
-        /// Print the room, get user input to accept commands
-        /// </summary>
-        public void Run()
-        {
-            PrintInstructions();
-            while (true) {
-                Player player = CharacterDefinitions.PlayerCharacter;
-                Point currentRoom = player.Location;
-                maze[currentRoom].Print();
-                string userInput = Console.ReadLine();
-                switch (userInput[0])
-                {
-                    case 'n':
-                    case 'N':
-                        player.TryGo(maze, new Point(currentRoom.X, currentRoom.Y-1), Direction.North);
-                        break;
-                    case 's':
-                    case 'S':
-                        player.TryGo(maze, new Point(currentRoom.X, currentRoom.Y + 1), Direction.South);
-                        break;
-                    case 'e':
-                    case 'E':
-                        player.TryGo(maze, new Point(currentRoom.X + 1, currentRoom.Y), Direction.East);
-                        break;
-                    case 'w':
-                    case 'W':
-                        player.TryGo(maze, new Point(currentRoom.X - 1, currentRoom.Y), Direction.West);
-                        break;
-                    case 'L':
-                    case 'l':
-                        Console.Write(maze[currentRoom].LookAround());
-                        break;
-                    case 't':
-                    case 'T':
-                        tryTalk(userInput);
-                        break;
-                    case 'p':
-                    case 'P':
-                        PickupItem();
-                        break;
-                    case 'i':
-                    case 'I':
-                        CharacterDefinitions.PlayerCharacter.PrintInventory();
-                        break;
-                    case 'c':
-                    case 'C':
-                        CharacterDefinitions.PlayerCharacter.PrintStats();
-                        break;
-                    default:
-                        PrintInstructions();
-                        break;
-                }
-            }
-        }
-        
-        /// <summary>
-        /// Lists all items in the room and gives options for the player to pick them up. 
-        /// If he chooses a valid item it gets added to the inventory.
-        /// </summary>
-        private void PickupItem()
+        private void TalkTo(string charactername)
         {
             Point currentRoom = CharacterDefinitions.PlayerCharacter.Location;
-            if (maze[currentRoom].ObjectsInRoom.Count <= 0)
+            NPC talkTarget = maze[currentRoom].NPCsInRoom.Find((NPC c) => {
+                return c.Name == charactername;
+            });
+            if (talkTarget == null)
             {
-                Console.WriteLine("There are no items to pickup in this room.");
+                Console.WriteLine("There is nobody called " + charactername + " here.");
                 return;
             }
-            for (int i = 0; i < maze[currentRoom].ObjectsInRoom.Count; i++)
+            talkTarget.Talk();
+        }
+
+        /// <summary>
+        /// <summary>me="direction">Direction to go in</param>
+        /// </summary>
+        /// <param name="currentRoom">The room you're in</param>
+        /// <param name="direction">The direction to go in</param>
+        private void TryGo(Direction direction)
+        {
+            Point currentRoom = CharacterDefinitions.PlayerCharacter.Location;
+            Point towards = currentRoom.Add(direction);
+            if (towards.X < 0 || towards.X == Width || towards.Y < 0 || towards.Y == Height)
             {
-                Console.WriteLine($"[{i + 1}] to pickup:" + maze[currentRoom].ObjectsInRoom[i].Name);
+                Console.WriteLine("You attempt to go " + direction.ToString().ToLower() + " but face the end of the world.");
             }
-            string input = Console.ReadLine();
-            int inputInteger;
-            int.TryParse(input, out inputInteger);
-            if (inputInteger > 0 && inputInteger < maze[currentRoom].ObjectsInRoom.Count + 1)
+            else if (maze[currentRoom].CanGoThere[direction])
             {
-                var obj = maze[currentRoom].ObjectsInRoom[inputInteger - 1];
-                maze[currentRoom].ObjectsInRoom.Remove(obj);
-                obj.PickupObject(CharacterDefinitions.PlayerCharacter);
+                currentRoom = towards;
             }
             else
             {
-                Console.WriteLine("Cannot pick that item up.");
+                Console.WriteLine("You cannot go " + direction.ToString().ToLower());
             }
+        }
+
+        private void ProcessInput(string userInput)
+        {
+            userInput = userInput.ToLower();
+            if (userInput.Length > 0)
+            {
+                Action<Game,string> action = Commands[userInput[0]];
+                if (action != null)
+                {
+                    action(this, userInput);
+                    return;
+                }
+            }
+            PrintInstructions();
         }
 
         private void PrintInstructions()
         {
             Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around.");
-            Console.WriteLine("[L] to look around, [P] to pick up an item, [I] Inventory");
+            Console.WriteLine("[L] to look around, [P] to pick up an item, [I] Inventory, [B] Battle");
             Console.WriteLine("[C] to view stats");
         }
     }

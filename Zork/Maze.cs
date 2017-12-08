@@ -53,40 +53,59 @@ namespace Zork
             {
                 for (int xi = 0; xi < Width; ++xi)
                 {
-                    Console.Write("0");
-                    if (rooms[xi, yi].CanGoThere[Direction.East])
-                    {
-                        Debug.Assert(xi == Width - 1 || rooms[xi + 1, yi].CanGoThere[Direction.West]);
-                        Console.Write("-");
-                    }
-                    else if (xi < Width - 1)
-                    {
-                        Console.Write(" ");
-                    }
+                    PrintHorizontal(xi, yi);
+                }
+                PrintLowerHalf(yi);
+            }
+        }
+
+        private void PrintLowerHalf(int yi)
+        {
+            Console.Write("\n");
+            if (yi < Height - 1)
+            {
+                for (int xi = 0; xi < Width; ++xi)
+                {
+                    PrintVertical(xi, yi);
                 }
                 Console.Write("\n");
-                if (yi < Height - 1)
-                {
-                    for (int xi = 0; xi < Width; ++xi)
-                    {
-                        if (rooms[xi, yi].CanGoThere[Direction.South])
-                        {
-                            Debug.Assert(yi == Height - 1 || rooms[xi, yi + 1].CanGoThere[Direction.North]);
-                            Console.Write("|");
-                        }
-                        else if (xi < Width - 1)
-                        {
-                            Console.Write(" ");
-                        }
-                        Console.Write(" ");
-                    }
-                    Console.Write("\n");
-                }
+            }
+        }
+
+        private void PrintVertical(int xi, int yi)
+        {
+            if (rooms[xi, yi].CanGoThere[Direction.South])
+            {
+                Debug.Assert(yi == Height - 1 || rooms[xi, yi + 1].CanGoThere[Direction.North]);
+                Console.Write("|");
+            }
+            else if (xi < Width - 1)
+            {
+                Console.Write(" ");
+            }
+            Console.Write(" ");
+        }
+
+        private void PrintHorizontal(int xi, int yi)
+        {
+            Console.Write("0");
+            if (rooms[xi, yi].CanGoThere[Direction.East])
+            {
+                Debug.Assert(xi == Width - 1 || rooms[xi + 1, yi].CanGoThere[Direction.West]);
+                Console.Write("-");
+            }
+            else if (xi < Width - 1)
+            {
+                Console.Write(" ");
             }
         }
 
         private void AddExtraConnections(int extras)
         {
+            if(Width < 3 || Height < 3)
+            {
+                return;
+            }
             for (int i = 0; i < extras; ++i)
             {
                 var roomToConnect = new Point(rng.Next(1, Width - 1), rng.Next(1, Height - 1));
@@ -105,31 +124,41 @@ namespace Zork
         {
             if (a.X == b.X)
             {
-                if (a.Y + 1 == b.Y)
-                {
-                    rooms[a.X, a.Y].CanGoThere[Direction.South] = true;
-                    rooms[b.X, b.Y].CanGoThere[Direction.North] = true;
-                }
-                else
-                {
-                    Debug.Assert(a.Y - 1 == b.Y);
-                    rooms[a.X, a.Y].CanGoThere[Direction.North] = true;
-                    rooms[b.X, b.Y].CanGoThere[Direction.South] = true;
-                }
+                ConnectVertical(a, b);
             }
             else
             {
-                if (a.X + 1 == b.X)
-                {
-                    rooms[a.X, a.Y].CanGoThere[Direction.East] = true;
-                    rooms[b.X, b.Y].CanGoThere[Direction.West] = true;
-                }
-                else
-                {
-                    Debug.Assert(a.X - 1 == b.X);
-                    rooms[a.X, a.Y].CanGoThere[Direction.West] = true;
-                    rooms[b.X, b.Y].CanGoThere[Direction.East] = true;
-                }
+                ConnectHorizontal(a, b);
+            }
+        }
+
+        private void ConnectHorizontal(Point a, Point b)
+        {
+            if (a.X + 1 == b.X)
+            {
+                rooms[a.X, a.Y].CanGoThere[Direction.East] = true;
+                rooms[b.X, b.Y].CanGoThere[Direction.West] = true;
+            }
+            else
+            {
+                Debug.Assert(a.X - 1 == b.X);
+                rooms[a.X, a.Y].CanGoThere[Direction.West] = true;
+                rooms[b.X, b.Y].CanGoThere[Direction.East] = true;
+            }
+        }
+
+        private void ConnectVertical(Point a, Point b)
+        {
+            if (a.Y + 1 == b.Y)
+            {
+                rooms[a.X, a.Y].CanGoThere[Direction.South] = true;
+                rooms[b.X, b.Y].CanGoThere[Direction.North] = true;
+            }
+            else
+            {
+                Debug.Assert(a.Y - 1 == b.Y);
+                rooms[a.X, a.Y].CanGoThere[Direction.North] = true;
+                rooms[b.X, b.Y].CanGoThere[Direction.South] = true;
             }
         }
 
@@ -140,24 +169,9 @@ namespace Zork
         /// <returns></returns>
         private List<Point> ListEmptyNeighbours(Point place)
         {
-            List<Point> result = new List<Point>();
-            if (place.X > 0 && rooms[place.X - 1, place.Y] == null)
-            {
-                result.Add(new Point(place.X - 1, place.Y));
-            }
-            if (place.Y > 0 && rooms[place.X, place.Y - 1] == null)
-            {
-                result.Add(new Point(place.X, place.Y - 1));
-            }
-            if (place.X < Width - 1 && rooms[place.X + 1, place.Y] == null)
-            {
-                result.Add(new Point(place.X + 1, place.Y));
-            }
-            if (place.Y < Height - 1 && rooms[place.X, place.Y + 1] == null)
-            {
-                result.Add(new Point(place.X, place.Y + 1));
-            }
-            return result;
+            return place.ListNeighbours(this).Where((Point neighbour) => {
+                return this[neighbour] == null;
+            }).ToList();
         }
 
         /// <summary>
@@ -169,17 +183,14 @@ namespace Zork
             while (true)
             {
                 List<Point> options = ListEmptyNeighbours(fromPoint);
-                if (options.Count > 0)
+                if (options.Count == 0)
                 {
-                    Point destPoint = options[rng.Next(0, options.Count)];
-                    rooms[destPoint.X, destPoint.Y] = new Room("A busy street in London.");
-                    Connect(fromPoint, destPoint);
-                    CreateNeighbour(destPoint); //recursive step
+                    return;
                 }
-                else
-                {
-                    break;
-                }
+                Point destPoint = options[rng.Next(0, options.Count)];
+                rooms[destPoint.X, destPoint.Y] = new Room("A busy street in London.");
+                Connect(fromPoint, destPoint);
+                CreateNeighbour(destPoint); //recursive step
             }
         }
 

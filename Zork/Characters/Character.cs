@@ -13,7 +13,7 @@ namespace Zork
     public abstract class Character
     {
         #region properties
-
+        
         protected int MaxHealth = 100;
 
         private string _name;
@@ -65,14 +65,6 @@ namespace Zork
             protected set { _description = value; }
         }
         
-        private TextTree _text;
-
-        public TextTree Text
-        {
-            get { return _text; }
-            protected set { _text = value; }
-        }
-        
         private List<Objects.BaseObject> _inventory = new List<BaseObject>();
 
 
@@ -105,7 +97,6 @@ namespace Zork
             this.MaxHealth = maxHealth;
             this.Health = Math.Min(maxHealth, startHealth);
             this.EquippedWeapon = weapon;
-            SetTextTree();
         }
 
         /// <summary>
@@ -125,62 +116,20 @@ namespace Zork
                 Console.WriteLine($"{Inventory[i].Name} : {Inventory[i].Description}");
             };
         }
-        
+
+        public void ResetHealth()
+        {
+            Health = MaxHealth;
+        }
+
         /// Take the specified damage, return whether we are still alive
         /// </summary>
         /// <param name="damage">hitpoints to remove</param>
         /// <returns>whether we are still alive</returns>
-        public bool takeDamage(int damage)
+        public bool TakeDamage(int damage)
         {
             Health -= damage;
             return Health > 0;
-        }
-
-        private void SetTextTree()
-        {
-
-            this.Text = new TextTree(Name + ".txt");
-        }
-
-        /// <summary>
-        /// Output text and accept player choices until the tree reaches a leaf node
-        /// </summary>
-        public void Talk()
-        {
-            Node currentNode = Text.RootNode;
-            while (true)
-            {
-                Console.WriteLine(currentNode.Text);
-                List<Node> options = currentNode.AvailableChildren();
-                if (options.Count == 0)
-                {
-                    return;
-                }
-
-                int responseNumber = 1;
-                foreach (Node child in options)
-                {
-                    Console.WriteLine(responseNumber + "> " + child.Text);
-                    ++responseNumber;
-                }
-                Console.Write("> ");
-                int chosenResponse = -1;
-                while (Int32.TryParse(Console.ReadLine(), out chosenResponse) == false || chosenResponse < 0 || chosenResponse > currentNode.Children.Count)
-                {
-                    Console.WriteLine("Write a number for one of the responses");
-                    Console.Write("> ");
-                }
-                Node playerResponse = options[chosenResponse - 1];
-                Console.WriteLine("> " + playerResponse.Text);
-                List<Node> npcResponses = playerResponse.AvailableChildren();
-                if (npcResponses.Count > 0)
-                {
-                    currentNode = npcResponses.First();
-                } else
-                {
-                    return;
-                }
-            }
         }
 
         public void PrintStats()

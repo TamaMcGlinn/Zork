@@ -12,19 +12,8 @@ namespace Zork
             {
                 gameObject.Run();
             }
-            catch (StackOverflowException e)
+            catch (Exception e)
             {
-                Console.WriteLine("Stackoverflow");
-                Console.WriteLine(e.Message);
-            }
-            catch (NullReferenceException e)
-            {
-                Console.WriteLine("Null reference");
-                Console.WriteLine(e.Message);
-            }
-            catch (OutOfMemoryException e)
-            {
-                Console.WriteLine("Out of memory");
                 Console.WriteLine(e.Message);
             }
         }

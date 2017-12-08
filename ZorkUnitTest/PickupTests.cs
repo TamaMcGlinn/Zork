@@ -39,7 +39,7 @@ namespace ZorkUnitTest
         {
             var health = makeVial();
             Player p = new Player();
-            p.takeDamage(50);
+            p.TakeDamage(50);
             p.UseHealthPickup(health);
             Assert.AreEqual(p.Health, 80);
         }

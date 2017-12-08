@@ -25,5 +25,25 @@ namespace Zork
                     throw new Exception("Unknown direction encountered: " + dir);
             }
         }
+
+        public static IEnumerable<Point> ListNeighbours(this Point place, Maze maze)
+        {
+            if (place.X > 0)
+            {
+                yield return new Point(place.X - 1, place.Y);
+            }
+            if (place.Y > 0)
+            {
+                yield return new Point(place.X, place.Y - 1);
+            }
+            if (place.X < maze.Width - 1)
+            {
+                yield return new Point(place.X + 1, place.Y);
+            }
+            if (place.Y < maze.Height - 1)
+            {
+                yield return new Point(place.X, place.Y + 1);
+            }
+        }
     }
 }

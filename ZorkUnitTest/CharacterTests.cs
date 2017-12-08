@@ -61,8 +61,8 @@ namespace ZorkUnitTest
         public void LookAroundTest()
         {
             Room room = new Room("A place");
-            Character character = CreateCharacter();
-            room.CharactersInRoom.Add(character);
+            NPC character = CreateNPC();
+            room.NPCsInRoom.Add(character);
             room.ObjectsInRoom = CreateListOfThreeWeaponObjects();
             string lookAroundTextString = room.LookAround();
             string[] lookAroundTextList = lookAroundTextString.Split('\n');
@@ -117,7 +117,7 @@ namespace ZorkUnitTest
         /// Creates a character holding a weapon for testing purposes
         /// </summary>
         /// <returns>A character equipped with a longsword</returns>
-        private Character CreateCharacter()
+        private NPC CreateNPC()
         {
             return new NPC("sherrif_barney", "This man has a long beard.", 4, 100, CreateWeapon());
         }

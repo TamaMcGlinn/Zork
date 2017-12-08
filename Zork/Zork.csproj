@@ -50,6 +50,7 @@
     <Compile Include="Direction.cs" />
     <Compile Include="Extensions\ListNPCExtensions.cs" />
     <Compile Include="Game.cs" />
+    <Compile Include="Interactions.cs" />
     <Compile Include="Maze.cs" />
     <Compile Include="Objects\BaseObject.cs" />
     <Compile Include="Objects\Clue.cs" />
