@@ -61,7 +61,8 @@ namespace Zork
         /// Fights the chosen enemy untill someone dies, if player dies he loses all his items, 
         /// if enemy dies player picks up all his items.
         /// </summary>
-        /// <param name="enemy"></param>
+        /// <param name="enemy">The character you wish to fight</param>
+        /// <param name="player"></param>
         /// <returns>A boolean indicating wether the player won the fight</returns>
         public static bool Fight(Character enemy, Character player)
         {
@@ -168,13 +169,6 @@ namespace Zork
             {
                 Console.WriteLine("Cannot pick that item up.");
             }
-        }
-
-        public static int ReadUserInputInteger()
-        {
-            int userInput;
-            int.TryParse(Console.ReadLine(), out userInput);
-            return userInput;
         }
     }
 }
