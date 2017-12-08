@@ -112,6 +112,19 @@ namespace Zork
             SetTextTree();
         }
 
+
+        public void PrintWeapon()
+        {
+            if (EquippedWeapon != null)
+            {
+                Console.WriteLine($"Youre holding a {EquippedWeapon.Name} :  {EquippedWeapon.Description}");
+            }
+            else
+            {
+                Console.WriteLine("You're not holding a weapon");
+            }
+        }
+
         /// <summary>
         /// Lists all items in the character's inventory
         /// </summary>
