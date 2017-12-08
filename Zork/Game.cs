@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Zork.Characters;
-using Zork.Extensions;
 using Zork.Objects;
 
 namespace Zork
@@ -27,7 +26,7 @@ namespace Zork
             { 's', (Game g, string s) => { g.TryGo(Direction.South); } },
             { 'w', (Game g, string s) => { g.TryGo(Direction.West); } },
             { 'l', (Game g, string s) => { Console.Write(g.maze[g.currentRoom].LookAround()); } },
-            { 't', (Game g, string s) => { g.tryTalk(s); } },
+            { 't', (Game g, string s) => { g.TryTalk(s); } },
             { 'p', (Game g, string s) => { Interactions.PickupItem(g.maze, g.currentRoom); } },
             { 'i', (Game g, string s) => { CharacterDefinitions.PlayerCharacter.PrintWeapon(); CharacterDefinitions.PlayerCharacter.PrintInventory(); } },
             { 'c', (Game g, string s) => { CharacterDefinitions.PlayerCharacter.PrintStats(); } },
@@ -56,7 +55,7 @@ namespace Zork
             }
         }
 
-        private void tryTalk(string userInput)
+        private void TryTalk(string userInput)
         {
             var talkCommand = userInput.Split(' ');
             if (talkCommand.Length >= 3 && talkCommand[1] == "to")
@@ -118,8 +117,6 @@ namespace Zork
             }
             PrintInstructions();
         }
-
-       
 
         private void PrintInstructions()
         {
