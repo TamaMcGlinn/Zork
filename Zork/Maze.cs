@@ -13,8 +13,8 @@ namespace Zork
     {
         Room[,] rooms;
         Random rng;
-        private int Width;
-        private int Height;
+        public readonly int Width;
+        public readonly int Height;
 
         public Maze(int xSize, int ySize, int StartX, int StartY)
         {
@@ -169,24 +169,9 @@ namespace Zork
         /// <returns></returns>
         private List<Point> ListEmptyNeighbours(Point place)
         {
-            List<Point> result = new List<Point>();
-            if (place.X > 0 && rooms[place.X - 1, place.Y] == null)
-            {
-                result.Add(new Point(place.X - 1, place.Y));
-            }
-            if (place.Y > 0 && rooms[place.X, place.Y - 1] == null)
-            {
-                result.Add(new Point(place.X, place.Y - 1));
-            }
-            if (place.X < Width - 1 && rooms[place.X + 1, place.Y] == null)
-            {
-                result.Add(new Point(place.X + 1, place.Y));
-            }
-            if (place.Y < Height - 1 && rooms[place.X, place.Y + 1] == null)
-            {
-                result.Add(new Point(place.X, place.Y + 1));
-            }
-            return result;
+            return place.ListNeighbours(this).Where((Point neighbour) => {
+                return this[neighbour] == null;
+            }).ToList();
         }
 
         /// <summary>
