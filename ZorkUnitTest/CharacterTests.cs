@@ -70,7 +70,7 @@ namespace ZorkUnitTest
         public void LookAroundTest()
         {
             Room room = new Room("A place");
-            Character character = CreateCharacter();
+            Character character = CharacterDefinitions.NPCS[0];
             room.CharactersInRoom.Add(character);
             room.ObjectsInRoom = CreateListOfThreeWeaponObjects();
             string lookAroundTextString = room.LookAround();
@@ -89,13 +89,13 @@ namespace ZorkUnitTest
 
 
             //checks whether the second line of text contains the name of the character (the character which is added to the room
-            if (!lookAroundTextList[2].Contains(character.Name.Replace('_', ' ')))
+            if (!lookAroundTextList[3].Contains(character.Name.Replace('_', ' ')))
             {
                 Assert.Fail("The character's name is not printed in the second line of the look around method");
             }
 
             //checks if lines 4, 5, 6 are the description of the three weapons (the objects in the room)
-            for (int i = 4; i < 7; i++)
+            for (int i = 6; i < 9; i++)
             {
                 Assert.IsTrue(lookAroundTextList[i].Contains(CreateWeapon().Description), "The objects do not match the right description");
             }
