@@ -11,10 +11,25 @@ namespace Zork
 {
     public static class Interactions
     {
+
+        public static void Battle(Maze maze, Point currentRoom)
+        {
+            Character enemy = null;
+            Interactions.ChooseEnemyMessage(maze, currentRoom);
+            int enemyNumber;
+            if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber >= 0)
+            {
+                enemy = maze[currentRoom].CharactersInRoom[enemyNumber];
+            }
+            if (enemy != null)
+            {
+                Interactions.Fight(enemy, CharacterDefinitions.PlayerCharacter);
+            }
+        }
         /// <summary>
         /// Prints a list of characters you can fight and lets you choose a character
         /// </summary>
-        public static Character ChooseEnemy(Maze maze, System.Drawing.Point currentRoom)
+        public static void ChooseEnemyMessage(Maze maze, System.Drawing.Point currentRoom)
         {
             if (maze[currentRoom].CharactersInRoom.Count > 0)
             {
@@ -26,15 +41,8 @@ namespace Zork
             else
             {
                 Console.WriteLine("\nThere's no one here\n");
-                return null;
+                
             }
-
-            int enemyNumber;
-            if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber >= 0)
-            {
-                return getEnemyCharacterFromRoom(maze, currentRoom, enemyNumber); ;
-            }
-            return null;
         }
 
         /// <summary>

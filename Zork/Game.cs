@@ -31,7 +31,7 @@ namespace Zork
             { 'p', (Game g, string s) => { Interactions.PickupItem(g.maze, g.currentRoom); } },
             { 'i', (Game g, string s) => { CharacterDefinitions.PlayerCharacter.PrintInventory(); } },
             { 'c', (Game g, string s) => { CharacterDefinitions.PlayerCharacter.PrintStats(); } },
-            { 'b', (Game g, string s) => { g.Battle(); } }
+            { 'b', (Game g, string s) => { Interactions.Battle(g.maze,g.currentRoom); } }
         };
 
         public Game()
@@ -112,14 +112,7 @@ namespace Zork
             PrintInstructions();
         }
 
-        private void Battle()
-        {
-            Character enemy = Interactions.ChooseEnemy(maze, currentRoom);
-            if (enemy != null)
-            {
-                Interactions.Fight(enemy, CharacterDefinitions.PlayerCharacter);
-            }
-        }
+       
 
         /// <summary>
         /// Lists all items in the room and gives options for the player to pick them up. 
