@@ -124,31 +124,41 @@ namespace Zork
         {
             if (a.X == b.X)
             {
-                if (a.Y + 1 == b.Y)
-                {
-                    rooms[a.X, a.Y].CanGoThere[Direction.South] = true;
-                    rooms[b.X, b.Y].CanGoThere[Direction.North] = true;
-                }
-                else
-                {
-                    Debug.Assert(a.Y - 1 == b.Y);
-                    rooms[a.X, a.Y].CanGoThere[Direction.North] = true;
-                    rooms[b.X, b.Y].CanGoThere[Direction.South] = true;
-                }
+                ConnectVertical(a, b);
             }
             else
             {
-                if (a.X + 1 == b.X)
-                {
-                    rooms[a.X, a.Y].CanGoThere[Direction.East] = true;
-                    rooms[b.X, b.Y].CanGoThere[Direction.West] = true;
-                }
-                else
-                {
-                    Debug.Assert(a.X - 1 == b.X);
-                    rooms[a.X, a.Y].CanGoThere[Direction.West] = true;
-                    rooms[b.X, b.Y].CanGoThere[Direction.East] = true;
-                }
+                ConnectHorizontal(a, b);
+            }
+        }
+
+        private void ConnectHorizontal(Point a, Point b)
+        {
+            if (a.X + 1 == b.X)
+            {
+                rooms[a.X, a.Y].CanGoThere[Direction.East] = true;
+                rooms[b.X, b.Y].CanGoThere[Direction.West] = true;
+            }
+            else
+            {
+                Debug.Assert(a.X - 1 == b.X);
+                rooms[a.X, a.Y].CanGoThere[Direction.West] = true;
+                rooms[b.X, b.Y].CanGoThere[Direction.East] = true;
+            }
+        }
+
+        private void ConnectVertical(Point a, Point b)
+        {
+            if (a.Y + 1 == b.Y)
+            {
+                rooms[a.X, a.Y].CanGoThere[Direction.South] = true;
+                rooms[b.X, b.Y].CanGoThere[Direction.North] = true;
+            }
+            else
+            {
+                Debug.Assert(a.Y - 1 == b.Y);
+                rooms[a.X, a.Y].CanGoThere[Direction.North] = true;
+                rooms[b.X, b.Y].CanGoThere[Direction.South] = true;
             }
         }
 
