@@ -183,17 +183,14 @@ namespace Zork
             while (true)
             {
                 List<Point> options = ListEmptyNeighbours(fromPoint);
-                if (options.Count > 0)
+                if (options.Count == 0)
                 {
-                    Point destPoint = options[rng.Next(0, options.Count)];
-                    rooms[destPoint.X, destPoint.Y] = new Room("A busy street in London.");
-                    Connect(fromPoint, destPoint);
-                    CreateNeighbour(destPoint); //recursive step
+                    return;
                 }
-                else
-                {
-                    break;
-                }
+                Point destPoint = options[rng.Next(0, options.Count)];
+                rooms[destPoint.X, destPoint.Y] = new Room("A busy street in London.");
+                Connect(fromPoint, destPoint);
+                CreateNeighbour(destPoint); //recursive step
             }
         }
 
