@@ -15,7 +15,7 @@ namespace Zork
         public static void Battle(Maze maze, Point currentRoom)
         {
             Character enemy = null;
-            Interactions.ChooseEnemyMessage(maze, currentRoom);
+            ChooseEnemyMessage(maze, currentRoom);
             int enemyNumber;
             if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber >= 0)
             {
