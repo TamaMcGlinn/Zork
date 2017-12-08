@@ -135,5 +135,60 @@ namespace ZorkUnitTest
         {
             return new NPC("sherrif_barney", "This man has a long beard.", 4, 100);
         }
+        
+        [TestMethod]
+        public void CharactersMovesAround()
+        {
+            Maze maze = new Maze(5, 5, 1, 1);
+            CharacterDefinitions.AddCharacters(maze);
+            Dictionary<Character, bool> characterHasMoved = InitialiseCharacterHasMoved();
+            Dictionary<NPC, Point> startLocations = InitialiseStartLocations(maze);
+            MoveCharactersAround(maze, characterHasMoved, startLocations);
+            foreach (bool charMoved in characterHasMoved.Values)
+            {
+                Assert.IsTrue(charMoved);
+            }
+        }
+
+        private static void MoveCharactersAround(Maze maze, Dictionary<Character, bool> characterHasMoved, Dictionary<NPC, Point> startLocations)
+        {
+            for (int i = 0; i < NPC.MaxTurnsBetweenMoves; i++)
+            {
+                CharacterDefinitions.MoveNPCs(maze);
+                foreach (NPC c in CharacterDefinitions.NPCS)
+                {
+                    if (!maze[startLocations[c]].NPCsInRoom.Contains(c))
+                    {
+                        characterHasMoved[c] = true;
+                    }
+                }
+            }
+        }
+
+        private static Dictionary<NPC, Point> InitialiseStartLocations(Maze maze)
+        {
+            Dictionary<NPC, Point> startLocations = new Dictionary<NPC, Point>();
+            for (int xi = 0; xi < maze.Width; ++xi)
+            {
+                for (int yi = 0; yi < maze.Height; ++yi)
+                {
+                    foreach (NPC npc in maze[xi, yi].NPCsInRoom)
+                    {
+                        startLocations.Add(npc, new Point(xi, yi));
+                    }
+                }
+            }
+            return startLocations;
+        }
+
+        private static Dictionary<Character, bool> InitialiseCharacterHasMoved()
+        {
+            Dictionary<Character, bool> characterHasMoved = new Dictionary<Character, bool>();
+            foreach (Character c in CharacterDefinitions.NPCS)
+            {
+                characterHasMoved.Add(c, false);
+            }
+            return characterHasMoved;
+        }
     }
 }
