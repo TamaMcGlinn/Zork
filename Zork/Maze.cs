@@ -39,12 +39,12 @@ namespace Zork
 
         public void AddItemToRandomRoom(BaseObject obj)
         {
-            GetRandomRoom().ObjectsInRoom.Add(obj);
+            this[GetRandomRoom()].ObjectsInRoom.Add(obj);
         }
 
-        public Room GetRandomRoom()
+        public Point GetRandomRoom()
         {
-            return this[rng.Next(0, Width), rng.Next(0, Height)];
+            return new Point(rng.Next(0, Width), rng.Next(0, Height));
         }
 
         public void Print()
@@ -109,10 +109,16 @@ namespace Zork
             for (int i = 0; i < extras; ++i)
             {
                 var roomToConnect = new Point(rng.Next(1, Width - 1), rng.Next(1, Height - 1));
-                int neighbourToConnect = rng.Next(0, 4);
-                var neighbourPoint = new Point(roomToConnect.X + (neighbourToConnect % 2) * ((neighbourToConnect / 2) * 2 - 1), roomToConnect.Y + (1 - (neighbourToConnect % 2)) * ((neighbourToConnect / 2) * 2 - 1));
+                var neighbourPoint = GetRandomNeighbour(roomToConnect);
                 Connect(roomToConnect, neighbourPoint);
             }
+        }
+
+        public Point GetRandomNeighbour(Point roomToConnect)
+        {
+            Direction[] allDirections = (Direction[])Enum.GetValues(typeof(Direction));
+            Direction direction = allDirections[rng.Next(0, allDirections.Length)];
+            return roomToConnect.Add(direction);
         }
 
         /// <summary>
@@ -172,6 +178,22 @@ namespace Zork
             return place.ListNeighbours(this).Where((Point neighbour) => {
                 return this[neighbour] == null;
             }).ToList();
+        }
+
+        /// <summary>
+        /// Return the neighbouring points accessible from the place.
+        /// </summary>
+        /// <param name="place">The target location to examine</param>
+        /// <returns></returns>
+        public IEnumerable<Point> AccessibleNeighbours(Point place)
+        {
+            foreach(Direction dir in Enum.GetValues(typeof(Direction)))
+            {
+                if (this[place].CanGoThere[dir])
+                {
+                    yield return place.Add(dir);
+                }
+            }
         }
 
         /// <summary>

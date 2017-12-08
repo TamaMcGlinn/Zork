@@ -135,12 +135,5 @@ namespace ZorkUnitTest
         {
             return new NPC("sherrif_barney", "This man has a long beard.", 4, 100);
         }
-
-        [TestMethod]
-        public void CharacterMovesAround()
-        {
-            NPC dude = new NPC("dude", "A dude", 5, 100);
-            
-        }
     }
 }

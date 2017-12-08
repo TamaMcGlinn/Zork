@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,13 +24,40 @@ namespace Zork.Characters
         {
             get { return _npcs; }
         }
-        
+
+        private static Dictionary<NPC, Point> _characterLocations = new Dictionary<NPC, Point>();
+
         public static void AddCharacters(Maze maze)
         {
             foreach (NPC npc in NPCS)
             {
-                maze.GetRandomRoom().NPCsInRoom.Add(npc);
+                Point location = maze.GetRandomRoom();
+                maze[location].NPCsInRoom.Add(npc);
+                _characterLocations.Add(npc, location);
             }
+        }
+
+        public static void MoveNPCs(Maze maze)
+        {
+            foreach(var kvp in _characterLocations)
+            {
+                if (kvp.Key.IsTimeToMove())
+                {
+                    MoveNPC(maze, kvp.Value, kvp.Key);
+                    kvp.Key.PickNextTimeToMove();
+                    kvp.Key.PickNextTimeToMove();
+                }
+                kvp.Key.PlayerMoved();
+            }
+        }
+
+        private static void MoveNPC(Maze maze, Point currentLocation, NPC npc)
+        {
+            var rng = new Random();
+            var options = maze.AccessibleNeighbours(currentLocation).ToList();
+            var newRoom = options[rng.Next(0,options.Count)];
+            maze[currentLocation].NPCsInRoom.Remove(npc);
+            maze[newRoom].NPCsInRoom.Add(npc);
         }
     }
 }

@@ -10,6 +10,11 @@ namespace Zork.Characters
 {
     public class NPC : Character
     {
+        public const int MinTurnsBetweenMoves = 2;
+        public const int MaxTurnsBetweenMoves = 5;
+
+        private int _turnsUntilNextMove;
+
         private TextTree _text;
 
         public TextTree Text
@@ -25,6 +30,13 @@ namespace Zork.Characters
         public NPC(string name, string description, int strength, int startHealth, int maxHealth, Weapon weapon = null) : base(name, description, strength, startHealth, maxHealth, weapon)
         {
             this.Text = new TextTree(Name + ".txt");
+            PickNextTimeToMove();
+        }
+
+        public void PickNextTimeToMove()
+        {
+            var rng = new Random();
+            _turnsUntilNextMove = rng.Next(MinTurnsBetweenMoves, MaxTurnsBetweenMoves + 1);
         }
 
         /// <summary>
@@ -37,6 +49,16 @@ namespace Zork.Characters
             {
                 currentNode = ProcessNode(currentNode);
             }
+        }
+
+        public bool IsTimeToMove()
+        {
+            return _turnsUntilNextMove == 0;
+        }
+
+        public void PlayerMoved()
+        {
+            _turnsUntilNextMove--;
         }
 
         private Node ProcessNode(Node currentNode)

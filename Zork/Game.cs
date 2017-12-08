@@ -97,6 +97,7 @@ namespace Zork
             else if (maze[currentRoom].CanGoThere[direction])
             {
                 currentRoom = towards;
+                CharacterDefinitions.MoveNPCs(maze);
             }
             else
             {
