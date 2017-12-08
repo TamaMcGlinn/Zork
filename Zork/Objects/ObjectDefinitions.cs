@@ -10,13 +10,18 @@ namespace Zork.Objects
     {
         public static void AddItems(Maze maze)
         {
+            AddClues(maze);
+            AddWeapons(maze);
+            AddHealthPickups(maze);
+        }
+
+        private static void AddClues(Maze maze)
+        {
             maze.AddItemToRandomRoom(new Clue("Chesspiece", "A white wooden rook"));
-            maze.AddItemToRandomRoom(new Weapon("Longsword", 40, "Best suited to spilling the blood of your enemies."));
-            maze.AddItemToRandomRoom(new Weapon("Knife", 20, "Crude, but will probably get the job done."));
-            maze.AddItemToRandomRoom(new Weapon("Butterknife", 5, "Very lethal if you happen to encounter someone made of butter."));
-            maze.AddItemToRandomRoom(new Weapon("Broom", 8, "A long wooden handle with straw bound in rope."));
-            maze.AddItemToRandomRoom(new Weapon("Hammer", 25, "The heavy sort; could probably kill a human fairly quickly."));
-            maze.AddItemToRandomRoom(new Weapon("Pan", 10, "A cast-iron skillet, quite heavy."));
+        }
+
+        private static void AddHealthPickups(Maze maze)
+        {
             maze.AddItemToRandomRoom(new HealthPickup("Green vial", 50, "Some sort of potion; might be toxic."));
             maze.AddItemToRandomRoom(new HealthPickup("Green vial", -50, "Some sort of potion; might be toxic."));
             maze.AddItemToRandomRoom(new HealthPickup("Red vial", -90, "Wonderful life-saving stuff. Probably."));
@@ -32,6 +37,16 @@ namespace Zork.Objects
             {
                 maze.AddItemToRandomRoom(new HealthPickup("Brown rag", 20, "Just what you need when you're bleeding."));
             }
+        }
+
+        private static void AddWeapons(Maze maze)
+        {
+            maze.AddItemToRandomRoom(new Weapon("Longsword", 40, "Best suited to spilling the blood of your enemies."));
+            maze.AddItemToRandomRoom(new Weapon("Knife", 20, "Crude, but will probably get the job done."));
+            maze.AddItemToRandomRoom(new Weapon("Butterknife", 5, "Very lethal if you happen to encounter someone made of butter."));
+            maze.AddItemToRandomRoom(new Weapon("Broom", 8, "A long wooden handle with straw bound in rope."));
+            maze.AddItemToRandomRoom(new Weapon("Hammer", 25, "The heavy sort; could probably kill a human fairly quickly."));
+            maze.AddItemToRandomRoom(new Weapon("Pan", 10, "A cast-iron skillet, quite heavy."));
         }
     }
 }
