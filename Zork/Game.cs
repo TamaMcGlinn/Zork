@@ -19,7 +19,6 @@ namespace Zork
         const int Height = 20;
         const int StartX = 1;
         const int StartY = 1;
-        Random rng = new Random();
 
         public Game()
         {
