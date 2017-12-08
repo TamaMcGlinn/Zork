@@ -19,7 +19,7 @@ namespace Zork
             int enemyNumber;
             if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber >= 0)
             {
-                enemy = maze[currentRoom].CharactersInRoom[enemyNumber];
+                enemy = maze[currentRoom].CharactersInRoom[enemyNumber -1];
             }
             if (enemy != null)
             {

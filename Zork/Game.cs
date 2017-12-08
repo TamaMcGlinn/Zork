@@ -15,8 +15,8 @@ namespace Zork
     {
         Maze maze;
         Point currentRoom;
-        const int Width = 20;
-        const int Height = 20;
+        const int Width = 2;
+        const int Height = 2;
         const int StartX = 1;
         const int StartY = 1;
 

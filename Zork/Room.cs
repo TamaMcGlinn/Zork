@@ -112,8 +112,16 @@ namespace Zork
             sb.AppendLine(Description);
 
             //prints all characters
-            sb.AppendLine("The following characters are in this room:");
-            sb.Append(PrintCharactersInRoom());
+            if (CharactersInRoom.Count > 0)
+            {
+                sb.AppendLine("\nThe following people are in this room:");
+                sb.Append(PrintCharactersInRoom());
+                sb.Append("\n");
+            }
+            else
+            {
+                sb.AppendLine("\nThere are no other people here.\n");
+            }
 
             //prints all objects
             sb.AppendLine("You see the following objects laying around:");
