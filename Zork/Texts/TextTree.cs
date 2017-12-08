@@ -58,7 +58,7 @@ namespace Zork.Texts
 
         private Node readNode(string[] lines, int line)
         {
-            if(line >= lines.Count())
+            if (line >= lines.Count())
             {
                 return null;
             }
@@ -66,24 +66,30 @@ namespace Zork.Texts
             string contents = lines[line].Substring(tabs + 1);
             List<string> conditions = getConditions(ref contents);
             Node currentNode = new Node(contents, conditions);
-            List<int> childBeginLines = new List<int>();
-            for (int endline = line + 1; endline != lines.Count(); ++endline)
-            {
-                int childTabs = countInitialTabs(lines[endline]);
-                if( childTabs == tabs+1)
-                {
-                    childBeginLines.Add(endline);
-                }
-                if( childTabs < tabs+1)
-                {
-                    break;
-                }
-            }
-            foreach(int beginLine in childBeginLines)
+            List<int> childBeginLines = GetChildren(lines, line, tabs);
+            foreach (int beginLine in childBeginLines)
             {
                 currentNode.Children.Add(readNode(lines, beginLine));
             }
             return currentNode;
+        }
+
+        private List<int> GetChildren(string[] lines, int line, int tabs)
+        {
+            List<int> childBeginLines = new List<int>();
+            for (int endline = line + 1; endline != lines.Count(); ++endline)
+            {
+                int childTabs = countInitialTabs(lines[endline]);
+                if (childTabs == tabs + 1)
+                {
+                    childBeginLines.Add(endline);
+                }
+                if (childTabs < tabs + 1)
+                {
+                    break;
+                }
+            }
+            return childBeginLines;
         }
     }
 }

@@ -16,21 +16,18 @@ namespace Zork
         /// </summary>
         public static Character ChooseEnemy(Maze maze, System.Drawing.Point currentRoom)
         {
-            if (maze[currentRoom].CharactersInRoom.Count > 0)
-            {
-                for (int i = 0; i < maze[currentRoom].CharactersInRoom.Count; i++)
-                {
-                    Console.WriteLine($"[{i + 1}] {maze[currentRoom].CharactersInRoom[i].Name}");
-                }
-            }
-            else
+            if (maze[currentRoom].CharactersInRoom.Count == 0)
             {
                 Console.WriteLine("\nThere's no one here\n");
                 return null;
             }
+            for (int i = 0; i < maze[currentRoom].CharactersInRoom.Count; i++)
+            {
+                Console.WriteLine($"[{i + 1}] {maze[currentRoom].CharactersInRoom[i].Name}");
+            }
 
             int enemyNumber;
-            if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber >= 0)
+            if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber >= 0 && enemyNumber < maze[currentRoom].CharactersInRoom.Count)
             {
                 return getEnemyCharacterFromRoom(maze, currentRoom, enemyNumber); ;
             }
@@ -61,51 +58,22 @@ namespace Zork
         }
 
         /// <summary>
-        /// Fights the chosen enemy untill someone dies, if player dies he loses all his items, if enemy dies player picks up all his items.
+        /// Fights the chosen enemy untill someone dies, if player dies he loses all his items, 
+        /// if enemy dies player picks up all his items.
         /// </summary>
         /// <param name="enemy"></param>
         /// <returns>A boolean indicating wether the player won the fight</returns>
         public static bool Fight(Character enemy, Character player)
         {
-            Random turnBonusDamageGenerator = new Random();
-            int maxBonusDamage = 10;
-
             while (player.Health > 0 && enemy.Health > 0)
             {
-                int playerBonusDamage = turnBonusDamageGenerator.Next(0, maxBonusDamage);
-                int enemyBonusDamage = turnBonusDamageGenerator.Next(0, maxBonusDamage);
-
-                int playerDamage = playerBonusDamage + player.Strength;
-                int enemyDamage = enemyBonusDamage + enemy.Strength;
-
-                if (player.EquippedWeapon != null)
-                {
-                    playerDamage += player.EquippedWeapon.Strength;
-                }
-                if (enemy.EquippedWeapon != null)
-                {
-                    enemyDamage += enemy.EquippedWeapon.Strength;
-                }
-
-                Console.WriteLine("You hit eachother...");
-                player.TakeDamage(enemyDamage);
-                enemy.TakeDamage(playerDamage);
-
-
-                Console.Write("You hit for: " + playerDamage);
-                if (player.EquippedWeapon != null)
-                {
-                    Console.Write($" with your mighty {player.EquippedWeapon.Name}");
-                }
-                Console.WriteLine();
-                Console.Write($"{enemy.Name} hits you for:" + enemyDamage);
-                if (enemy.EquippedWeapon != null)
-                {
-                    Console.Write($" with his stupid {enemy.EquippedWeapon}");
-                }
-                Console.WriteLine();
-                Console.WriteLine($"You have {player.Health} hp left, he has {enemy.Health} hp left.");
+                FightOneRound(enemy, player);
             }
+            return CheckWhoWon(enemy, player);
+        }
+
+        private static bool CheckWhoWon(Character enemy, Character player)
+        {
             if (player.Health < 0)
             {
                 player.Inventory.Clear();
@@ -119,6 +87,52 @@ namespace Zork
                 Console.WriteLine($"You've won! You've picked up all {enemy.Name}'s items, check your inventory!");
                 return true;
             }
+        }
+
+        private static void FightOneRound(Character enemy, Character player)
+        {
+            int playerDamage = GenerateDamage(player);
+            int enemyDamage = GenerateDamage(enemy);
+
+            Console.WriteLine("You hit eachother...");
+            player.TakeDamage(enemyDamage);
+            enemy.TakeDamage(playerDamage);
+
+            Console.Write("You hit for: " + playerDamage + GetPlayerWeaponString(player));
+            Console.Write($"\n{enemy.Name} hits you for:" + enemyDamage + GetEnemyWeaponString(enemy));
+            Console.WriteLine($"\nYou have {player.Health} hp left, he has {enemy.Health} hp left.");
+        }
+
+        private static string GetPlayerWeaponString(Character player)
+        {
+            if (player.EquippedWeapon != null)
+            {
+                Console.Write($" with your mighty {player.EquippedWeapon.Name}");
+            }
+            return "";
+        }
+
+        private static string GetEnemyWeaponString(Character player)
+        {
+            if (player.EquippedWeapon != null)
+            {
+                Console.Write($" with his stupid {player.EquippedWeapon.Name}");
+            }
+            return "";
+        }
+
+        private static int GenerateDamage(Character player)
+        {
+            Random turnBonusDamageGenerator = new Random();
+            const int maxBonusDamage = 10;
+            int bonusDamage = turnBonusDamageGenerator.Next(0, maxBonusDamage);
+
+            int playerDamage = player.Strength + bonusDamage;
+            if (player.EquippedWeapon != null)
+            {
+                playerDamage += player.EquippedWeapon.Strength;
+            }
+            return playerDamage;
         }
 
         /// <summary>
@@ -139,15 +153,23 @@ namespace Zork
             string input = Console.ReadLine();
             int inputInteger;
             int.TryParse(input, out inputInteger);
-            if (inputInteger > 0 && inputInteger < maze[currentRoom].ObjectsInRoom.Count)
+            TryPickUp(maze, currentRoom, inputInteger - 1);
+        }
+
+        private static void TryPickUp(Maze maze, Point currentRoom, int choiceIndex)
+        {
+            if (choiceIndex >= 0 && choiceIndex < maze[currentRoom].ObjectsInRoom.Count)
             {
-                (maze[currentRoom].ObjectsInRoom[inputInteger - 1]).PickupObject(Characters.CharacterDefinitions.PlayerCharacter);
+                var obj = maze[currentRoom].ObjectsInRoom[choiceIndex];
+                maze[currentRoom].ObjectsInRoom.Remove(obj);
+                obj.PickupObject(CharacterDefinitions.PlayerCharacter);
             }
             else
             {
                 Console.WriteLine("Cannot pick that item up.");
             }
         }
+
         public static int ReadUserInputInteger()
         {
             int userInput;

@@ -157,39 +157,47 @@ namespace Zork
         public void Talk()
         {
             Node currentNode = Text.RootNode;
-            while (true)
+            while (currentNode != null)
             {
-                Console.WriteLine(currentNode.Text);
-                List<Node> options = currentNode.AvailableChildren();
-                if (options.Count == 0)
-                {
-                    return;
-                }
-
-                int responseNumber = 1;
-                foreach (Node child in options)
-                {
-                    Console.WriteLine(responseNumber + "> " + child.Text);
-                    ++responseNumber;
-                }
-                Console.Write("> ");
-                int chosenResponse = -1;
-                while (Int32.TryParse(Console.ReadLine(), out chosenResponse) == false || chosenResponse < 0 || chosenResponse > currentNode.Children.Count)
-                {
-                    Console.WriteLine("Write a number for one of the responses");
-                    Console.Write("> ");
-                }
-                Node playerResponse = options[chosenResponse - 1];
-                Console.WriteLine("> " + playerResponse.Text);
-                List<Node> npcResponses = playerResponse.AvailableChildren();
-                if (npcResponses.Count > 0)
-                {
-                    currentNode = npcResponses.First();
-                } else
-                {
-                    return;
-                }
+                currentNode = ProcessNode(currentNode);
             }
+        }
+
+        private Node ProcessNode(Node currentNode)
+        {
+            Console.WriteLine(currentNode.Text);
+            List<Node> options = currentNode.AvailableChildren();
+            if (options.Count == 0)
+            {
+                return null;
+            }
+            Node playerResponse = GetPlayerResponse(currentNode, options);
+            Console.WriteLine("> " + playerResponse.Text);
+            List<Node> npcResponses = playerResponse.AvailableChildren();
+            if (npcResponses.Count == 0)
+            {
+                return null;
+            }
+            return npcResponses.First();
+        }
+
+        private static Node GetPlayerResponse(Node currentNode, List<Node> options)
+        {
+            int responseNumber = 1;
+            foreach (Node child in options)
+            {
+                Console.WriteLine(responseNumber + "> " + child.Text);
+                ++responseNumber;
+            }
+            Console.Write("> ");
+            int chosenResponse = -1;
+            while (Int32.TryParse(Console.ReadLine(), out chosenResponse) == false || chosenResponse < 0 || chosenResponse > currentNode.Children.Count)
+            {
+                Console.WriteLine("Write a number for one of the responses");
+                Console.Write("> ");
+            }
+            Node playerResponse = options[chosenResponse - 1];
+            return playerResponse;
         }
 
         public void PrintStats()
