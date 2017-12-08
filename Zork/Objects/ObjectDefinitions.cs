@@ -54,7 +54,7 @@ namespace Zork.Objects
             }
         }
 
-        private static bool WeaponDropChanceByPercentage(int chancePercentage)
+        public static bool WeaponDropChanceByPercentage(int chancePercentage)
         {
             Random r = new Random();
             int chance = 100 / chancePercentage;
