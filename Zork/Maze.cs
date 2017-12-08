@@ -53,35 +53,45 @@ namespace Zork
             {
                 for (int xi = 0; xi < Width; ++xi)
                 {
-                    Console.Write("0");
-                    if (rooms[xi, yi].CanGoThere[Direction.East])
-                    {
-                        Debug.Assert(xi == Width - 1 || rooms[xi + 1, yi].CanGoThere[Direction.West]);
-                        Console.Write("-");
-                    }
-                    else if (xi < Width - 1)
-                    {
-                        Console.Write(" ");
-                    }
+                    PrintHorizontal(xi, yi);
                 }
                 Console.Write("\n");
                 if (yi < Height - 1)
                 {
                     for (int xi = 0; xi < Width; ++xi)
                     {
-                        if (rooms[xi, yi].CanGoThere[Direction.South])
-                        {
-                            Debug.Assert(yi == Height - 1 || rooms[xi, yi + 1].CanGoThere[Direction.North]);
-                            Console.Write("|");
-                        }
-                        else if (xi < Width - 1)
-                        {
-                            Console.Write(" ");
-                        }
-                        Console.Write(" ");
+                        PrintVertical(xi, yi);
                     }
                     Console.Write("\n");
                 }
+            }
+        }
+
+        private void PrintVertical(int xi, int yi)
+        {
+            if (rooms[xi, yi].CanGoThere[Direction.South])
+            {
+                Debug.Assert(yi == Height - 1 || rooms[xi, yi + 1].CanGoThere[Direction.North]);
+                Console.Write("|");
+            }
+            else if (xi < Width - 1)
+            {
+                Console.Write(" ");
+            }
+            Console.Write(" ");
+        }
+
+        private void PrintHorizontal(int xi, int yi)
+        {
+            Console.Write("0");
+            if (rooms[xi, yi].CanGoThere[Direction.East])
+            {
+                Debug.Assert(xi == Width - 1 || rooms[xi + 1, yi].CanGoThere[Direction.West]);
+                Console.Write("-");
+            }
+            else if (xi < Width - 1)
+            {
+                Console.Write(" ");
             }
         }
 
