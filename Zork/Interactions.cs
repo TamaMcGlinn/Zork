@@ -27,7 +27,7 @@ namespace Zork
             }
 
             int enemyNumber;
-            if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber >= 0)
+            if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber >= 0 && enemyNumber < maze[currentRoom].CharactersInRoom.Count)
             {
                 return getEnemyCharacterFromRoom(maze, currentRoom, enemyNumber); ;
             }
