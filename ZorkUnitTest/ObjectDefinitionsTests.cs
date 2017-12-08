@@ -100,7 +100,7 @@ namespace ZorkUnitTest
         [TestMethod]
         public void DropChanceTest()
         {
-            Assert.IsTrue(ObjectDefinitions.WeaponDropChanceByPercentage(100));
+            Assert.IsTrue(ObjectDefinitions.DropChanceByPercentage(100));
         }
 
       
