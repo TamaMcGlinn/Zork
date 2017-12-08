@@ -87,6 +87,10 @@ namespace Zork
 
         private void AddExtraConnections(int extras)
         {
+            if(Width < 3 || Height < 3)
+            {
+                return;
+            }
             for (int i = 0; i < extras; ++i)
             {
                 var roomToConnect = new Point(rng.Next(1, Width - 1), rng.Next(1, Height - 1));
