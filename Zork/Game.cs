@@ -61,18 +61,25 @@ namespace Zork
             var talkCommand = userInput.Split(' ');
             if (talkCommand.Length >= 3 && talkCommand[1] == "to")
             {
-                string charactername = string.Join("_", talkCommand.Skip(2)).ToLower();
-                Character talkTarget = maze[currentRoom].CharactersInRoom.Find((Character c) => { return c.Name == charactername; });
-                if (talkTarget == null)
-                {
-                    Console.WriteLine("There is nobody called " + charactername + " here.");
-                }
-                talkTarget.Talk();
+                TalkTo(String.Join("_", talkCommand.Skip(2)).ToLower());
             }
             else
             {
                 Console.WriteLine("Did you mean; \"Talk to [character name]\"?");
             }
+        }
+
+        private void TalkTo(string charactername)
+        {
+            Character talkTarget = maze[currentRoom].CharactersInRoom.Find((Character c) => {
+                return c.Name == charactername;
+            });
+            if (talkTarget == null)
+            {
+                Console.WriteLine("There is nobody called " + charactername + " here.");
+                return;
+            }
+            talkTarget.Talk();
         }
 
         /// <summary>
@@ -113,41 +120,6 @@ namespace Zork
         }
 
        
-
-        /// <summary>
-        /// Lists all items in the room and gives options for the player to pick them up. 
-        /// If he chooses a valid item it gets added to the inventory.
-        /// </summary>
-        private void PickupItem()
-        {
-            if (maze[currentRoom].ObjectsInRoom.Count <= 0)
-            {
-                Console.WriteLine("There are no items to pickup in this room.");
-                return;
-            }
-            for (int i = 0; i < maze[currentRoom].ObjectsInRoom.Count; i++)
-            {
-                Console.WriteLine($"[{i + 1}] to pickup:" + maze[currentRoom].ObjectsInRoom[i].Name);
-            }
-            string input = Console.ReadLine();
-            int inputInteger;
-            int.TryParse(input, out inputInteger);
-            TryPickUp(inputInteger - 1);
-        }
-
-        private void TryPickUp(int choiceIndex)
-        {
-            if (choiceIndex >= 0 && choiceIndex < maze[currentRoom].ObjectsInRoom.Count)
-            {
-                var obj = maze[currentRoom].ObjectsInRoom[choiceIndex];
-                maze[currentRoom].ObjectsInRoom.Remove(obj);
-                obj.PickupObject(CharacterDefinitions.PlayerCharacter);
-            }
-            else
-            {
-                Console.WriteLine("Cannot pick that item up.");
-            }
-        }
 
         private void PrintInstructions()
         {
