@@ -16,17 +16,14 @@ namespace Zork
         /// </summary>
         public static Character ChooseEnemy(Maze maze, System.Drawing.Point currentRoom)
         {
-            if (maze[currentRoom].CharactersInRoom.Count > 0)
-            {
-                for (int i = 0; i < maze[currentRoom].CharactersInRoom.Count; i++)
-                {
-                    Console.WriteLine($"[{i + 1}] {maze[currentRoom].CharactersInRoom[i].Name}");
-                }
-            }
-            else
+            if (maze[currentRoom].CharactersInRoom.Count == 0)
             {
                 Console.WriteLine("\nThere's no one here\n");
                 return null;
+            }
+            for (int i = 0; i < maze[currentRoom].CharactersInRoom.Count; i++)
+            {
+                Console.WriteLine($"[{i + 1}] {maze[currentRoom].CharactersInRoom[i].Name}");
             }
 
             int enemyNumber;
