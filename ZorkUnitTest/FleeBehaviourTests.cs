@@ -15,10 +15,11 @@ namespace ZorkUnitTest
         [TestMethod]
         public void FleeFunctionalityTest()
         {
+            
             FleeBehaviour fleeBehaviour = new FleeBehaviour(5);
             Point p1 = new Point(0, 0);
             Point p2 = new Point(0, 0);
-            fleeBehaviour.Flee(p1);
+            fleeBehaviour.Flee(ref p1);
             Assert.IsTrue(p1.X != p2.X && p1.Y != p2.Y);
         }
     }

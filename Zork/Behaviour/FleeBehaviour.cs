@@ -43,22 +43,22 @@ namespace Zork
             }
         }
 
-        public void Flee(Point currentRoom)
+        public void Flee(ref Point currentRoom)
         {
             Random r = new Random();
-            int oldX = currentRoom.X;
-            int oldY = currentRoom.Y;
-            int newX = 0, newY = 0;
-            while(oldX == currentRoom.X )
+            int X = currentRoom.X;
+            int Y = currentRoom.Y;
+            while(X == currentRoom.X )
             {
-                 newX = r.Next(0, Game.Width);
+                 X = r.Next(0, Game.Width);
                
             }
-            while(oldY == currentRoom.Y)
+            while(Y == currentRoom.Y)
             {
-                 newY = r.Next(0, Game.Height);
+                 Y = r.Next(0, Game.Height);
             }
-            currentRoom = new Point(newX, newY);
+            currentRoom.X = X;
+            currentRoom.Y = Y;
 
             Console.WriteLine("...What ...Where am i?");
         }

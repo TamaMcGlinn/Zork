@@ -33,7 +33,7 @@ namespace Zork.Behaviour
             }
             if (FleeBehaviour.Fled)
             {
-                FleeBehaviour.Flee(currentRoom);
+                FleeBehaviour.Flee(ref currentRoom);
                 return BattleOutcomeEnum.PlayerFled;
             }
             return CheckWhoWon();
