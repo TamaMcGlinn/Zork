@@ -19,23 +19,25 @@ namespace ZorkUnitTest
             Console.SetOut(writer);
             Point currentRoom = new Point(0, 0);
             Maze maze = new Maze(1, 1, currentRoom.X, currentRoom.Y);
-            maze[currentRoom.X, currentRoom.Y].CharactersInRoom.Add(CharacterDefinitions.NPCS[0]);
+            maze[currentRoom.X, currentRoom.Y].NPCsInRoom.Add(CharacterDefinitions.NPCS[0]);
             Interactions.ChooseEnemyMessage(maze, currentRoom);
-            Assert.IsTrue(writer.ToString().Contains($"[{0 + 1}] {maze[currentRoom].CharactersInRoom[0].Name}"));
+            Assert.IsTrue(writer.ToString().Contains($"[{0 + 1}] {maze[currentRoom].NPCsInRoom[0].Name}"));
         }
 
         [TestMethod]
         public void FightStrongEnemyTest()
         {
             //TODO: ask how to test private methods
-            Assert.IsFalse(Interactions.Fight(new NPC("sherrif_barney", 30, 100, new Weapon("Strong weapon", 10, "desc"), "desc"), new Player()));
+            Character enemy = new NPC("sherrif_barney", "desc", 30, 100, new Weapon("Strong weapon", 10, "desc"));
+            Character player = new Player();
+            Assert.IsFalse(Interactions.Fight(enemy, player));
         }
 
         [TestMethod]
         public void FightweakEnemyTest()
         {
             //TODO: ask how to test private methods
-            Assert.IsTrue(Interactions.Fight(new NPC("sherrif_barney", 1, 10, null, "desc"), new Player()));
+            Assert.IsTrue(Interactions.Fight(new NPC("sherrif_barney", "desc", 1, 10, null), new Player()));
         }
     }
 }

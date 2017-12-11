@@ -12,9 +12,10 @@ namespace Zork
             Character enemy = null;
             ChooseEnemyMessage(maze, currentRoom);
             int enemyNumber;
-            if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber >= 0)
+            Room theRoom = maze[currentRoom];
+            if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber > 0 && enemyNumber <= theRoom.NPCsInRoom.Count)
             {
-                enemy = maze[currentRoom].CharactersInRoom[enemyNumber -1];
+                enemy = theRoom.NPCsInRoom[enemyNumber - 1];
             }
             if (enemy != null)
             {
@@ -26,11 +27,11 @@ namespace Zork
         /// </summary>
         public static void ChooseEnemyMessage(Maze maze, System.Drawing.Point currentRoom)
         {
-            if (maze[currentRoom].CharactersInRoom.Count > 0)
+            if (maze[currentRoom].NPCsInRoom.Count > 0)
             {
-                for (int i = 0; i < maze[currentRoom].CharactersInRoom.Count; i++)
+                for (int i = 0; i < maze[currentRoom].NPCsInRoom.Count; i++)
                 {
-                    Console.WriteLine($"[{i + 1}] {maze[currentRoom].CharactersInRoom[i].Name}");
+                    Console.WriteLine($"[{i + 1}] {maze[currentRoom].NPCsInRoom[i].Name}");
                 }
             }
             else
@@ -50,11 +51,11 @@ namespace Zork
         /// <returns></returns>
         private static Character getEnemyCharacterFromRoom(Maze maze, Point currentRoom, int enemyNumber)
         {
-            if (enemyNumber >= 0 && enemyNumber < maze[currentRoom].CharactersInRoom.Count)
+            if (enemyNumber >= 0 && enemyNumber < maze[currentRoom].NPCsInRoom.Count)
             {
-                if (enemyNumber < maze[currentRoom].CharactersInRoom.Count + 1)
+                if (enemyNumber < maze[currentRoom].NPCsInRoom.Count + 1)
                 {
-                    return maze[currentRoom].CharactersInRoom[enemyNumber - 1];
+                    return maze[currentRoom].NPCsInRoom[enemyNumber - 1];
                 }
                 else
                 {

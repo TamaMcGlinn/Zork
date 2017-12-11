@@ -13,9 +13,9 @@ namespace Zork
     public class Game
     {
         Maze maze;
-        Point currentRoom;
-        const int Width = 2;
-        const int Height = 2;
+        private Point currentRoom;
+        const int Width = 20;
+        const int Height = 20;
         const int StartX = 1;
         const int StartY = 1;
 
@@ -30,7 +30,7 @@ namespace Zork
             { 'p', (Game g, string s) => { Interactions.PickupItem(g.maze, g.currentRoom); } },
             { 'i', (Game g, string s) => { CharacterDefinitions.PlayerCharacter.PrintWeapon(); CharacterDefinitions.PlayerCharacter.PrintInventory(); } },
             { 'c', (Game g, string s) => { CharacterDefinitions.PlayerCharacter.PrintStats(); } },
-            { 'b', (Game g, string s) => { Interactions.Battle(g.maze,g.currentRoom); } }
+            { 'b', (Game g, string s) => { Interactions.Battle(g.maze, g.currentRoom); } }
         };
 
         public Game()
@@ -41,7 +41,7 @@ namespace Zork
             CharacterDefinitions.AddCharacters(maze);
             ObjectDefinitions.AddItems(maze);
         }
-
+        
         /// <summary>
         /// Print the room, get user input to accept commands
         /// </summary>
@@ -70,7 +70,7 @@ namespace Zork
 
         private void TalkTo(string charactername)
         {
-            Character talkTarget = maze[currentRoom].CharactersInRoom.Find((Character c) => {
+            NPC talkTarget = maze[currentRoom].NPCsInRoom.Find((NPC c) => {
                 return c.Name == charactername;
             });
             if (talkTarget == null)
@@ -96,6 +96,7 @@ namespace Zork
             else if (maze[currentRoom].CanGoThere[direction])
             {
                 currentRoom = towards;
+                CharacterDefinitions.MoveNPCs(maze);
             }
             else
             {

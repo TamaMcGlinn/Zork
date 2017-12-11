@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using Zork.Characters;
 using Zork.Objects;
 
 namespace Zork
@@ -38,9 +39,9 @@ namespace Zork
             set { _objectsInRoom = value; }
         }
 
-        private List<Character> _charactersInRoom = new List<Character>();
+        private List<NPC> _charactersInRoom = new List<NPC>();
 
-        public List<Character> CharactersInRoom
+        public List<NPC> NPCsInRoom
         {
             get { return _charactersInRoom; }
         }
@@ -92,12 +93,12 @@ namespace Zork
         public string PrintCharactersInRoom()
         {
             StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < CharactersInRoom.Count; i++)
+            for (int i = 0; i < NPCsInRoom.Count; i++)
             {
-                string formattedName = CharactersInRoom[i].Name.Replace('_', ' ');
+                string formattedName = NPCsInRoom[i].Name.Replace('_', ' ');
                 sb.Append(formattedName);
                 sb.Append(" : ");
-                sb.Append(CharactersInRoom[i].Description);
+                sb.Append(NPCsInRoom[i].Description);
                 sb.AppendLine();
             }
 
@@ -112,7 +113,7 @@ namespace Zork
             sb.AppendLine(Description);
 
             //prints all characters
-            if (CharactersInRoom.Count > 0)
+            if (NPCsInRoom.Count > 0)
             {
                 sb.AppendLine("\nThe following people are in this room:");
                 sb.Append(PrintCharactersInRoom());

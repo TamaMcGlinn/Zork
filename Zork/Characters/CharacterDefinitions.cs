@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 
 namespace Zork.Characters
 {
@@ -12,20 +15,52 @@ namespace Zork.Characters
         }
 
         private static List<NPC> _npcs = new List<NPC>() {
-            new NPC("sherrif_barney", 3, 100, null, "A fat man in a prim black sherrif's uniform. He has a mustache and short brown hair.")
+            new NPC("sherrif_barney", "A fat man in a prim black sherrif's uniform. He has a mustache and short brown hair.", 3, 100)
         };
 
         public static List<NPC> NPCS
         {
             get { return _npcs; }
         }
-        
+
+        private static Dictionary<NPC, Point> _characterLocations = new Dictionary<NPC, Point>();
+
         public static void AddCharacters(Maze maze)
         {
-            foreach (Character npc in NPCS)
+            foreach (NPC npc in NPCS)
             {
-                maze.GetRandomRoom().CharactersInRoom.Add(npc);
+                Point location = maze.GetRandomRoom();
+                maze[location].NPCsInRoom.Add(npc);
+                _characterLocations.Add(npc, location);
             }
+        }
+
+        /// <summary>
+        /// Move each NPC if it is time to move it.
+        /// </summary>
+        public static void MoveNPCs(Maze maze)
+        {
+            foreach(KeyValuePair<NPC,Point> kvp in _characterLocations)
+            {
+                NPC npc = kvp.Key;
+                Point location = kvp.Value;
+                if (npc.IsTimeToMove())
+                {
+                    MoveNPC(maze, location, npc);
+                    npc.PickNextTimeToMove();
+                    npc.PickNextTimeToMove();
+                }
+                npc.PlayerMoved();
+            }
+        }
+
+        private static void MoveNPC(Maze maze, Point currentLocation, NPC npc)
+        {
+            var rng = new Random();
+            var options = maze.AccessibleNeighbours(currentLocation).ToList();
+            var newRoom = options[rng.Next(0,options.Count)];
+            maze[currentLocation].NPCsInRoom.Remove(npc);
+            maze[newRoom].NPCsInRoom.Add(npc);
         }
     }
 }

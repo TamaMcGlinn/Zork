@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using Zork;
 using Zork.Characters;
@@ -18,7 +19,7 @@ namespace ZorkUnitTest
         public void characterConstructorTest()
         {
             Weapon longSword = CreateWeapon();
-            Character character1 = new NPC("sherrif_barney", 4, 100, longSword, "This man has a long beard.");
+            Character character1 = new NPC("sherrif_barney", "This man has a long beard.", 4, 100, longSword);
             if (character1.Name != "sherrif_barney")
             {
                 Assert.Fail("The name of the character is not correct");
@@ -44,7 +45,7 @@ namespace ZorkUnitTest
         [TestMethod]
         public void NonExistingCharacterTest()
         {
-            NPC npc = new NPC("sdqoiwqjd", "Highly valuable person");
+            NPC npc = new NPC("sdqoiwqjd", "Highly valuable person", 0, 10);
             Assert.IsTrue(npc.Text.RootNode == null);
         }
 
@@ -69,8 +70,8 @@ namespace ZorkUnitTest
         public void LookAroundTest()
         {
             Room room = new Room("A place");
-            Character character = CharacterDefinitions.NPCS[0];
-            room.CharactersInRoom.Add(character);
+            NPC character = CreateNPC();
+            room.NPCsInRoom.Add(character);
             room.ObjectsInRoom = CreateListOfThreeWeaponObjects();
             string lookAroundTextString = room.LookAround();
             string[] lookAroundTextList = lookAroundTextString.Split('\n');
@@ -125,9 +126,9 @@ namespace ZorkUnitTest
         /// Creates a character holding a weapon for testing purposes
         /// </summary>
         /// <returns>A character equipped with a longsword</returns>
-        private Character CreateCharacter()
+        private NPC CreateNPC()
         {
-            return new NPC("sherrif_barney", 4, 100, CreateWeapon(), "This man has a long beard.");
+            return new NPC("sherrif_barney", "This man has a long beard.", 4, 100, CreateWeapon());
         }
 
         private List<BaseObject> CreateListOfThreeWeaponObjects()
@@ -141,8 +142,62 @@ namespace ZorkUnitTest
 
         private Character CreateCharacterWithoutWeapon()
         {
-            return new NPC("sherrif_barney", 4, 100, null, "This man has a long beard.");
+            return new NPC("sherrif_barney", "This man has a long beard.", 4, 100);
+        }
+        
+        [TestMethod]
+        public void CharactersMovesAround()
+        {
+            Maze maze = new Maze(5, 5, 1, 1);
+            CharacterDefinitions.AddCharacters(maze);
+            Dictionary<Character, bool> characterHasMoved = InitialiseCharacterHasMoved();
+            Dictionary<NPC, Point> startLocations = InitialiseStartLocations(maze);
+            MoveCharactersAround(maze, characterHasMoved, startLocations);
+            foreach (bool charMoved in characterHasMoved.Values)
+            {
+                Assert.IsTrue(charMoved);
+            }
         }
 
+        private static void MoveCharactersAround(Maze maze, Dictionary<Character, bool> characterHasMoved, Dictionary<NPC, Point> startLocations)
+        {
+            for (int i = 0; i < NPC.MaxTurnsBetweenMoves; i++)
+            {
+                CharacterDefinitions.MoveNPCs(maze);
+                foreach (NPC c in CharacterDefinitions.NPCS)
+                {
+                    if (!maze[startLocations[c]].NPCsInRoom.Contains(c))
+                    {
+                        characterHasMoved[c] = true;
+                    }
+                }
+            }
+        }
+
+        private static Dictionary<NPC, Point> InitialiseStartLocations(Maze maze)
+        {
+            Dictionary<NPC, Point> startLocations = new Dictionary<NPC, Point>();
+            for (int xi = 0; xi < maze.Width; ++xi)
+            {
+                for (int yi = 0; yi < maze.Height; ++yi)
+                {
+                    foreach (NPC npc in maze[xi, yi].NPCsInRoom)
+                    {
+                        startLocations.Add(npc, new Point(xi, yi));
+                    }
+                }
+            }
+            return startLocations;
+        }
+
+        private static Dictionary<Character, bool> InitialiseCharacterHasMoved()
+        {
+            Dictionary<Character, bool> characterHasMoved = new Dictionary<Character, bool>();
+            foreach (Character c in CharacterDefinitions.NPCS)
+            {
+                characterHasMoved.Add(c, false);
+            }
+            return characterHasMoved;
+        }
     }
 }
