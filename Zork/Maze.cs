@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using Zork.Objects;
 
@@ -13,6 +14,7 @@ namespace Zork
         Random rng;
         public readonly int Width;
         public readonly int Height;
+        private List<string> streetNames = new List<string>();
 
         public Maze(int xSize, int ySize, int StartX, int StartY)
         {
@@ -21,6 +23,7 @@ namespace Zork
             rng = new Random();
             rooms = new Room[xSize, ySize];
             rooms[StartX, StartY] = new Room("Your house");
+            streetNames.AddRange(File.ReadAllText("../../../data/streetnames.txt").Split('\n'));
             CreateNeighbour(new Point(StartX, StartY));
             AddExtraConnections(xSize * ySize);
         }
@@ -194,6 +197,19 @@ namespace Zork
             }
         }
 
+        private string GetRoomDescription()
+        {
+            if( streetNames.Count == 0)
+            {
+                return "A busy street in London.";
+            }
+            Random rng = new Random();
+            int index = rng.Next(0, streetNames.Count);
+            var result = streetNames[index];
+            streetNames.RemoveAt(index);
+            return result;
+        }
+
         /// <summary>
         /// Create rooms next to the current one as long as there are still null neighbours
         /// </summary>
@@ -208,7 +224,7 @@ namespace Zork
                     return;
                 }
                 Point destPoint = options[rng.Next(0, options.Count)];
-                rooms[destPoint.X, destPoint.Y] = new Room("A busy street in London.");
+                rooms[destPoint.X, destPoint.Y] = new Room(GetRoomDescription());
                 Connect(fromPoint, destPoint);
                 CreateNeighbour(destPoint); //recursive step
             }
