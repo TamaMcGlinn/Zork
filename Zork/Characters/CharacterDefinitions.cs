@@ -16,7 +16,7 @@ namespace Zork.Characters
 
         private static List<NPC> _npcs = new List<NPC>() {
             new NPC("sherrif_barney", "A fat man in a prim black sherrif's uniform. He has a mustache and short brown hair.", 3, 100),
-            new NPC("henry", "A tall man with a round face, and a kingly red robe draped around his shoulders.", 12, 100, new Objects.Weapon("Sword", 22, "Blackened steel sword. Looks pointy."))
+            new NPC("henry", "A tall man with a round face, and a kingly red robe draped around his shoulders.", 12, 100, new Objects.Weapon("Sword", 22, "Blackened steel sword. Looks pointy."), true)
         };
 
         public static List<NPC> NPCS

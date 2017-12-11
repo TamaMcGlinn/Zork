@@ -8,6 +8,8 @@ namespace Zork.Characters
 {
     public class NPC : Character
     {
+        public bool IsMurderer = false;
+
         public const int MinTurnsBetweenMoves = 2;
         public const int MaxTurnsBetweenMoves = 5;
 
@@ -21,14 +23,15 @@ namespace Zork.Characters
             protected set { _text = value; }
         }
 
-        public NPC(string name, string description, int strength, int startHealth, Weapon weapon = null) : this(name, description, strength, startHealth, startHealth, weapon)
+        public NPC(string name, string description, int strength, int startHealth, Weapon weapon = null, bool isMurderer = false) : this(name, description, strength, startHealth, startHealth, weapon)
         {
         }
 
-        public NPC(string name, string description, int strength, int startHealth, int maxHealth, Weapon weapon = null) : base(name, description, strength, startHealth, maxHealth, weapon)
+        public NPC(string name, string description, int strength, int startHealth, int maxHealth, Weapon weapon = null, bool isMurderer = false) : base(name, description, strength, startHealth, maxHealth, weapon)
         {
             this.Text = new TextTree(Name + ".txt");
             PickNextTimeToMove();
+            IsMurderer = IsMurderer;
         }
 
         public void PickNextTimeToMove()
