@@ -37,17 +37,22 @@ namespace Zork.Characters
             }
         }
 
+        /// <summary>
+        /// Move each NPC if it is time to move it.
+        /// </summary>
         public static void MoveNPCs(Maze maze)
         {
-            foreach(var kvp in _characterLocations)
+            foreach(KeyValuePair<NPC,Point> kvp in _characterLocations)
             {
-                if (kvp.Key.IsTimeToMove())
+                NPC npc = kvp.Key;
+                Point location = kvp.Value;
+                if (npc.IsTimeToMove())
                 {
-                    MoveNPC(maze, kvp.Value, kvp.Key);
-                    kvp.Key.PickNextTimeToMove();
-                    kvp.Key.PickNextTimeToMove();
+                    MoveNPC(maze, location, npc);
+                    npc.PickNextTimeToMove();
+                    npc.PickNextTimeToMove();
                 }
-                kvp.Key.PlayerMoved();
+                npc.PlayerMoved();
             }
         }
 
