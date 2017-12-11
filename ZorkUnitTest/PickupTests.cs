@@ -54,7 +54,8 @@ namespace ZorkUnitTest
         [TestMethod]
         public void PickUpWeaponTest()
         {
-            Player p = CharacterDefinitions.PlayerCharacter;
+            CharacterDefinitions characters = new CharacterDefinitions();
+            Player p = characters.PlayerCharacter;
             Weapon w = new Weapon("Longsword", 5, "a big sword");
             w.PickupObject(p);
             Assert.IsTrue(p.EquippedWeapon == w);

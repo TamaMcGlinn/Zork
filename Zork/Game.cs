@@ -13,12 +13,13 @@ namespace Zork
     public class Game
     {
         Maze maze;
-        Point currentRoom;
-        const int Width = 2;
-        const int Height = 2;
+        public Point currentRoom;
+        public const int Width = 2;
+        public const int Height = 2;
         const int StartX = 1;
         const int StartY = 1;
-
+        Interactions interactions = new Interactions();
+        CharacterDefinitions characters = new CharacterDefinitions();
         Dictionary<char, Action<Game, string>> Commands = new Dictionary<char, Action<Game, string>>()
         {
             { 'n', (Game g, string s) => { g.TryGo(Direction.North); } },
@@ -27,10 +28,10 @@ namespace Zork
             { 'w', (Game g, string s) => { g.TryGo(Direction.West); } },
             { 'l', (Game g, string s) => { Console.Write(g.maze[g.currentRoom].LookAround()); } },
             { 't', (Game g, string s) => { g.TryTalk(s); } },
-            { 'p', (Game g, string s) => { Interactions.PickupItem(g.maze, g.currentRoom); } },
-            { 'i', (Game g, string s) => { CharacterDefinitions.PlayerCharacter.PrintWeapon(); CharacterDefinitions.PlayerCharacter.PrintInventory(); } },
-            { 'c', (Game g, string s) => { CharacterDefinitions.PlayerCharacter.PrintStats(); } },
-            { 'b', (Game g, string s) => { Interactions.Battle(g.maze,g.currentRoom); } }
+            { 'p', (Game g, string s) => { Interactions.PickupItem(g.maze, g.currentRoom, g.characters.PlayerCharacter); } },
+            { 'i', (Game g, string s) => { g.characters.PlayerCharacter.PrintWeapon(); g.characters.PlayerCharacter.PrintInventory(); } },
+            { 'c', (Game g, string s) => { g.characters.PlayerCharacter.PrintStats(); } },
+            { 'b', (Game g, string s) => { g.interactions.Battle(g.maze,g.currentRoom, g.characters.PlayerCharacter); } }
         };
 
         public Game()
@@ -38,7 +39,7 @@ namespace Zork
             currentRoom = new Point(StartX, StartY);
             maze = new Maze(Width, Height, StartX, StartY);
             maze.Print();
-            CharacterDefinitions.AddCharacters(maze);
+            characters.AddCharacters(maze);
             ObjectDefinitions.AddItems(maze);
         }
 

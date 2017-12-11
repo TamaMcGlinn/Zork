@@ -31,31 +31,33 @@ namespace ZorkUnitTest
         [TestMethod]
         public void UnarmedPlayerDescriptionIsCorrect()
         {
+            CharacterDefinitions characters = new CharacterDefinitions();
             Player p = new Player();
             p.EquippedWeapon = null;
             StringWriter consoleOutput = new StringWriter();
             Console.SetOut(consoleOutput);
             p.PrintStats();
-            Assert.AreEqual(CharacterDefinitions.PlayerCharacter.Name + ": " 
-                + CharacterDefinitions.PlayerCharacter.Description +
+            Assert.AreEqual(characters.PlayerCharacter.Name + ": " 
+                + characters.PlayerCharacter.Description +
                 "\r\nHealth: 100" +
-                "\r\nStrength: " + CharacterDefinitions.PlayerCharacter.Strength + 
+                "\r\nStrength: " + characters.PlayerCharacter.Strength + 
                 "\r\nUnarmed.\r\n", consoleOutput.ToString());
         }
 
         [TestMethod]
         public void ArmedPlayerDescriptionIsCorrect()
         {
+            CharacterDefinitions characters = new CharacterDefinitions();
             Player p = new Player();
             p.EquippedWeapon = new Weapon("gun", 1, "description");
             using (StringWriter consoleOutput = new StringWriter())
             {
                 Console.SetOut(consoleOutput);
                 p.PrintStats();
-                string expectedResult = CharacterDefinitions.PlayerCharacter.Name + ": "
-                    + CharacterDefinitions.PlayerCharacter.Description +
+                string expectedResult = characters.PlayerCharacter.Name + ": "
+                    + characters.PlayerCharacter.Description +
                     "\r\nHealth: 100" +
-                    "\r\nStrength: " + CharacterDefinitions.PlayerCharacter.Strength +
+                    "\r\nStrength: " + characters.PlayerCharacter.Strength +
                     "\r\nCurrent weapon:" +
                     "\r\n" + p.EquippedWeapon.Name + ": " + p.EquippedWeapon.Description +
                     "\r\nStrength: " + p.EquippedWeapon.Strength + "\r\n";

@@ -14,7 +14,11 @@ namespace Zork.Characters
         {
             get { return _cluesFound; }
         }
-        #endregion 
+
+
+
+
+        #endregion
 
         public Player() : base()
         {

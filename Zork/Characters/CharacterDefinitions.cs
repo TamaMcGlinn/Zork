@@ -2,25 +2,25 @@
 
 namespace Zork.Characters
 {
-    public static class CharacterDefinitions
+    public class CharacterDefinitions
     {
-        private static Player _player = new Player();
+        private Player _player = new Player();
 
-        public static Player PlayerCharacter
+        public Player PlayerCharacter
         {
             get { return _player; }
         }
 
-        private static List<NPC> _npcs = new List<NPC>() {
+        private List<NPC> _npcs = new List<NPC>() {
             new NPC("sherrif_barney", 3, 100, null, "A fat man in a prim black sherrif's uniform. He has a mustache and short brown hair.")
         };
 
-        public static List<NPC> NPCS
+        public List<NPC> NPCS
         {
             get { return _npcs; }
         }
         
-        public static void AddCharacters(Maze maze)
+        public void AddCharacters(Maze maze)
         {
             foreach (Character npc in NPCS)
             {

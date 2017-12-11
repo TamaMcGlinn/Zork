@@ -174,14 +174,14 @@ namespace Zork
         private Node ProcessNode(Node currentNode)
         {
             Console.WriteLine(currentNode.Text);
-            List<Node> options = currentNode.AvailableChildren();
+            List<Node> options = currentNode.AvailableChildren(this);
             if (options.Count == 0)
             {
                 return null;
             }
             Node playerResponse = GetPlayerResponse(currentNode, options);
             Console.WriteLine("> " + playerResponse.Text);
-            List<Node> npcResponses = playerResponse.AvailableChildren();
+            List<Node> npcResponses = playerResponse.AvailableChildren(this);
             if (npcResponses.Count == 0)
             {
                 return null;

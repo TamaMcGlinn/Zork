@@ -68,8 +68,9 @@ namespace ZorkUnitTest
         [TestMethod]
         public void LookAroundTest()
         {
+            CharacterDefinitions characters = new CharacterDefinitions();
             Room room = new Room("A place");
-            Character character = CharacterDefinitions.NPCS[0];
+            Character character = characters.NPCS[0];
             room.CharactersInRoom.Add(character);
             room.ObjectsInRoom = CreateListOfThreeWeaponObjects();
             string lookAroundTextString = room.LookAround();
@@ -102,12 +103,13 @@ namespace ZorkUnitTest
         [TestMethod]
         public void PrintInventoryTest()
         {
+            CharacterDefinitions characters = new CharacterDefinitions();
             StringWriter consoleOutput = new StringWriter();
             Console.SetOut(consoleOutput);
-            CharacterDefinitions.PlayerCharacter.Inventory = new List<BaseObject>();
+            characters.PlayerCharacter.Inventory = new List<BaseObject>();
             Clue clue = new Clue("Red pants", "very nice pants");
-            CharacterDefinitions.PlayerCharacter.Inventory.Add(clue);
-            CharacterDefinitions.PlayerCharacter.PrintInventory();
+            characters.PlayerCharacter.Inventory.Add(clue);
+            characters.PlayerCharacter.PrintInventory();
             Assert.IsTrue(consoleOutput.ToString().Contains($"{clue.Name} : {clue.Description}"));
         }
 
