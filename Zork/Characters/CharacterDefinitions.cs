@@ -50,7 +50,7 @@ namespace Zork.Characters
                     npc.PickNextTimeToMove();
                     npc.PickNextTimeToMove();
                 }
-                npc.PlayerMoved();
+                npc.LowerTurnsToNextMove();
             }
         }
 

@@ -34,7 +34,7 @@ namespace Zork.Characters
         public void PickNextTimeToMove()
         {
             var rng = new Random();
-            _turnsUntilNextMove = rng.Next(MinTurnsBetweenMoves, MaxTurnsBetweenMoves + 1);
+            _turnsUntilNextMove = rng.Next(MinTurnsBetweenMoves, MaxTurnsBetweenMoves);
         }
 
         /// <summary>
@@ -54,7 +54,7 @@ namespace Zork.Characters
             return _turnsUntilNextMove == 0;
         }
 
-        public void PlayerMoved()
+        public void LowerTurnsToNextMove()
         {
             _turnsUntilNextMove--;
         }

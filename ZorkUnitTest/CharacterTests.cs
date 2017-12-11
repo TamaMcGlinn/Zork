@@ -159,7 +159,7 @@ namespace ZorkUnitTest
             }
         }
 
-        private static void MoveCharactersAround(Maze maze, Dictionary<Character, bool> characterHasMoved, Dictionary<NPC, Point> startLocations)
+        private void MoveCharactersAround(Maze maze, Dictionary<Character, bool> characterHasMoved, Dictionary<NPC, Point> startLocations)
         {
             for (int i = 0; i < NPC.MaxTurnsBetweenMoves; i++)
             {
