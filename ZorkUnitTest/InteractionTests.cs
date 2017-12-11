@@ -37,7 +37,7 @@ namespace ZorkUnitTest
             {
                 fight.FightOneRound();
             }
-            Assert.IsTrue(fight.Enemy.Health <= 0);
+            Assert.IsTrue(fight.Player.Health <= 0);
         }
 
         [TestMethod]
