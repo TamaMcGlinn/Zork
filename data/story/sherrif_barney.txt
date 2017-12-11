@@ -1,15 +1,15 @@
 Sherrif Barney
-<Sherlock! Goed je te zien!
-	>Hoe gaat het?
-		<Het is een prachtige dag, vind je niet?
-			>Niet bepaald. Mijn vrouw is al een paar dagen vermist.
-			>Ja, prima. Laat het maar weten als je mijn vrouw nog tegenkomt.
-	>Kun je helpen zoeken?
-		<Waarnaar zoek je?
-			>Naar de moordenaar, natuurlijk!
-				<[tornrag]Hij heeft een rode jas aan. Die heb ik nog niet gezien.
-				<Zoek eerst maar uit wie het heeft gedaan.
-			>Ik zoek een wapen.
-				<Als je de wet in eigen handen wil nemen kan ik je niet helpen.
-			>Ik ben gewond; kun je me helpen?
-				<Eigenlijk heb ik je nooit echt gemogen. Succes!
+<Sherlock! What's new?
+	>How are you?
+		<It's a fine day for a stroll, don't you think?
+			>Not really; my wife has been missing for several days.
+			>Whatever. Let me know if you see my wife.
+	>Can you help me?
+		<What do you need?
+			>Find the murderer!
+				<[tornrag]He's wearing a red coat. I haven't seen that yet.
+				<First find out who did it.
+			>I'm looking for a weapon.
+				<If you're going to take the law into your own hands, I can't help you.
+			>I'm wounded. Can you help me?
+				<Actually, I never really liked you. Good luck bleeding!
