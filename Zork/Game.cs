@@ -78,7 +78,7 @@ namespace Zork
                 Console.WriteLine("There is nobody called " + charactername + " here.");
                 return;
             }
-            talkTarget.Talk();
+            talkTarget.Talk(CharacterDefinitions.PlayerCharacter);
         }
 
         /// <summary>

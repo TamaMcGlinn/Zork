@@ -7,13 +7,9 @@ namespace Zork.Characters
     public class Player : Character
     {
         #region properties
+        
+        public HashSet<string> Clues = new HashSet<string>();
 
-        private List<string> _cluesFound = new List<string>();
-
-        public List<string> Clues
-        {
-            get { return _cluesFound; }
-        }
         #endregion 
 
         public Player() : base("Sherlock Holmes", "A very good investigator.", 10, 100)

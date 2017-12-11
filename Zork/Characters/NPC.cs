@@ -40,11 +40,15 @@ namespace Zork.Characters
         /// <summary>
         /// Output text and accept player choices until the tree reaches a leaf node
         /// </summary>
-        public void Talk()
+        public void Talk(Player player)
         {
             Node currentNode = Text.RootNode;
             while (currentNode != null)
             {
+                foreach(string s in currentNode.UnlockedClues)
+                {
+                    player.Clues.Add(s);
+                }
                 currentNode = ProcessNode(currentNode);
             }
         }

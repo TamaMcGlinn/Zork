@@ -19,6 +19,8 @@ namespace Zork.Texts
 
         private List<string> _conditions;
 
+        public List<string> UnlockedClues;
+
         private List<Node> _children;
 
         public List<Node> Children
@@ -26,11 +28,12 @@ namespace Zork.Texts
             get { return _children; }
         }
 
-        public Node(string text, List<string> conditions)
+        public Node(string text, List<string> conditions, List<string> unlockedClues)
         {
             Text = text;
             _children = new List<Node>();
             _conditions = conditions;
+            UnlockedClues = unlockedClues;
         }
 
         private bool IsAvailable()

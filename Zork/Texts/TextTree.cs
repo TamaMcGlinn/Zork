@@ -41,30 +41,48 @@ namespace Zork.Texts
             _rootNode = readNode(lines, 1);
         }
 
-        private int countInitialTabs(string line)
+        private static int countInitialTabs(string line)
         {
             int i = 0;
             while (line[i++] == '\t') ;
             return i-1;
         }
 
-        private List<string> getConditions(ref string inputLine)
+        private static List<string> getRequiredConditions(ref string inputLine)
         {
-            List<string> result = new List<string>();
             int start = inputLine.IndexOf('[');
-            if(start >= 0)
+            if(start == 0)
             {
                 int end = inputLine.IndexOf(']');
-                Debug.Assert(end > 0);
-                Debug.Assert(end > start);
-                string conditions = inputLine.Substring(start+1, end - start - 1);
-                result = conditions.Split(',').ToList();
-                inputLine = inputLine.Substring(end+1);
+                var result = ReadConditions(inputLine, start, end);
+                inputLine = inputLine.Substring(end + 1);
+                return result;
             }
-            return result;
+            return new List<string>();
         }
 
-        private Node readNode(string[] lines, int line)
+        private static List<string> getUnlockedClues(ref string inputLine)
+        {
+            int start = inputLine.IndexOf('[');
+            if (start >= 0)
+            {
+                int end = inputLine.IndexOf(']');
+                var result = ReadConditions(inputLine, start, end);
+                inputLine = inputLine.Substring(0, start);
+                return result;
+            }
+            return new List<string>();
+        }
+
+        private static List<string> ReadConditions(string inputLine, int start, int end)
+        {
+            Debug.Assert(start >= 0);
+            Debug.Assert(end > start);
+            string conditions = inputLine.Substring(start + 1, end - start - 1);
+            return conditions.Split(',').ToList();
+        }
+
+        private static Node readNode(string[] lines, int line)
         {
             if (line >= lines.Count())
             {
@@ -72,8 +90,9 @@ namespace Zork.Texts
             }
             int tabs = countInitialTabs(lines[line]);
             string contents = lines[line].Substring(tabs + 1);
-            List<string> conditions = getConditions(ref contents);
-            Node currentNode = new Node(contents, conditions);
+            var requiredConditions = getRequiredConditions(ref contents);
+            var unlockedClues = getUnlockedClues(ref contents);
+            Node currentNode = new Node(contents, requiredConditions, unlockedClues);
             List<int> childBeginLines = GetChildren(lines, line, tabs);
             foreach (int beginLine in childBeginLines)
             {
@@ -82,7 +101,7 @@ namespace Zork.Texts
             return currentNode;
         }
 
-        private List<int> GetChildren(string[] lines, int line, int tabs)
+        private static List<int> GetChildren(string[] lines, int line, int tabs)
         {
             List<int> childBeginLines = new List<int>();
             for (int endline = line + 1; endline != lines.Count(); ++endline)
