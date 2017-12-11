@@ -31,7 +31,6 @@ namespace ZorkUnitTest
         [TestMethod]
         public void FightStrongEnemyTest()
         {
-            //TODO: ask how to test private methods
             FightBehaviour fight = new FightBehaviour(new NPC("sherrif_barney", 30, 100, new Weapon("Strong weapon", 10, "desc"), "desc"), new Player());
             while (fight.Player.Health > 0 && fight.Enemy.Health > 0)
             {
