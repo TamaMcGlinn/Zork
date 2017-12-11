@@ -52,6 +52,7 @@
     <Compile Include="Game.cs" />
     <Compile Include="Interactions.cs" />
     <Compile Include="Maze.cs" />
+    <Compile Include="MazeEnumerator.cs" />
     <Compile Include="Objects\BaseObject.cs" />
     <Compile Include="Objects\Clue.cs" />
     <Compile Include="Objects\HealthPickup.cs" />

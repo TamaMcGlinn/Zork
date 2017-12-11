@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
@@ -8,8 +9,9 @@ using Zork.Objects;
 
 namespace Zork
 {
-    public class Maze
+    public class Maze : IEnumerable<Room>
     {
+        public const string HouseDescription = "Your house";
         Room[,] rooms;
         Random rng;
         public readonly int Width;
@@ -22,7 +24,7 @@ namespace Zork
             Height = ySize;
             rng = new Random();
             rooms = new Room[xSize, ySize];
-            rooms[StartX, StartY] = new Room("Your house");
+            rooms[StartX, StartY] = new Room(HouseDescription);
             streetNames.AddRange(File.ReadAllText("../../../data/streetnames.txt").Split('\n'));
             CreateNeighbour(new Point(StartX, StartY));
             AddExtraConnections(xSize * ySize);
@@ -230,5 +232,14 @@ namespace Zork
             }
         }
 
+        public IEnumerator<Room> GetEnumerator()
+        {
+            return new MazeEnumerator(this);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return (IEnumerator)GetEnumerator();
+        }
     }
 }
