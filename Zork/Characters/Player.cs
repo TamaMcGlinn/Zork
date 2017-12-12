@@ -62,17 +62,15 @@ namespace Zork.Characters
             Console.WriteLine($"\nYou have {Health} hp left, he has {Enemy.Health} hp left.");
         }
 
-        public override BattleOutcomeEnum Fight(Character enemy, Room[,] allRooms)
+        public override BattleOutcomeEnum Fight(NPC enemy, Room[,] allRooms)
         {
             Enemy = enemy;
             while (enemy.Health > 0 && Health > 0 && !Fled)
             {
-                if (enemy is NPC) {
-                    if (TurnsPassed % (enemy as NPC).LetsPlayerFleePerXRounds == 0)
-                    {
-                        AskFlee();
-                    }
-                 }
+                if (TurnsPassed % enemy.LetsPlayerFleePerXRounds == 0)
+                {
+                    AskFlee();
+                }
                 FightOneRound();
                 Turn();
             }

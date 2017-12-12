@@ -10,7 +10,7 @@ namespace Zork
 
         public void Battle(Maze maze, Room currentRoom, Player player)
         {
-            Character enemy = null;
+            NPC enemy = null;
             if (ChooseEnemyMessage(maze, currentRoom))
             {
                 return;
