@@ -54,6 +54,14 @@ namespace ZorkUnitTest
 
         }
 
+        [TestMethod]
+        public void MurdererCanKillNoOneIfRoomIsEmpty()
+        {
+            MurdererNPC murderer = CreateMurderer();
+            murderer.CurrentRoom.NPCsInRoom.Clear();
+            Assert.IsFalse(murderer.KillRandomNPCInSameRoom());
+        }
+
         public MurdererNPC CreateMurderer()
         {
             MurdererNPC murderer = new Zork.Characters.MurdererNPC("Murderer", "desc", 10, 100, 99, null);

@@ -9,7 +9,7 @@ namespace Zork.Characters
 {
     public class MurdererNPC : NPC
     {
-        int roundsBeforeNewKill = 10;
+        public int roundsBeforeNewKill = 10;
 
         public MurdererNPC(string name, string description, int strength, int startHealth, int letsPlayerFleePerXRounds, Weapon weapon = null) : base(name, description, strength, startHealth, letsPlayerFleePerXRounds, weapon)
         {
@@ -30,14 +30,27 @@ namespace Zork.Characters
            
         }
 
-        public void KillRandomNPCInSameRoom()
+        /// <summary>
+        /// Kills someone in the current room
+        /// </summary>
+        /// <returns>true if the murderer killed someone, false if he didnt</returns>
+        public bool KillRandomNPCInSameRoom()
         {
-            Random rng = new Random();
-            int killNpc = rng.Next(0, CurrentRoom.NPCsInRoom.Count - 1);
-            List<NPC> npcsInCurrentRoom = CurrentRoom.NPCsInRoom;
-            npcsInCurrentRoom[killNpc].DropWeapon();
-            npcsInCurrentRoom[killNpc].DropAllItems();
-            npcsInCurrentRoom.RemoveAt(killNpc);
+            if (CurrentRoom.NPCsInRoom.Count > 0)
+            {
+                Random rng = new Random();
+
+                int killNpc = rng.Next(0, CurrentRoom.NPCsInRoom.Count - 1);
+                List<NPC> npcsInCurrentRoom = CurrentRoom.NPCsInRoom;
+                npcsInCurrentRoom[killNpc].DropWeapon();
+                npcsInCurrentRoom[killNpc].DropAllItems();
+                npcsInCurrentRoom.RemoveAt(killNpc);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }
