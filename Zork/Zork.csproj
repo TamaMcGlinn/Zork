@@ -43,7 +43,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Behaviour\BattleOutcomeEnum.cs" />
+    <Compile Include="BattleOutcomeEnum.cs" />
     <Compile Include="Characters\Character.cs" />
     <Compile Include="Characters\CharacterDefinitions.cs" />
     <Compile Include="Characters\NPC.cs" />

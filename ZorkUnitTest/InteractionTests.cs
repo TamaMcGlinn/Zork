@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
 using Zork;
-using Zork.Behaviour;
 using Zork.Characters;
 using Zork.Objects;
 

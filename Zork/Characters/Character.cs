@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using Zork.Behaviour;
 using Zork.Characters;
 using Zork.Objects;
-using Zork.Texts;
 
 namespace Zork
 {
