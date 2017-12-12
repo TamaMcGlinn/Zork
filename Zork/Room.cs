@@ -72,14 +72,17 @@ namespace Zork
 
         public void PrintAvailableDirections() {
             Console.WriteLine("\n"+Description + "\n");
-            Console.WriteLine("You can go:");
+            Console.Write("You can go: ");
+            int checkForLastKvp = 0;
             foreach (var kvp in CanGoThere)
             {
                 if (kvp.Value)
                 {
-                    Console.WriteLine(kvp.Key);
+                    Console.Write(kvp.Key + " ");
                 }
+               
             }
+            Console.WriteLine();
         }
 
         /// <summary>

@@ -15,9 +15,10 @@ namespace Zork
         Maze maze;
         public const int Width = 2;
         public const int Height = 2;
-
         const int StartX = 1;
         const int StartY = 1;
+
+
         Interactions interactions = new Interactions();
         CharacterDefinitions characters = new CharacterDefinitions();
         Dictionary<char, Action<Game, string>> Commands = new Dictionary<char, Action<Game, string>>()
