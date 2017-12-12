@@ -56,12 +56,12 @@ namespace ZorkUnitTest
 
         public NPC createNPCBarney()
         {
-            return new NPC("sherrif_barney", "", 30, 100, 5, new Weapon("Strong weapon", 10, "desc"));
+            return new NPC("constable_barney", "", 30, 100, 5, new Weapon("Strong weapon", 10, "desc"));
         }
 
         public NPC CreateWeakNPC()
         {
-            return new NPC("sherrif_barney", "", 1, 10, 5, new Weapon("Strong weapon", 10, "desc"));
+            return new NPC("constable_barney", "", 1, 10, 5, new Weapon("Strong weapon", 10, "desc"));
         }
 
     }

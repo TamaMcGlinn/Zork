@@ -20,7 +20,7 @@ namespace ZorkUnitTest
         {
             Weapon longSword = CreateWeapon();
             Character character1 = CreateNPC();
-            if (character1.Name != "sherrif_barney")
+            if (character1.Name != "constable_barney")
             {
                 Assert.Fail("The name of the character is not correct");
             }
@@ -132,7 +132,7 @@ namespace ZorkUnitTest
         /// <returns>A character equipped with a longsword</returns>
         private NPC CreateNPC()
         {
-            return new NPC("sherrif_barney", "This man has a long beard.", 4, 100, 5, CreateWeapon(), false);
+            return new NPC("constable_barney", "This man has a long beard.", 4, 100, 5, CreateWeapon(), false);
         }
 
         private List<BaseObject> CreateListOfThreeWeaponObjects()
@@ -146,7 +146,7 @@ namespace ZorkUnitTest
 
         private Character CreateCharacterWithoutWeapon()
         {
-            return new NPC("sherrif_barney", "This man has a long beard.", 4, 100, 5, null, false);
+            return new NPC("constable_barney", "This man has a long beard.", 4, 100, 5, null, false);
         }
         
         [TestMethod]

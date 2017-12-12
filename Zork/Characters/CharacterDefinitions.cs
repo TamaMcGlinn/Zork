@@ -18,7 +18,7 @@ namespace Zork.Characters
         private List<NPC> _npcs = new List<NPC>() {
             new NPC("alfred", "A man on horseback. He looks like he's in a hurry!", 4, 100, 2, null, false),
             new NPC("audrey", "A vile woman, penniless but with a golden smile.", 3, 60, 1, null, false),
-            new NPC("sherrif_barney", "A fat man in a prim black sherrif's uniform. He has a mustache and short brown hair.",3 , 100, 5, null, false),
+            new NPC("constable_barney", "A fat man in a prim black sherrif's uniform. He has a mustache and short brown hair.",3 , 100, 5, null, false),
             new NPC("henry", "A tall man with a round face, and a kingly red robe draped around his shoulders.", 12, 100, 5, new Objects.Weapon("Sword", 22, "Blackened steel sword. Looks pointy."), false),
             new NPC("lady_barclay", "Lady to Sir Barclay, of Barclay manor. She wears a black bonnet and coat.", 4, 40, 1, null, false),
             new NPC("barden", "A lad, not sixteen years of age.", 4, 40, 1, null, false),
