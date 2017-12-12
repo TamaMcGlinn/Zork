@@ -32,7 +32,7 @@ namespace Zork
             { 'p', (Game g, string s) => { g.characters.PlayerCharacter.PickupItem(); } },
             { 'i', (Game g, string s) => { g.characters.PlayerCharacter.PrintEquippedWeapon(); g.characters.PlayerCharacter.PrintInventory(); } },
             { 'c', (Game g, string s) => { g.characters.PlayerCharacter.PrintStats(); } },
-            { 'b', (Game g, string s) => { g.interactions.Battle(g.maze,g.characters.PlayerCharacter.CurrentRoom, g.characters.PlayerCharacter); } }
+            { 'b', (Game g, string s) => { g.characters.PlayerCharacter.Battle(g.maze.Rooms); } }
         };
 
         public Game()
@@ -72,6 +72,8 @@ namespace Zork
             }
             PrintInstructions();
         }
+
+
 
         private void PrintInstructions()
         {

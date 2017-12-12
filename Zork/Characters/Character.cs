@@ -175,6 +175,24 @@ namespace Zork
 
         internal int TurnsPassed { get; set; }
 
+        public void Battle(Room[,] allRooms)
+        {
+            NPC enemy = null;
+            if (!CurrentRoom.PrintAvailableEnemiesInRoom())
+            {
+                return;
+            }
+            int enemyNumber;
+            if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber > 0 && enemyNumber <= CurrentRoom.NPCsInRoom.Count)
+            {
+                enemy = CurrentRoom.NPCsInRoom[enemyNumber - 1];
+            }
+            if (enemy != null)
+            {
+                BattleOutcomeEnum battleOutcome = Fight(enemy, allRooms);
+            }
+        }
+
         /// <summary>
         /// Fights the chosen enemy untill someone dies, if player dies he loses all his items, 
         /// if enemy dies player picks up all his items.

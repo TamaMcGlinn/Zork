@@ -85,6 +85,27 @@ namespace Zork
         }
 
         /// <summary>
+        /// Prints a list of characters you can fight and lets you choose a character
+        /// </summary>
+        /// <returns>Whether there are enemies in the current room</returns>
+        public bool PrintAvailableEnemiesInRoom()
+        {
+            if (NPCsInRoom.Count > 0)
+            {
+                for (int i = 0; i < NPCsInRoom.Count; i++)
+                {
+                    Console.WriteLine($"[{i + 1}] {NPCsInRoom[i].Name}");
+                }
+                return true;
+            }
+            else
+            {
+                Console.WriteLine("\nThere's no one here\n");
+                return false;
+            }
+        }
+
+        /// <summary>
         /// Prints a string containing all the objects in the room
         /// </summary>
         /// <returns>The string which is printed</returns>
