@@ -41,7 +41,7 @@ namespace Zork.Texts
         {
             foreach(string condition in _conditions)
             {
-                if (player.Clues.Contains(condition))
+                if (!player.Clues.Contains(condition))
                 {
                     return false;
                 }
