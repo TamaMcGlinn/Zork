@@ -47,39 +47,38 @@ namespace Zork.Characters
             return "";
         }
 
-        private string PrintGetHittedWithWeapon()
+        private string PrintGetHittedWithWeapon(NPC enemy)
         {
             if (EquippedWeapon != null)
             {
-                Console.Write($" with his stupid {Enemy.EquippedWeapon.Name} ");
+                Console.Write($" with his stupid {enemy.EquippedWeapon.Name} ");
             }
             return "";
         }
 
-        protected override void FightOneRound()
+        protected override void FightOneRound(NPC enemy)
         {
-            int enemyDamage = Enemy.GenerateDamage();
+            int enemyDamage = enemy.GenerateDamage();
             int myDamage = GenerateDamage();
 
             Console.WriteLine("You hit eachother...");
-            Enemy.TakeDamage(myDamage);
+            enemy.TakeDamage(myDamage);
             TakeDamage(enemyDamage);
 
             Console.Write("You hit for: " + myDamage + PrintHittingWithWeapon());
-            Console.Write($"\n{Enemy.Name} hits you for:" + enemyDamage + PrintGetHittedWithWeapon());
-            Console.WriteLine($"\nYou have {Health} hp left, he has {Enemy.Health} hp left.");
+            Console.Write($"\n{enemy.Name} hits you for:" + enemyDamage + PrintGetHittedWithWeapon(enemy));
+            Console.WriteLine($"\nYou have {Health} hp left, he has {enemy.Health} hp left.");
         }
 
         public override BattleOutcomeEnum Fight(NPC enemy, Room[,] allRooms)
         {
-            Enemy = enemy;
             while (enemy.Health > 0 && Health > 0 && !Fled)
             {                
                 if (TurnsPassed % enemy.LetsPlayerFleePerXRounds == 0)
                 {
                     AskFlee();
                 }
-                FightOneRound();
+                FightOneRound(enemy);
                 Turn();
             }
             if (Fled)
@@ -87,7 +86,7 @@ namespace Zork.Characters
                 Flee(allRooms);
                 return BattleOutcomeEnum.PlayerFled;
             }
-            return base.CheckWhoWon();
+            return base.CheckWhoWon(enemy);
         }
 
 

@@ -171,8 +171,6 @@ namespace Zork
                 EquippedWeapon.PrintStats();
             }
         }
-        
-        public Character Enemy { get; set; }
 
         internal int TurnsPassed { get; set; }
 
@@ -201,13 +199,12 @@ namespace Zork
         /// <returns>A boolean indicating wether the player won the fight</returns>
         public virtual BattleOutcomeEnum Fight(NPC enemy, Room[,] AllRooms)
         {
-            Enemy = enemy;
             while (enemy.Health > 0 && Health > 0)
             {
-                FightOneRound();
+                FightOneRound(enemy);
                 Turn();
             }
-            return CheckWhoWon();
+            return CheckWhoWon(enemy);
         }
 
         public void Turn()
@@ -215,28 +212,28 @@ namespace Zork
             TurnsPassed++;
         }
 
-        protected BattleOutcomeEnum CheckWhoWon()
+        protected BattleOutcomeEnum CheckWhoWon(NPC enemy)
         {
-            if (Enemy.Health < 0)
+            if (enemy.Health < 0)
             {
-                Enemy.Inventory.Clear();
-                Enemy.ResetHealth();
+                enemy.Inventory.Clear();
+                enemy.ResetHealth();
                 Console.WriteLine("You died! But luckily you've returned without items.");
                 return BattleOutcomeEnum.EnemyWon;
             }
             else
             {
-                Enemy.Inventory.AddRange(Enemy.Inventory);
-                Console.WriteLine($"You've won! You've picked up all {Enemy.Name}'s items, check your inventory!");
+                enemy.Inventory.AddRange(enemy.Inventory);
+                Console.WriteLine($"You've won! You've picked up all {enemy.Name}'s items, check your inventory!");
                 return BattleOutcomeEnum.PlayerWon;
             }
         }
 
-        protected virtual void FightOneRound()
+        protected virtual void FightOneRound(NPC enemy)
         {
-            int enemyDamage = Enemy.GenerateDamage();
+            int enemyDamage = enemy.GenerateDamage();
             int myDamage = GenerateDamage();
-            Enemy.TakeDamage(myDamage);
+            enemy.TakeDamage(myDamage);
             TakeDamage(enemyDamage);
         }
         
