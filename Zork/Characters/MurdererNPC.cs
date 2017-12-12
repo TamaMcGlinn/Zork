@@ -9,23 +9,27 @@ namespace Zork.Characters
 {
     public class MurdererNPC : NPC
     {
-        public int roundsBeforeNewKill = 10;
+        public int killEveryXRounds { get; set; } = 10;
+        public int roundsBeforeNewKill;
 
         public MurdererNPC(string name, string description, int strength, int startHealth, int letsPlayerFleePerXRounds, Weapon weapon = null) : base(name, description, strength, startHealth, letsPlayerFleePerXRounds, weapon)
         {
+            roundsBeforeNewKill = killEveryXRounds;
         }
 
         public MurdererNPC(string name, string description, int strength, int startHealth, int maxHealth, int letsPlayerFleePerXRounds, Weapon weapon = null) : base(name, description, strength, startHealth, maxHealth, letsPlayerFleePerXRounds, weapon)
         {
+            roundsBeforeNewKill = killEveryXRounds;
         }
 
         public override void Turn()
         {
+            roundsBeforeNewKill--;
             if (roundsBeforeNewKill == 0)
             {
                 KillRandomNPCInSameRoom();
+                roundsBeforeNewKill = killEveryXRounds;
             }
-            roundsBeforeNewKill--;
             base.Turn();
            
         }

@@ -62,6 +62,23 @@ namespace ZorkUnitTest
             Assert.IsFalse(murderer.KillRandomNPCInSameRoom());
         }
 
+        [TestMethod]
+        public void MurdererTriesToKillEveryXTurns()
+        {
+            MurdererNPC murderer = CreateMurderer();
+            murderer.CurrentRoom.NPCsInRoom.Add(CreateMurderer());
+            murderer.CurrentRoom.NPCsInRoom.Add(CreateMurderer());
+            murderer.CurrentRoom.NPCsInRoom.Add(CreateMurderer());
+            murderer.CurrentRoom.NPCsInRoom.Add(CreateMurderer());
+            int killEveryXRounds = murderer.roundsBeforeNewKill;
+            for (int i = 0; i < killEveryXRounds*4; i++)
+            {
+                murderer.Turn();
+            }
+            Assert.IsTrue(murderer.CurrentRoom.NPCsInRoom.Count == 0);
+
+        }
+
         public MurdererNPC CreateMurderer()
         {
             MurdererNPC murderer = new Zork.Characters.MurdererNPC("Murderer", "desc", 10, 100, 99, null);
