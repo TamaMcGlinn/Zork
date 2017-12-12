@@ -203,7 +203,7 @@ namespace Zork
             return CheckWhoWon(enemy);
         }
 
-        public void Turn()
+        public virtual void Turn()
         {
             TurnsPassed++;
         }
@@ -267,6 +267,13 @@ namespace Zork
             int inputInteger;
             int.TryParse(input, out inputInteger);
             TryPickUp(CurrentRoom, inputInteger - 1);
+        }
+
+        public void DropWeapon()
+        {
+            CurrentRoom.ObjectsInRoom.Add(EquippedWeapon);
+            EquippedWeapon = null;
+            
         }
 
         private void TryPickUp(Room currentRoom, int choiceIndex)
