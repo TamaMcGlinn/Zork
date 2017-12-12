@@ -21,18 +21,18 @@ namespace Zork
 
         Interactions interactions = new Interactions();
         CharacterDefinitions characters = new CharacterDefinitions();
-        Dictionary<char, Action<Game, string>> Commands = new Dictionary<char, Action<Game, string>>()
+        Dictionary<char, Action<Game>> Commands = new Dictionary<char, Action<Game>>()
         {
-            { 'n', (Game g, string s) => { g.characters.PlayerCharacter.TryGo(Direction.North, g.maze.Rooms); } },
-            { 'e', (Game g, string s) => { g.characters.PlayerCharacter.TryGo(Direction.East,g.maze.Rooms); } },
-            { 's', (Game g, string s) => { g.characters.PlayerCharacter.TryGo(Direction.South, g.maze.Rooms); } },
-            { 'w', (Game g, string s) => { g.characters.PlayerCharacter.TryGo(Direction.West, g.maze.Rooms); } },
-            { 'l', (Game g, string s) => { g.characters.PlayerCharacter.LookAround(); } },
-            { 't', (Game g, string s) => { g.characters.PlayerCharacter.TryTalk(s); } },
-            { 'p', (Game g, string s) => { g.characters.PlayerCharacter.PickupItem(); } },
-            { 'i', (Game g, string s) => { g.characters.PlayerCharacter.PrintEquippedWeapon(); g.characters.PlayerCharacter.PrintInventory(); } },
-            { 'c', (Game g, string s) => { g.characters.PlayerCharacter.PrintStats(); } },
-            { 'b', (Game g, string s) => { g.characters.PlayerCharacter.Battle(g.maze.Rooms); } }
+            { 'n', (Game g) => { g.characters.PlayerCharacter.TryGo(Direction.North, g.maze.Rooms); } },
+            { 'e', (Game g) => { g.characters.PlayerCharacter.TryGo(Direction.East,g.maze.Rooms); } },
+            { 's', (Game g) => { g.characters.PlayerCharacter.TryGo(Direction.South, g.maze.Rooms); } },
+            { 'w', (Game g) => { g.characters.PlayerCharacter.TryGo(Direction.West, g.maze.Rooms); } },
+            { 'l', (Game g) => { g.characters.PlayerCharacter.LookAround(); } },
+            { 't', (Game g) => { g.characters.PlayerCharacter.TryTalk(); } },
+            { 'p', (Game g) => { g.characters.PlayerCharacter.PickupItem(); } },
+            { 'i', (Game g) => { g.characters.PlayerCharacter.PrintEquippedWeapon(); g.characters.PlayerCharacter.PrintInventory(); } },
+            { 'c', (Game g) => { g.characters.PlayerCharacter.PrintStats(); } },
+            { 'b', (Game g) => { g.characters.PlayerCharacter.Battle(g.maze.Rooms); } }
         };
 
         public Game()
@@ -63,10 +63,10 @@ namespace Zork
             userInput = userInput.ToLower();
             if (userInput.Length > 0)
             {
-                Action<Game,string> action = Commands[userInput[0]];
+                Action<Game> action = Commands[userInput[0]];
                 if (action != null)
                 {
-                    action(this, userInput);
+                    action(this);
                     return;
                 }
             }

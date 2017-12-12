@@ -151,31 +151,27 @@ namespace Zork.Characters
 
         #region talkMethods
 
-        public void TryTalk(string userInput)
+        public void TryTalk()
         {
-            var talkCommand = userInput.Split(' ');
-            if (talkCommand.Length >= 3 && talkCommand[1] == "to")
+            Console.WriteLine("With who do you want to talk?");
+            List<NPC> npcs =  CurrentRoom.NPCsInRoom;
+            for (int i = 0; i < npcs.Count; i++)
             {
-                TalkTo(String.Join("_", talkCommand.Skip(2)).ToLower());
+                Console.WriteLine($"[{i}] {npcs[i].Name}");
+            }
+            int talkToNPCInt;
+            int.TryParse(Console.ReadLine(), out talkToNPCInt);
+            if(talkToNPCInt >= 0 && talkToNPCInt <= npcs.Count)
+            {
+                npcs[talkToNPCInt].Talk(this);
             }
             else
             {
-                Console.WriteLine("Did you mean; \"Talk to [character name]\"?");
+                Console.WriteLine("He's not here...");
+                return;
             }
         }
 
-        private void TalkTo(string charactername)
-        {
-            NPC talkTarget = CurrentRoom.NPCsInRoom.Find((c) => {
-                return c.Name == charactername;
-            });
-            if (talkTarget == null)
-            {
-                Console.WriteLine("There is nobody called " + charactername + " here.");
-                return;
-            }
-            talkTarget.Talk(this);
-        }
         #endregion
 
         /// <summary>
