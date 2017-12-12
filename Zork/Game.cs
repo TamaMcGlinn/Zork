@@ -13,7 +13,6 @@ namespace Zork
     public class Game
     {
         Maze maze;
-        public Point currentRoom;
         public const int Width = 2;
         public const int Height = 2;
 
@@ -27,9 +26,9 @@ namespace Zork
             { 'e', (Game g, string s) => { g.characters.PlayerCharacter.TryGo(Direction.East,g.maze.Rooms); } },
             { 's', (Game g, string s) => { g.characters.PlayerCharacter.TryGo(Direction.South, g.maze.Rooms); } },
             { 'w', (Game g, string s) => { g.characters.PlayerCharacter.TryGo(Direction.West, g.maze.Rooms); } },
-            { 'l', (Game g, string s) => { Console.Write(g.maze[g.currentRoom].PrintLookAroundString()); } },
+            { 'l', (Game g, string s) => { Console.Write(g.maze[g.characters.PlayerCharacter.CurrentRoom.LocationOfRoom].PrintLookAroundString()); } },
             { 't', (Game g, string s) => { g.characters.PlayerCharacter.TryTalk(s); } },
-            { 'p', (Game g, string s) => { Interactions.PickupItem(g.maze, g.currentRoom, g.characters.PlayerCharacter); } },
+            { 'p', (Game g, string s) => { g.interactions.PickupItem(g.maze, g.characters.PlayerCharacter.CurrentRoom.LocationOfRoom, g.characters.PlayerCharacter); } },
             { 'i', (Game g, string s) => { g.characters.PlayerCharacter.PrintEquippedWeapon(); g.characters.PlayerCharacter.PrintInventory(); } },
             { 'c', (Game g, string s) => { g.characters.PlayerCharacter.PrintStats(); } },
             { 'b', (Game g, string s) => { g.interactions.Battle(g.maze,g.characters.PlayerCharacter.CurrentRoom, g.characters.PlayerCharacter); } }
@@ -37,7 +36,7 @@ namespace Zork
 
         public Game()
         {
-            currentRoom = new Point(StartX, StartY);
+            characters.PlayerCharacter.CurrentRoom.LocationOfRoom = new Point(StartX, StartY);
             maze = new Maze(Width, Height, StartX, StartY);
             maze.Print();
             characters.AddCharacters(maze);
@@ -52,7 +51,7 @@ namespace Zork
             PrintInstructions();
             while (true)
             {
-                maze[currentRoom].PrintAvailableDirections();
+                maze[characters.PlayerCharacter.CurrentRoom.LocationOfRoom].PrintAvailableDirections();
                 ProcessInput(Console.ReadLine());
             }
         }

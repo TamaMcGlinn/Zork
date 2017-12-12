@@ -25,10 +25,6 @@ namespace Zork.Characters
             CurrentRoom = currentRoom;
         } 
 
-        public Player() : base("Sherlock Holmes", "A very good investigator.", 10, 100, 100, null)
-        {
-        }
-
         public void UseHealthPickup(HealthPickup h)
         {
             Health = Math.Min(MaxHealth, Health + h.Potency);
