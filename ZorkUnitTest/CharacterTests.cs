@@ -151,20 +151,19 @@ namespace ZorkUnitTest
         public void CharactersMovesAround()
         {
             CharacterDefinitions cd = new CharacterDefinitions();
-           Maze maze = new Maze(5, 5, 1, 1);
+            Maze maze = new Maze(5, 5, 1, 1);
             cd.AddCharacters(maze);
-            Dictionary<Character, bool> characterHasMoved = InitialiseCharacterHasMoved();
+            Dictionary<string, bool> characterHasMoved = InitialiseCharacterHasMoved();
             Dictionary<NPC, Point> startLocations = InitialiseStartLocations(maze);
-            MoveCharactersAround(maze, characterHasMoved, startLocations);
+            MoveCharactersAround(maze, characterHasMoved, startLocations, cd);
             foreach (bool charMoved in characterHasMoved.Values)
             {
                 Assert.IsTrue(charMoved);
             }
         }
 
-        private void MoveCharactersAround(Maze maze, Dictionary<Character, bool> characterHasMoved, Dictionary<NPC, Point> startLocations)
+        private void MoveCharactersAround(Maze maze, Dictionary<string, bool> characterHasMoved, Dictionary<NPC, Point> startLocations, CharacterDefinitions cd)
         {
-            CharacterDefinitions cd = new CharacterDefinitions();
             for (int i = 0; i < NPC.MaxTurnsBetweenMoves; i++)
             {
                 cd.MoveNPCs(maze);
@@ -172,7 +171,7 @@ namespace ZorkUnitTest
                 {
                     if (!maze[startLocations[c]].NPCsInRoom.Contains(c))
                     {
-                        characterHasMoved[c] = true;
+                        characterHasMoved[c.Name] = true;
                     }
                 }
             }
@@ -194,13 +193,13 @@ namespace ZorkUnitTest
             return startLocations;
         }
 
-        private static Dictionary<Character, bool> InitialiseCharacterHasMoved()
+        private static Dictionary<string, bool> InitialiseCharacterHasMoved()
         {
             CharacterDefinitions cd = new CharacterDefinitions();
-            Dictionary<Character, bool> characterHasMoved = new Dictionary<Character, bool>();
+            Dictionary<string, bool> characterHasMoved = new Dictionary<string, bool>();
             foreach (Character c in cd.NPCS)
             {
-                characterHasMoved.Add(c, false);
+                characterHasMoved.Add(c.Name, false);
             }
             return characterHasMoved;
         }
