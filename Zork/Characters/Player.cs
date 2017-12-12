@@ -30,8 +30,7 @@ namespace Zork.Characters
         /// </summary>
         public void LookAround()
         {
-            string lookAroundString = CurrentRoom.PrintLookAroundString();
-            Console.Write(lookAroundString);
+            CurrentRoom.PrintLookAroundString();
         }
 
         public void UseHealthPickup(HealthPickup h)
