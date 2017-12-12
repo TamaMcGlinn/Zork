@@ -8,7 +8,7 @@ namespace Zork
     public class Interactions
     {
 
-        public void Battle(Maze maze, Point currentRoom, Player player)
+        public void Battle(Maze maze, Room currentRoom, Player player)
         {
             Character enemy = null;
             if (ChooseEnemyMessage(maze, currentRoom))
@@ -18,7 +18,7 @@ namespace Zork
             int enemyNumber;
             if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber >= 0)
             {
-                enemy = maze[currentRoom].CharactersInRoom[enemyNumber -1];
+                enemy = currentRoom.CharactersInRoom[enemyNumber -1];
             }
             if (enemy != null)
             {
@@ -29,13 +29,13 @@ namespace Zork
         /// Prints a list of characters you can fight and lets you choose a character
         /// </summary>
         /// <returns>Whether there are enemies in the current room</returns>
-        public bool ChooseEnemyMessage(Maze maze, System.Drawing.Point currentRoom)
+        public bool ChooseEnemyMessage(Maze maze, Room currentRoom)
         {
-            if (maze[currentRoom].CharactersInRoom.Count > 0)
+            if (currentRoom.CharactersInRoom.Count > 0)
             {
-                for (int i = 0; i < maze[currentRoom].CharactersInRoom.Count; i++)
+                for (int i = 0; i < currentRoom.CharactersInRoom.Count; i++)
                 {
-                    Console.WriteLine($"[{i + 1}] {maze[currentRoom].CharactersInRoom[i].Name}");
+                    Console.WriteLine($"[{i + 1}] {currentRoom.CharactersInRoom[i].Name}");
                 }
             }
             else

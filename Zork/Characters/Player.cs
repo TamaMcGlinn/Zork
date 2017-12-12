@@ -19,13 +19,14 @@ namespace Zork.Characters
         }
         #endregion
 
-        public Player() : base()
+        public Player(Room currentRoom) : base()
         {
             Name = "Sherlock Holmes";
             Description = "A very good investigator.";
             EquippedWeapon = null;
             Strength = 10;
             Health = MaxHealth;
+            CurrentRoom = currentRoom;
         }
 
         public void UseHealthPickup(HealthPickup h)

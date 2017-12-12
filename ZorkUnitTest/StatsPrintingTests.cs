@@ -16,7 +16,8 @@ namespace ZorkUnitTest
         [TestMethod]
         public void WeaponDescriptionIsCorrect()
         {
-            Player p = new Player();
+            
+            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0,0)));
             string gunName = "gun";
             string gunDescription = "description";
             p.EquippedWeapon = new Weapon(gunName, 1, gunDescription);
@@ -32,7 +33,7 @@ namespace ZorkUnitTest
         public void UnarmedPlayerDescriptionIsCorrect()
         {
             CharacterDefinitions characters = new CharacterDefinitions();
-            Player p = new Player();
+            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)));
             p.EquippedWeapon = null;
             StringWriter consoleOutput = new StringWriter();
             Console.SetOut(consoleOutput);
@@ -48,7 +49,7 @@ namespace ZorkUnitTest
         public void ArmedPlayerDescriptionIsCorrect()
         {
             CharacterDefinitions characters = new CharacterDefinitions();
-            Player p = new Player();
+            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)));
             p.EquippedWeapon = new Weapon("gun", 1, "description");
             using (StringWriter consoleOutput = new StringWriter())
             {

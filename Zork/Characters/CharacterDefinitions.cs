@@ -4,7 +4,7 @@ namespace Zork.Characters
 {
     public class CharacterDefinitions
     {
-        private Player _player = new Player();
+        private Player _player = new Player(new Room("", new System.Drawing.Point(0,0)));
 
         public Player PlayerCharacter
         {

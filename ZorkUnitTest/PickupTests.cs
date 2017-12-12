@@ -29,7 +29,7 @@ namespace ZorkUnitTest
         public void HealthLimited()
         {
             var health = makeVial();
-            Player p = new Player();
+            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)));
             p.UseHealthPickup(health);
             Assert.AreEqual(p.Health, 100);
         }
@@ -38,7 +38,7 @@ namespace ZorkUnitTest
         public void CanHeal()
         {
             var health = makeVial();
-            Player p = new Player();
+            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)));
             p.TakeDamage(50);
             p.UseHealthPickup(health);
             Assert.AreEqual(p.Health, 80);
@@ -64,7 +64,7 @@ namespace ZorkUnitTest
         [TestMethod]
         public void PickupObjectTest()
         {
-            Player p = new Player();
+            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)));
             Clue bo = new Clue("pants", "description");
             bo.PickupObject(p);
             Assert.IsTrue(p.Inventory.Contains(bo));
@@ -74,7 +74,7 @@ namespace ZorkUnitTest
         public void TestClues()
         {
             string clue = "c";
-            Player p = new Player();
+            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)));
             p.Clues.Add(clue);
             Assert.IsTrue(p.Clues.Contains(clue));
         }

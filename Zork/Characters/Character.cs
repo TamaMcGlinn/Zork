@@ -83,9 +83,6 @@ namespace Zork
 
 
         #endregion properties
-
-
-
         public Character()
         {
 
