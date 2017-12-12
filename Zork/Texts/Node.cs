@@ -37,11 +37,11 @@ namespace Zork.Texts
             UnlockedClues = unlockedClues;
         }
 
-        private bool IsAvailable(Character player)
+        private bool IsAvailable(Player player)
         {
             foreach(string condition in _conditions)
             {
-                if ((player is Player) && !(player as Player).Clues.Contains(condition))
+                if (player.Clues.Contains(condition))
                 {
                     return false;
                 }
@@ -49,7 +49,7 @@ namespace Zork.Texts
             return true;
         }
 
-        public List<Node> AvailableChildren(Character player)
+        public List<Node> AvailableChildren(Player player)
         {
             return Children.Where((Node n) => { return n.IsAvailable(player); }).ToList();
         }

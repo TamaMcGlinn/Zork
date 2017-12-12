@@ -8,7 +8,6 @@ namespace Zork.Characters
 {
     public class NPC : Character
     {
-
         public int LetsPlayerFleePerXRounds { get; set; }
         public bool IsMurderer = false;
 

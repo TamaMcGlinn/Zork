@@ -25,15 +25,14 @@ namespace Zork.Characters
             get { return _npcs; }
         }
 
-        private static Dictionary<NPC, Point> _characterLocations = new Dictionary<NPC, Point>();
-
         public void AddCharacters(Maze maze)
         {
             foreach (NPC npc in NPCS)
             {
                 Point location = maze.GetRandomRoom();
-                maze[location].NPCsInRoom.Add(npc);
-                _characterLocations.Add(npc, location);
+                Room room = maze[location];
+                room.NPCsInRoom.Add(npc);
+                npc.CurrentRoom = room;
             }
         }
 
@@ -42,14 +41,12 @@ namespace Zork.Characters
         /// </summary>
         public void MoveNPCs(Maze maze)
         {
-            foreach(KeyValuePair<NPC,Point> kvp in _characterLocations)
+            foreach(NPC npc in NPCS)
             {
-                NPC npc = kvp.Key;
-                Point location = kvp.Value;
+                Point location = npc.CurrentRoom.LocationOfRoom;
                 if (npc.IsTimeToMove())
                 {
                     MoveNPC(maze, location, npc);
-                    npc.PickNextTimeToMove();
                     npc.PickNextTimeToMove();
                 }
                 npc.LowerTurnsToNextMove();

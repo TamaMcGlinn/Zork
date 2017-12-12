@@ -56,7 +56,6 @@ namespace Zork
         
         private List<Objects.BaseObject> _inventory = new List<BaseObject>();
 
-
         public List<BaseObject> Inventory
         {
             get { return _inventory; }
@@ -110,7 +109,6 @@ namespace Zork
             this.EquippedWeapon = weapon;
         }
 
-
         public void PrintEquippedWeapon()
         {
             if (EquippedWeapon != null)
@@ -155,46 +153,7 @@ namespace Zork
             Health -= damage;
             return Health > 0;
         }
-
-
-
-        private Node ProcessNode(Node currentNode)
-        {
-            Console.WriteLine(currentNode.Text);
-            List<Node> options = currentNode.AvailableChildren(this);
-            if (options.Count == 0)
-            {
-                return null;
-            }
-            Node playerResponse = GetPlayerResponse(currentNode, options);
-            Console.WriteLine("> " + playerResponse.Text);
-            List<Node> npcResponses = playerResponse.AvailableChildren(this);
-            if (npcResponses.Count == 0)
-            {
-                return null;
-            }
-            return npcResponses.First();
-        }
-
-        private static Node GetPlayerResponse(Node currentNode, List<Node> options)
-        {
-            int responseNumber = 1;
-            foreach (Node child in options)
-            {
-                Console.WriteLine(responseNumber + "> " + child.Text);
-                ++responseNumber;
-            }
-            Console.Write("> ");
-            int chosenResponse = -1;
-            while (Int32.TryParse(Console.ReadLine(), out chosenResponse) == false || chosenResponse < 0 || chosenResponse > currentNode.Children.Count)
-            {
-                Console.WriteLine("Write a number for one of the responses");
-                Console.Write("> ");
-            }
-            Node playerResponse = options[chosenResponse - 1];
-            return playerResponse;
-        }
-
+        
         public void PrintStats()
         {
             Console.WriteLine(Name + ": " + Description);
@@ -210,9 +169,7 @@ namespace Zork
                 EquippedWeapon.PrintStats();
             }
         }
-
-
-
+        
         public Character Enemy { get; set; }
 
         internal int TurnsPassed { get; set; }
@@ -276,7 +233,5 @@ namespace Zork
             }
             return damage;
         }
-
-       
     }
 }
