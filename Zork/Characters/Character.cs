@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Zork.Behaviour;
+using Zork.Characters;
 using Zork.Objects;
 using Zork.Texts;
 
@@ -179,7 +180,7 @@ namespace Zork
         /// if enemy dies player picks up all his items.
         /// </summary>
         /// <returns>A boolean indicating wether the player won the fight</returns>
-        public virtual BattleOutcomeEnum Fight(Character enemy, Room[,] AllRooms)
+        public virtual BattleOutcomeEnum Fight(NPC enemy, Room[,] AllRooms)
         {
             Enemy = enemy;
             while (enemy.Health > 0 && Health > 0)
