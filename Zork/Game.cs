@@ -53,7 +53,7 @@ namespace Zork
             PrintInstructions();
             while (true)
             {
-                maze[characters.PlayerCharacter.CurrentRoom.LocationOfRoom].PrintAvailableDirections();
+                player.CurrentRoom.PrintAvailableDirections();
                 ProcessInput(Console.ReadLine());
             }
         }
