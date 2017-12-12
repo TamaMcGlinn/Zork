@@ -76,7 +76,7 @@ namespace Zork
         /// Lists all items in the room and gives options for the player to pick them up. 
         /// If he chooses a valid item it gets added to the inventory.
         /// </summary>
-        public static void PickupItem(Maze maze, Point currentRoom, Player player)
+        public void PickupItem(Maze maze, Point currentRoom, Player player)
         {
             if (maze[currentRoom].ObjectsInRoom.Count <= 0)
             {
@@ -93,7 +93,7 @@ namespace Zork
             TryPickUp(maze, currentRoom, inputInteger - 1, player);
         }
 
-        private static void TryPickUp(Maze maze, Point currentRoom, int choiceIndex, Player player)
+        private void TryPickUp(Maze maze, Point currentRoom, int choiceIndex, Player player)
         {
             if (choiceIndex >= 0 && choiceIndex < maze[currentRoom].ObjectsInRoom.Count)
             {
