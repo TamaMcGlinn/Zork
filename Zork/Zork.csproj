@@ -46,6 +46,7 @@
     <Compile Include="BattleOutcomeEnum.cs" />
     <Compile Include="Characters\Character.cs" />
     <Compile Include="Characters\CharacterDefinitions.cs" />
+    <Compile Include="Characters\MurdererNPC.cs" />
     <Compile Include="Characters\NPC.cs" />
     <Compile Include="Characters\Player.cs" />
     <Compile Include="Direction.cs" />

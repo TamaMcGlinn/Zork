@@ -45,7 +45,7 @@ namespace ZorkUnitTest
         [TestMethod]
         public void NonExistingCharacterTest()
         {
-            NPC npc = new NPC("sdqoiwqjd", "Highly valuable person", 0, 10, 5, null, false);
+            NPC npc = new NPC("sdqoiwqjd", "Highly valuable person", 0, 10, 5, null);
             Assert.IsTrue(npc.Text.RootNode == null);
         }
 
@@ -132,7 +132,7 @@ namespace ZorkUnitTest
         /// <returns>A character equipped with a longsword</returns>
         private NPC CreateNPC()
         {
-            return new NPC("sherrif_barney", "This man has a long beard.", 4, 100, 5, CreateWeapon(), false);
+            return new NPC("sherrif_barney", "This man has a long beard.", 4, 100, 5, CreateWeapon());
         }
 
         private List<BaseObject> CreateListOfThreeWeaponObjects()
@@ -146,7 +146,7 @@ namespace ZorkUnitTest
 
         private Character CreateCharacterWithoutWeapon()
         {
-            return new NPC("sherrif_barney", "This man has a long beard.", 4, 100, 5, null, false);
+            return new NPC("sherrif_barney", "This man has a long beard.", 4, 100, 5, null);
         }
         
         [TestMethod]

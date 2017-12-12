@@ -276,6 +276,12 @@ namespace Zork
             
         }
 
+        public void DropAllItems()
+        {
+            CurrentRoom.ObjectsInRoom.AddRange(Inventory);
+            Inventory.Clear();
+        }
+
         private void TryPickUp(Room currentRoom, int choiceIndex)
         {
             if (choiceIndex >= 0 && choiceIndex < CurrentRoom.ObjectsInRoom.Count)
