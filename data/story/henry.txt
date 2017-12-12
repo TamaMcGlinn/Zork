@@ -1,20 +1,20 @@
 Henry
 <What?
 	>Who are you?
-		<[introduced]I've told you once, I won't tell you again! Begone peasant!
+		<[introduced]I've told thee once, and shall not repeat it! Begone peasant!
 		<Sir Henry, heir to the throne of England. Begone peasant![introduced]
-	>[corpse]You bastard! Murderer!
-		<Thou lowly cozener! I defy you to prove that by the blade!
+	>You bastard! Murderer!
+		<Thou lowly cozener, thou purple-hued malt worm, thou drone, thou snail, thou slug, thou sot! I defy thee to prove by the blade what thy wretched lips do conjure!
 	>I'd like to ask you a few questions.
 		<Ask away.
 			>How came you by that red cloak?
-				<It was bequeathed by my late uncle Northumberland's wife's niece's dog. Why do you ask?
-					>[tornrag,wifecorpse]It looks to match this rag I found by my late wife's corpse. Pray tell, how did your cloak tear there?
-						<Indeed, my condolances. I came across your young lady in quite a fit. She said a moor was chasing her, and nearly tore my cloak asunder in begging for my help.
+				<It was bequeathed by my late aunt's nephew's dog. Why do you ask?
+					>[tornrag]It looks to match this rag I found by Cecil's corpse. Pray tell, how did your cloak tear there?
+						<Indeed, I came across the young lady in quite a fit. She said a moor was chasing her, and nearly tore my cloak asunder in begging for my help.
 							>Whence did she come?
 								<I couldn't say. She was in such a mood, running from house to house and banging on doors, I did not mark whither she went nor whence she came.
 							>Did she say anything else about this moor?
-								<No. Trouble me no further, I must attent to urgent matters of the state.
+								<No. Trouble me no further, I must attend to urgent matters of the state.
 			>What do you most desire in life?
 				<For this conversation to end swiftly. Goodbye.
 			>Where is the king?

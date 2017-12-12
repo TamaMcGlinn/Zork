@@ -1,0 +1,21 @@
+Reginald
+<I know thy face, sir!
+	>Well, this is awkward. (leave)
+	>Indeed; how goes thee?
+		<If my wife were a hobby horse I would count myself luckier; this very morning I was waylaid, my purse ta'en and left to wait for better fortune!
+			>[purse]Indeed, did it look like this here purse?
+				<Why yes! (takes purse and counts contents) Indeed, although 80d lighter than when it left me. How came you by it?
+					>[villains_described]I came across the villains, precisely as you described; and one by one slew them in answering for their crimes.
+						<Good, good! Please excuse me.
+					>Upon pressing my son he confessed of having taken it, together with some other scallywags.
+						<I will have your son answer for his crime, and receive of ye the missing coin presently!
+							>[reginald_lied]A bargain, perhaps, can be made. I will supply the missing coin, and say not a word about your false testimony to the constable.
+								<Very well.
+							>So it must be!
+			>God keep thee! What manner of villains did thee encounter?
+				<Eight at the least, armed to the teeth; the worst sort of brigands to ever cross the way of a good honest Englishman. One was missing an eye, that I marked, and they were robed in green and brown cloaks.[villains_described]
+					>If I don't help thee find these fools and cowards, unfit for any place but hell, cut this head from its shoulders.
+						<Good lad! The constable was as patient as a gentle stream as I did tell the tale, but as helpful as a dried pear in his suggestions.
+	>Reginald, good lad! How art thy parents?
+		<In heaven, in faith, as my good friends would know. Who are you that would seek to steal my friendship?
+			>A creature of the night, which must away presently!

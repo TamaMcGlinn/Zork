@@ -1,0 +1,9 @@
+Maxwell
+<Good day, sir!
+	>[suspicious_bag_seen]A boy told me something unusual; that Cecil came into this manor last evening but left it not. Is she still here?
+		<I know nothing of that sir. But if you do speak with our servant Burton, do tell him to return the skillet; it is hard cooking without it. Curse his clay-brained guts, that knotty-pated fool![skillet_missing]
+	>[iron_skillet]Is this household missing an iron skillet? I came across one bearing the mark of the Barclays.
+		<Indeed! Thank thee greatly, I know not how it went missing, only our servant is allowed in here. I shall have a word with him.
+			>No need. I will see him presently.[skillet_missing]
+	>Anything new?
+		<Well, now that you mention it, I'm missing some goods from the kitchen. Quite frustrating, but I'm sure there's nothing you can do about it.

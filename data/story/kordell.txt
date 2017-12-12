@@ -1,0 +1,8 @@
+Kordell
+<Goodday sir! Can I interest you in a new coat to fortify thee against the winter's onset?
+	>I'm rather busy.
+		<More of your conversation would infect my brain.
+	>Nay, but I praythee, what is 't o'clock?
+		<Three o'clock, or thereabouts.
+	>[corpse_wife]Rather I would lend thine eyes and ears. In the king's name I do conduct enquiry into all manner of mischief. What have you seen, what do the streets tell?
+		<I know nothing.

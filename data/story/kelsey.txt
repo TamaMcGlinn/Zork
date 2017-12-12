@@ -1,0 +1,8 @@
+Kelsey
+<Hello sir!
+	>[brigands_stole_from_reginald]You sinner! Repent thy crimes to thy father immediately, or I shall tell him for you!
+		<Darn.
+	>A fair day for a stroll, is it not?
+		<Indeed, a better one I could not wish. Good day to you!
+			>Not so fast, brigand. You murdered Cecil, did you not?
+				<Prove it or die!
