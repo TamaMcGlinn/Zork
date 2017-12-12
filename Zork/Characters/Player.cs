@@ -67,6 +67,7 @@ namespace Zork.Characters
             Enemy = enemy;
             while (enemy.Health > 0 && Health > 0 && !Fled)
             {
+                
                 if (enemy is NPC) {
                     if (TurnsPassed % (enemy as NPC).LetsPlayerFleePerXRounds == 0)
                     {
