@@ -53,8 +53,7 @@ namespace Zork.Objects
         public static bool DropChanceByPercentage(int chancePercentage)
         {
             Random r = new Random();
-            int chance = 100 / chancePercentage;
-            if(r.Next(0, chance)  == 0)
+            if(r.Next(0, 100) < chancePercentage)
             {
                 return true;
             }

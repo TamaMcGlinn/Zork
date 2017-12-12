@@ -10,10 +10,9 @@ namespace Zork
 {
     public abstract class Character
     {
-
         #region properties
-
-        protected static readonly int MaxHealth = 100;
+        
+        protected int MaxHealth = 100;
 
         private string _name;
 
@@ -39,7 +38,6 @@ namespace Zork
             protected set { _health = value; }
         }
 
-
         private Weapon _weapon;
 
         public Weapon EquippedWeapon
@@ -54,14 +52,6 @@ namespace Zork
         {
             get { return _description; }
             protected set { _description = value; }
-        }
-        
-        private TextTree _text;
-
-        public TextTree Text
-        {
-            get { return _text; }
-            protected set { _text = value; }
         }
         
         private List<Objects.BaseObject> _inventory = new List<BaseObject>();
@@ -93,7 +83,11 @@ namespace Zork
         /// </summary>
         /// <param name="name"></param>
         /// <param name="description"></param>
-        public Character(string name, string description) : this (name, 5, 100, null, description)
+        public Character(string name, string description) : this (name, description, 100, 100)
+        {
+
+        }
+        public Character(string name, string description, int strength, int startHealth, Weapon weapon = null) : this(name, description, strength, startHealth, startHealth, weapon)
         {
         }
 
@@ -106,14 +100,14 @@ namespace Zork
         /// <param name="weapon">The weapon the character has equipped</param>
         /// <param name="location">Current location of the character</param>
         /// <param name="description">a description of what the character looks like</param>
-        public Character(string name, int strength, int health, Weapon weapon, string description)
+        public Character(string name, string description, int strength, int startHealth, int maxHealth, Weapon weapon = null)
         {
             this.Name = name;
             this.Description = description;
             this.Strength = strength;
-            this.Health = health;
+            this.MaxHealth = maxHealth;
+            this.Health = Math.Min(maxHealth, startHealth);
             this.EquippedWeapon = weapon;
-            SetTextTree();
         }
 
 
@@ -162,25 +156,7 @@ namespace Zork
             return Health > 0;
         }
 
-        /// <summary>
-        /// Sets the texttree for this character so that the player can engage in a conversation with the character
-        /// </summary>
-        private void SetTextTree()
-        {
-            this.Text = new TextTree(Name + ".txt");
-        }
 
-        /// <summary>
-        /// Output text and accept player choices until the tree reaches a leaf node
-        /// </summary>
-        public void Talk()
-        {
-            Node currentNode = Text.RootNode;
-            while (currentNode != null)
-            {
-                currentNode = ProcessNode(currentNode);
-            }
-        }
 
         private Node ProcessNode(Node currentNode)
         {

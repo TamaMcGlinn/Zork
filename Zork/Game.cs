@@ -16,6 +16,7 @@ namespace Zork
         public Point currentRoom;
         public const int Width = 2;
         public const int Height = 2;
+
         const int StartX = 1;
         const int StartY = 1;
         Interactions interactions = new Interactions();
@@ -42,7 +43,7 @@ namespace Zork
             characters.AddCharacters(maze);
             ObjectDefinitions.AddItems(maze);
         }
-
+        
         /// <summary>
         /// Print the room, get user input to accept commands
         /// </summary>
@@ -55,7 +56,6 @@ namespace Zork
                 ProcessInput(Console.ReadLine());
             }
         }
-
 
         private void ProcessInput(string userInput)
         {

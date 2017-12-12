@@ -10,13 +10,9 @@ namespace Zork.Characters
     public class Player : Character
     {
         #region properties
-
-        private List<string> _cluesFound = new List<string>();
-
-        public List<string> Clues
-        {
-            get { return _cluesFound; }
-        }
+        
+        public HashSet<string> Clues = new HashSet<string>();
+        
         #endregion
 
         public Player(Room currentRoom) : base()
@@ -27,6 +23,10 @@ namespace Zork.Characters
             Strength = 10;
             Health = MaxHealth;
             CurrentRoom = currentRoom;
+        } 
+
+        public Player() : base("Sherlock Holmes", "A very good investigator.", 10, 100, 100, null)
+        {
         }
 
         public void UseHealthPickup(HealthPickup h)
@@ -163,7 +163,7 @@ namespace Zork.Characters
 
         private void TalkTo(string charactername)
         {
-            Character talkTarget = CurrentRoom.CharactersInRoom.Find((Character c) => {
+            NPC talkTarget = CurrentRoom.NPCsInRoom.Find((c) => {
                 return c.Name == charactername;
             });
             if (talkTarget == null)
@@ -171,9 +171,9 @@ namespace Zork.Characters
                 Console.WriteLine("There is nobody called " + charactername + " here.");
                 return;
             }
-            talkTarget.Talk();
+            talkTarget.Talk(this);
         }
-    #endregion
+        #endregion
 
         /// <summary>
         /// <summary>me="direction">Direction to go in</param>

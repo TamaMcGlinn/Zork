@@ -23,17 +23,18 @@ namespace ZorkUnitTest
             Maze maze = new Maze(1, 1, currentRoom.X, currentRoom.Y);
             Player p = new Player(maze.Rooms[currentRoom.X,currentRoom.Y]);
             List<NPC> NPCs = (new CharacterDefinitions()).NPCS;
-            maze[currentRoom.X, currentRoom.Y].CharactersInRoom.Add(NPCs[0]);
+            maze[currentRoom.X, currentRoom.Y].NPCsInRoom.Add(NPCs[0]);
             Interactions i = new Interactions();
             i.ChooseEnemyMessage(maze, p.CurrentRoom);
-            Assert.IsTrue(writer.ToString().Contains($"[{0 + 1}] {maze[currentRoom].CharactersInRoom[0].Name}"));
+            Assert.IsTrue(writer.ToString().Contains($"[{0 + 1}] {maze[currentRoom].NPCsInRoom[0].Name}"));
+
         }
 
         [TestMethod]
         public void FightStrongEnemyTest()
         {
-            NPC npc = new NPC("sherrif_barney", 10, 100, new Weapon("Strong weapon", 10, "desc"), "", 5);
-            NPC npc1 = new NPC("sherrif_barney", 60, 100, new Weapon("Strong weapon", 10, "desc"), "", 5);
+            NPC npc = CreateWeakNPC();
+            NPC npc1 = createNPCBarney();
             npc.Fight(npc1, CreateMaze().Rooms);
             Assert.IsTrue(npc.Health <= 0);
         }
@@ -41,8 +42,8 @@ namespace ZorkUnitTest
         [TestMethod]
         public void FightweakEnemyTest()
         {
-            NPC npc = new NPC("sherrif_barney", 30, 100, new Weapon("Strong weapon", 10, "desc"), "", 5);
-            NPC npc1 = new NPC("sherrif_barney", 1, 10, new Weapon("Strong weapon", 10, "desc"), "", 5);
+            NPC npc = createNPCBarney();
+            NPC npc1 = CreateWeakNPC();
             npc.Fight(npc1, CreateMaze().Rooms);
             Assert.IsTrue(npc.Health > 0);
         }
@@ -52,5 +53,16 @@ namespace ZorkUnitTest
 
             return new Maze(10, 10, 0, 0);
         }
+
+        public NPC createNPCBarney()
+        {
+            return new NPC("sherrif_barney", "", 30, 100, 5, new Weapon("Strong weapon", 10, "desc"));
+        }
+
+        public NPC CreateWeakNPC()
+        {
+            return new NPC("sherrif_barney", "", 1, 10, 5, new Weapon("Strong weapon", 10, "desc"));
+        }
+
     }
 }

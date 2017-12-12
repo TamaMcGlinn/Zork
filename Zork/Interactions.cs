@@ -16,9 +16,9 @@ namespace Zork
                 return;
             }
             int enemyNumber;
-            if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber >= 0)
+            if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber > 0 && enemyNumber <= currentRoom.NPCsInRoom.Count)
             {
-                enemy = currentRoom.CharactersInRoom[enemyNumber -1];
+                enemy = currentRoom.NPCsInRoom[enemyNumber -1];
             }
             if (enemy != null)
             {
@@ -31,11 +31,11 @@ namespace Zork
         /// <returns>Whether there are enemies in the current room</returns>
         public bool ChooseEnemyMessage(Maze maze, Room currentRoom)
         {
-            if (currentRoom.CharactersInRoom.Count > 0)
+            if (currentRoom.NPCsInRoom.Count > 0)
             {
-                for (int i = 0; i < currentRoom.CharactersInRoom.Count; i++)
+                for (int i = 0; i < currentRoom.NPCsInRoom.Count; i++)
                 {
-                    Console.WriteLine($"[{i + 1}] {currentRoom.CharactersInRoom[i].Name}");
+                    Console.WriteLine($"[{i + 1}] {currentRoom.NPCsInRoom[i].Name}");
                 }
             }
             else
@@ -56,11 +56,11 @@ namespace Zork
         /// <returns></returns>
         private Character getEnemyCharacterFromRoom(Maze maze, Point currentRoom, int enemyNumber)
         {
-            if (enemyNumber >= 0 && enemyNumber < maze[currentRoom].CharactersInRoom.Count)
+            if (enemyNumber >= 0 && enemyNumber < maze[currentRoom].NPCsInRoom.Count)
             {
-                if (enemyNumber < maze[currentRoom].CharactersInRoom.Count + 1)
+                if (enemyNumber < maze[currentRoom].NPCsInRoom.Count + 1)
                 {
-                    return maze[currentRoom].CharactersInRoom[enemyNumber - 1];
+                    return maze[currentRoom].NPCsInRoom[enemyNumber - 1];
                 }
                 else
                 {
