@@ -29,7 +29,7 @@ namespace Zork
             { 'l', (Game g) => { g.characters.PlayerCharacter.LookAround(); } },
             { 't', (Game g) => { g.characters.PlayerCharacter.TryTalk(); } },
             { 'p', (Game g) => { g.characters.PlayerCharacter.PickupItem(); } },
-            { 'i', (Game g) => { g.characters.PlayerCharacter.PrintEquippedWeapon(); g.characters.PlayerCharacter.PrintInventory(); } },
+            { 'i', (Game g) => { g.characters.PlayerCharacter.PrintInventory(); } },
             { 'c', (Game g) => { g.characters.PlayerCharacter.PrintStats(); } },
             { 'b', (Game g) => { g.characters.PlayerCharacter.Battle(g.maze.Rooms); } }
         };

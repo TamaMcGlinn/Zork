@@ -127,6 +127,7 @@ namespace Zork
         /// </summary>
         public void PrintInventory()
         {
+            PrintEquippedWeapon();
             if (Inventory.Count == 0)
             {
                 Console.WriteLine("\nYou have no items in your inventory.\n");
