@@ -18,27 +18,28 @@ namespace Zork
         const int StartX = 1;
         const int StartY = 1;
 
-        
         CharacterDefinitions characters = new CharacterDefinitions();
+        Player player;
         Dictionary<char, Action<Game>> Commands = new Dictionary<char, Action<Game>>()
         {
-            { 'n', (Game g) => { g.characters.PlayerCharacter.TryGo(Direction.North, g.maze.Rooms); } },
-            { 'e', (Game g) => { g.characters.PlayerCharacter.TryGo(Direction.East,g.maze.Rooms); } },
-            { 's', (Game g) => { g.characters.PlayerCharacter.TryGo(Direction.South, g.maze.Rooms); } },
-            { 'w', (Game g) => { g.characters.PlayerCharacter.TryGo(Direction.West, g.maze.Rooms); } },
-            { 'l', (Game g) => { g.characters.PlayerCharacter.LookAround(); } },
-            { 't', (Game g) => { g.characters.PlayerCharacter.TryTalk(); } },
-            { 'p', (Game g) => { g.characters.PlayerCharacter.PickupItem(); } },
-            { 'i', (Game g) => { g.characters.PlayerCharacter.PrintInventory(); } },
-            { 'c', (Game g) => { g.characters.PlayerCharacter.PrintStats(); } },
-            { 'b', (Game g) => { g.characters.PlayerCharacter.Battle(g.maze.Rooms); } }
+            { 'n', (Game g) => { g.player.TryGo(Direction.North, g.maze.Rooms); } },
+            { 'e', (Game g) => { g.player.TryGo(Direction.East,g.maze.Rooms); } },
+            { 's', (Game g) => { g.player.TryGo(Direction.South, g.maze.Rooms); } },
+            { 'w', (Game g) => { g.player.TryGo(Direction.West, g.maze.Rooms); } },
+            { 'l', (Game g) => { g.player.LookAround(); } },
+            { 't', (Game g) => { g.player.TryTalk(); } },
+            { 'p', (Game g) => { g.player.PickupItem(); } },
+            { 'i', (Game g) => { g.player.PrintInventory(); } },
+            { 'c', (Game g) => { g.player.PrintStats(); } },
+            { 'b', (Game g) => { g.player.Battle(g.maze.Rooms); } }
         };
 
         public Game()
         {
+            
             Console.SetWindowSize(Console.WindowWidth, Console.WindowHeight + Console.WindowHeight);
             maze = new Maze(Width, Height, StartX, StartY);
-            characters.PlayerCharacter = new Player(maze[new Point(StartX, StartY)]);
+            player = new Player(maze[new Point(StartX, StartY)]);
             maze.Print();
             characters.AddCharacters(maze);
             ObjectDefinitions.AddItems(maze);
