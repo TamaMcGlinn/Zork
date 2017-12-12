@@ -66,21 +66,11 @@ namespace Zork.Characters
         {
             Enemy = enemy;
             while (enemy.Health > 0 && Health > 0 && !Fled)
-            {
-<<<<<<< HEAD
-                
-                if (enemy is NPC) {
-                    if (TurnsPassed % (enemy as NPC).LetsPlayerFleePerXRounds == 0)
-                    {
-                        AskFlee();
-                    }
-                 }
-=======
+            {                
                 if (TurnsPassed % enemy.LetsPlayerFleePerXRounds == 0)
                 {
                     AskFlee();
                 }
->>>>>>> 0d9af64470d03e67afe8d4ba7cc80bbc03df6d37
                 FightOneRound();
                 Turn();
             }

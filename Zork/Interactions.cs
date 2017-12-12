@@ -11,7 +11,7 @@ namespace Zork
         public void Battle(Maze maze, Room currentRoom, Player player)
         {
             NPC enemy = null;
-            if (ChooseEnemyMessage(maze, currentRoom))
+            if (!ChooseEnemyMessage(maze, currentRoom))
             {
                 return;
             }
@@ -37,6 +37,7 @@ namespace Zork
                 {
                     Console.WriteLine($"[{i + 1}] {currentRoom.NPCsInRoom[i].Name}");
                 }
+                return true;
             }
             else
             {
