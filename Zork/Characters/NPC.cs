@@ -47,7 +47,7 @@ namespace Zork.Characters
         /// </summary>
         public void Talk(Player player)
         {
-            Node currentNode = Text.RootNode;
+            Node currentNode = Node.FirstAvailable(Text.RootNodes, player);
             while (currentNode != null)
             {
                 foreach(string s in currentNode.UnlockedClues)
@@ -78,12 +78,7 @@ namespace Zork.Characters
             }
             Node playerResponse = GetPlayerResponse(currentNode, options);
             Console.WriteLine("> " + playerResponse.Text);
-            List<Node> npcResponses = playerResponse.AvailableChildren(player);
-            if (npcResponses.Count == 0)
-            {
-                return null;
-            }
-            return npcResponses.First();
+            return playerResponse.FirstAvailableChild(player);
         }
 
         private static Node GetPlayerResponse(Node currentNode, List<Node> options)

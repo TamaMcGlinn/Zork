@@ -46,7 +46,7 @@ namespace ZorkUnitTest
         public void NonExistingCharacterTest()
         {
             NPC npc = new NPC("sdqoiwqjd", "Highly valuable person", 0, 10, 5, null, false);
-            Assert.IsTrue(npc.Text.RootNode == null);
+            Assert.IsTrue(npc.Text.RootNodes == null);
         }
 
         /// <summary>

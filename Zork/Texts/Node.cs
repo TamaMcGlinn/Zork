@@ -53,5 +53,15 @@ namespace Zork.Texts
         {
             return Children.Where((Node n) => { return n.IsAvailable(player); }).ToList();
         }
+
+        public Node FirstAvailableChild(Player player)
+        {
+            return FirstAvailable(Children, player);
+        }
+
+        public static Node FirstAvailable(List<Node> nodesList, Player player)
+        {
+            return nodesList.FirstOrDefault(n => n.IsAvailable(player));
+        }
     }
 }
