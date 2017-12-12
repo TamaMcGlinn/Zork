@@ -157,10 +157,11 @@ namespace Zork.Characters
             List<NPC> npcs =  CurrentRoom.NPCsInRoom;
             for (int i = 0; i < npcs.Count; i++)
             {
-                Console.WriteLine($"[{i}] {npcs[i].Name}");
+                Console.WriteLine($"[{i + 1}] {npcs[i].Name}");
             }
             int talkToNPCInt;
             int.TryParse(Console.ReadLine(), out talkToNPCInt);
+            talkToNPCInt -= 1;
             if(talkToNPCInt >= 0 && talkToNPCInt <= npcs.Count)
             {
                 npcs[talkToNPCInt].Talk(this);
