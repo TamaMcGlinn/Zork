@@ -24,7 +24,6 @@ namespace ZorkUnitTest
             Player p = new Player(maze.Rooms[currentRoom.X,currentRoom.Y]);
             List<NPC> NPCs = (new CharacterDefinitions()).NPCS;
             maze[currentRoom.X, currentRoom.Y].NPCsInRoom.Add(NPCs[0]);
-            Interactions i = new Interactions();
             p.CurrentRoom.PrintAvailableEnemiesInRoom();
             Assert.IsTrue(writer.ToString().Contains($"[{0 + 1}] {maze[currentRoom].NPCsInRoom[0].Name}"));
 

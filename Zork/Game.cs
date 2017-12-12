@@ -18,8 +18,7 @@ namespace Zork
         const int StartX = 1;
         const int StartY = 1;
 
-
-        Interactions interactions = new Interactions();
+        
         CharacterDefinitions characters = new CharacterDefinitions();
         Dictionary<char, Action<Game>> Commands = new Dictionary<char, Action<Game>>()
         {
