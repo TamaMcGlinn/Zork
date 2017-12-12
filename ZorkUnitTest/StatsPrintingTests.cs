@@ -16,8 +16,9 @@ namespace ZorkUnitTest
         [TestMethod]
         public void WeaponDescriptionIsCorrect()
         {
-            
-            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0,0)));
+
+            CharacterDefinitions characters = createPlayerCharacter();
+            Player p = characters.PlayerCharacter;
             string gunName = "gun";
             string gunDescription = "description";
             p.EquippedWeapon = new Weapon(gunName, 1, gunDescription);
@@ -32,9 +33,10 @@ namespace ZorkUnitTest
         [TestMethod]
         public void UnarmedPlayerDescriptionIsCorrect()
         {
-            CharacterDefinitions characters = new CharacterDefinitions();
-            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)));
-            p.EquippedWeapon = null;
+
+            CharacterDefinitions characters = createPlayerCharacter();
+            Player p = characters.PlayerCharacter;
+            characters.PlayerCharacter.EquippedWeapon = null;
             StringWriter consoleOutput = new StringWriter();
             Console.SetOut(consoleOutput);
             p.PrintStats();
@@ -48,13 +50,13 @@ namespace ZorkUnitTest
         [TestMethod]
         public void ArmedPlayerDescriptionIsCorrect()
         {
-            CharacterDefinitions characters = new CharacterDefinitions();
-            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)));
-            p.EquippedWeapon = new Weapon("gun", 1, "description");
+          
             using (StringWriter consoleOutput = new StringWriter())
             {
+                CharacterDefinitions characters = createPlayerCharacter();
+                Player p = characters.PlayerCharacter;
                 Console.SetOut(consoleOutput);
-                p.PrintStats();
+                characters.PlayerCharacter.PrintStats();
                 string expectedResult = characters.PlayerCharacter.Name + ": "
                     + characters.PlayerCharacter.Description +
                     "\r\nHealth: 100" +
@@ -64,6 +66,15 @@ namespace ZorkUnitTest
                     "\r\nStrength: " + p.EquippedWeapon.Strength + "\r\n";
                 Assert.AreEqual(expectedResult, consoleOutput.ToString());
             }
+        }
+
+        public CharacterDefinitions createPlayerCharacter()
+        {
+            CharacterDefinitions characters = new CharacterDefinitions();
+            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)));
+            p.EquippedWeapon = new Weapon("gun", 1, "description");
+            characters.PlayerCharacter = p;
+            return characters;
         }
     }
 }

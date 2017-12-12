@@ -104,7 +104,7 @@ namespace ZorkUnitTest
         [TestMethod]
         public void PrintInventoryTest()
         {
-            CharacterDefinitions characters = new CharacterDefinitions();
+            CharacterDefinitions characters = createPlayerCharacter();
             StringWriter consoleOutput = new StringWriter();
             Console.SetOut(consoleOutput);
             characters.PlayerCharacter.Inventory = new List<BaseObject>();
@@ -113,6 +113,8 @@ namespace ZorkUnitTest
             characters.PlayerCharacter.PrintInventory();
             Assert.IsTrue(consoleOutput.ToString().Contains($"{clue.Name} : {clue.Description}"));
         }
+       
+
 
         /// <summary>
         /// Creates a weapon objects for testing purposes
@@ -202,6 +204,14 @@ namespace ZorkUnitTest
                 characterHasMoved.Add(c.Name, false);
             }
             return characterHasMoved;
+        }
+        public CharacterDefinitions createPlayerCharacter()
+        {
+            CharacterDefinitions characters = new CharacterDefinitions();
+            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)));
+            p.EquippedWeapon = new Weapon("gun", 1, "description");
+            characters.PlayerCharacter = p;
+            return characters;
         }
     }
 }

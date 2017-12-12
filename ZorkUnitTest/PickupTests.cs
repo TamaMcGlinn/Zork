@@ -54,7 +54,7 @@ namespace ZorkUnitTest
         [TestMethod]
         public void PickUpWeaponTest()
         {
-            CharacterDefinitions characters = new CharacterDefinitions();
+            CharacterDefinitions characters = createPlayerCharacter();
             Player p = characters.PlayerCharacter;
             Weapon w = new Weapon("Longsword", 5, "a big sword");
             w.PickupObject(p);
@@ -77,6 +77,15 @@ namespace ZorkUnitTest
             Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)));
             p.Clues.Add(clue);
             Assert.IsTrue(p.Clues.Contains(clue));
+        }
+
+        public CharacterDefinitions createPlayerCharacter()
+        {
+            CharacterDefinitions characters = new CharacterDefinitions();
+            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)));
+            p.EquippedWeapon = new Weapon("gun", 1, "description");
+            characters.PlayerCharacter = p;
+            return characters;
         }
     }
 }
