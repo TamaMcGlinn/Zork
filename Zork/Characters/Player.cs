@@ -145,5 +145,56 @@ namespace Zork.Characters
             Y = r.Next(0, Game.Height);
             return new Point(X, Y);
         }
+
+        #region talkMethods
+
+        public void TryTalk(string userInput)
+        {
+            var talkCommand = userInput.Split(' ');
+            if (talkCommand.Length >= 3 && talkCommand[1] == "to")
+            {
+                TalkTo(String.Join("_", talkCommand.Skip(2)).ToLower());
+            }
+            else
+            {
+                Console.WriteLine("Did you mean; \"Talk to [character name]\"?");
+            }
+        }
+
+        private void TalkTo(string charactername)
+        {
+            Character talkTarget = CurrentRoom.CharactersInRoom.Find((Character c) => {
+                return c.Name == charactername;
+            });
+            if (talkTarget == null)
+            {
+                Console.WriteLine("There is nobody called " + charactername + " here.");
+                return;
+            }
+            talkTarget.Talk();
+        }
+    #endregion
+
+        /// <summary>
+        /// <summary>me="direction">Direction to go in</param>
+        /// </summary>
+        /// <param name="currentRoom">The room you're in</param>
+        /// <param name="direction">The direction to go in</param>
+        public void TryGo(Direction direction, Room[,] rooms)
+        {
+            Point towards = CurrentRoom.LocationOfRoom.Add(direction);
+            if (towards.X < 0 || towards.X == Game.Width || towards.Y < 0 || towards.Y == Game.Height)
+            {
+                Console.WriteLine("You attempt to go " + direction.ToString().ToLower() + " but face the end of the world.");
+            }
+            else if (CurrentRoom.CanGoThere[direction])
+            {
+                CurrentRoom = rooms[towards.X, towards.Y];
+            }
+            else
+            {
+                Console.WriteLine("You cannot go " + direction.ToString().ToLower());
+            }
+        }
     }
 }

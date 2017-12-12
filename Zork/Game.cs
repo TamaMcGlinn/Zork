@@ -22,12 +22,12 @@ namespace Zork
         CharacterDefinitions characters = new CharacterDefinitions();
         Dictionary<char, Action<Game, string>> Commands = new Dictionary<char, Action<Game, string>>()
         {
-            { 'n', (Game g, string s) => { g.TryGo(Direction.North); } },
-            { 'e', (Game g, string s) => { g.TryGo(Direction.East); } },
-            { 's', (Game g, string s) => { g.TryGo(Direction.South); } },
-            { 'w', (Game g, string s) => { g.TryGo(Direction.West); } },
+            { 'n', (Game g, string s) => { g.characters.PlayerCharacter.TryGo(Direction.North, g.maze.Rooms); } },
+            { 'e', (Game g, string s) => { g.characters.PlayerCharacter.TryGo(Direction.East,g.maze.Rooms); } },
+            { 's', (Game g, string s) => { g.characters.PlayerCharacter.TryGo(Direction.South, g.maze.Rooms); } },
+            { 'w', (Game g, string s) => { g.characters.PlayerCharacter.TryGo(Direction.West, g.maze.Rooms); } },
             { 'l', (Game g, string s) => { Console.Write(g.maze[g.currentRoom].PrintLookAroundString()); } },
-            { 't', (Game g, string s) => { g.TryTalk(s); } },
+            { 't', (Game g, string s) => { g.characters.PlayerCharacter.TryTalk(s); } },
             { 'p', (Game g, string s) => { Interactions.PickupItem(g.maze, g.currentRoom, g.characters.PlayerCharacter); } },
             { 'i', (Game g, string s) => { g.characters.PlayerCharacter.PrintEquippedWeapon(); g.characters.PlayerCharacter.PrintInventory(); } },
             { 'c', (Game g, string s) => { g.characters.PlayerCharacter.PrintStats(); } },
@@ -56,53 +56,6 @@ namespace Zork
             }
         }
 
-        private void TryTalk(string userInput)
-        {
-            var talkCommand = userInput.Split(' ');
-            if (talkCommand.Length >= 3 && talkCommand[1] == "to")
-            {
-                TalkTo(String.Join("_", talkCommand.Skip(2)).ToLower());
-            }
-            else
-            {
-                Console.WriteLine("Did you mean; \"Talk to [character name]\"?");
-            }
-        }
-
-        private void TalkTo(string charactername)
-        {
-            Character talkTarget = maze[currentRoom].CharactersInRoom.Find((Character c) => {
-                return c.Name == charactername;
-            });
-            if (talkTarget == null)
-            {
-                Console.WriteLine("There is nobody called " + charactername + " here.");
-                return;
-            }
-            talkTarget.Talk();
-        }
-
-        /// <summary>
-        /// <summary>me="direction">Direction to go in</param>
-        /// </summary>
-        /// <param name="currentRoom">The room you're in</param>
-        /// <param name="direction">The direction to go in</param>
-        private void TryGo(Direction direction)
-        {
-            Point towards = currentRoom.Add(direction);
-            if (towards.X < 0 || towards.X == Width || towards.Y < 0 || towards.Y == Height)
-            {
-                Console.WriteLine("You attempt to go " + direction.ToString().ToLower() + " but face the end of the world.");
-            }
-            else if (maze[currentRoom].CanGoThere[direction])
-            {
-                currentRoom = towards;
-            }
-            else
-            {
-                Console.WriteLine("You cannot go " + direction.ToString().ToLower());
-            }
-        }
 
         private void ProcessInput(string userInput)
         {
