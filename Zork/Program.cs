@@ -8,9 +8,7 @@ namespace Zork
         static void Main(string[] args)
         {
             Game gameObject = new Game();
-
-                gameObject.Run();
-
+             gameObject.Run();
         }
     }
 }
