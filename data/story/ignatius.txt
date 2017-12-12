@@ -10,4 +10,3 @@ Ignatius
 						<... I've already spent it, I'm afraid.
 							>What? How could you possibly have, so quickly!
 								<Err... well, Barden spent it on sack, and.. worse yet! Kelsey went to see Cecil, an infamous lady in this town.[kelsey_whored]
-									

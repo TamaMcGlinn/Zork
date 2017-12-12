@@ -4,8 +4,6 @@ Emerson
 		<Nay, save that Audrey had rather a lot of coin to spend last night.[audrey_rich]
 	>Indeed, lead the way!
 		<Oh... I.. nobody ever agrees. Honestly, I don't even know if there is an inn in this game.
-	>What news?
-		<
 	>[ask_emerson]I spoke with your ostler, Geoffrey. Whatever is troubling him so?
 		<Good riddance to him! I sent him away; a useless cream faced loon is he. I had a distinguished guest whose horse was stolen on his watch! That leathern-jerkin, crystal-button, knot-pated, agatering, puke-stocking, caddis-garter, smooth-tongue, Spanish pouch!
 			>He also said you might know where Cecil is.
