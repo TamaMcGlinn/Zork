@@ -27,9 +27,9 @@ namespace Zork
             { 'e', (Game g, string s) => { g.characters.PlayerCharacter.TryGo(Direction.East,g.maze.Rooms); } },
             { 's', (Game g, string s) => { g.characters.PlayerCharacter.TryGo(Direction.South, g.maze.Rooms); } },
             { 'w', (Game g, string s) => { g.characters.PlayerCharacter.TryGo(Direction.West, g.maze.Rooms); } },
-            { 'l', (Game g, string s) => { Console.Write(g.maze[g.characters.PlayerCharacter.CurrentRoom.LocationOfRoom].PrintLookAroundString()); } },
+            { 'l', (Game g, string s) => { g.characters.PlayerCharacter.LookAround(); } },
             { 't', (Game g, string s) => { g.characters.PlayerCharacter.TryTalk(s); } },
-            { 'p', (Game g, string s) => { g.interactions.PickupItem(g.maze, g.characters.PlayerCharacter.CurrentRoom.LocationOfRoom, g.characters.PlayerCharacter); } },
+            { 'p', (Game g, string s) => { g.characters.PlayerCharacter.PickupItem(); } },
             { 'i', (Game g, string s) => { g.characters.PlayerCharacter.PrintEquippedWeapon(); g.characters.PlayerCharacter.PrintInventory(); } },
             { 'c', (Game g, string s) => { g.characters.PlayerCharacter.PrintStats(); } },
             { 'b', (Game g, string s) => { g.interactions.Battle(g.maze,g.characters.PlayerCharacter.CurrentRoom, g.characters.PlayerCharacter); } }

@@ -25,6 +25,15 @@ namespace Zork.Characters
             CurrentRoom = currentRoom;
         } 
 
+        /// <summary>
+        /// Prints what the player sees
+        /// </summary>
+        public void LookAround()
+        {
+            string lookAroundString = CurrentRoom.PrintLookAroundString();
+            Console.Write(lookAroundString);
+        }
+
         public void UseHealthPickup(HealthPickup h)
         {
             Health = Math.Min(MaxHealth, Health + h.Potency);

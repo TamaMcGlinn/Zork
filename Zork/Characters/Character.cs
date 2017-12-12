@@ -234,5 +234,41 @@ namespace Zork
             }
             return damage;
         }
+
+        /// <summary>
+        /// Lists all items in the room and gives options for the player to pick them up. 
+        /// If he chooses a valid item it gets added to the inventory.
+        /// </summary>
+        public void PickupItem()
+        {
+            
+            if (CurrentRoom.ObjectsInRoom.Count <= 0)
+            {
+                Console.WriteLine("There are no items to pickup in this room.");
+                return;
+            }
+            for (int i = 0; i < CurrentRoom.ObjectsInRoom.Count; i++)
+            {
+                Console.WriteLine($"[{i + 1}] to pickup:" + CurrentRoom.ObjectsInRoom[i].Name);
+            }
+            string input = Console.ReadLine();
+            int inputInteger;
+            int.TryParse(input, out inputInteger);
+            TryPickUp(CurrentRoom, inputInteger - 1);
+        }
+
+        private void TryPickUp(Room currentRoom, int choiceIndex)
+        {
+            if (choiceIndex >= 0 && choiceIndex < CurrentRoom.ObjectsInRoom.Count)
+            {
+                var obj = CurrentRoom.ObjectsInRoom[choiceIndex];
+                CurrentRoom.ObjectsInRoom.Remove(obj);
+                obj.PickupObject(this);
+            }
+            else
+            {
+                Console.WriteLine("Cannot pick that item up.");
+            }
+        }
     }
 }
