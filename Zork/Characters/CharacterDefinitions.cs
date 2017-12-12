@@ -7,11 +7,12 @@ namespace Zork.Characters
 {
     public class CharacterDefinitions
     {
-        private Player _player = new Player(new Room("", new System.Drawing.Point(0,0)));
+        public Player _player;
 
         public Player PlayerCharacter
         {
             get { return _player; }
+            set { _player = value; }
         }
         
         private List<NPC> _npcs = new List<NPC>() {

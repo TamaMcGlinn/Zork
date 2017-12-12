@@ -36,8 +36,8 @@ namespace Zork
 
         public Game()
         {
-            characters.PlayerCharacter.CurrentRoom.LocationOfRoom = new Point(StartX, StartY);
             maze = new Maze(Width, Height, StartX, StartY);
+            characters.PlayerCharacter = new Player(maze[new Point(StartX, StartY)]);
             maze.Print();
             characters.AddCharacters(maze);
             ObjectDefinitions.AddItems(maze);
