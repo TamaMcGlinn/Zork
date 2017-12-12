@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Text;
 using Zork.Objects;
 
@@ -30,6 +31,15 @@ namespace Zork
             set { _description = value; }
         }
 
+        private Point _locationOfRoom;
+
+        public Point LocationOfRoom
+        {
+            get { return _locationOfRoom; }
+            set { _locationOfRoom = value; }
+        }
+
+
         private List<BaseObject> _objectsInRoom = new List<BaseObject>();
 
         public List<BaseObject> ObjectsInRoom
@@ -46,7 +56,7 @@ namespace Zork
         }
         #endregion properties
 
-        public Room(string desc)
+        public Room(string desc, Point locationOfRoom)
         {
             Description = desc;
             _canGoThere = new Dictionary<Direction, bool> {
@@ -55,9 +65,11 @@ namespace Zork
                 { Direction.South, false },
                 { Direction.West, false }
             };
+            LocationOfRoom = locationOfRoom;
         }
 
-        public void Print() {
+
+        public void PrintAvailableDirections() {
             Console.WriteLine("\n"+Description + "\n");
             Console.WriteLine("You can go:");
             foreach (var kvp in CanGoThere)
@@ -104,7 +116,7 @@ namespace Zork
             return sb.ToString();
         }
 
-        public string LookAround()
+        public string PrintLookAroundString()
         {
             StringBuilder sb = new StringBuilder();
 

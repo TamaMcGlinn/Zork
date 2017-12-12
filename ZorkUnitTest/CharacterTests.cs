@@ -18,7 +18,7 @@ namespace ZorkUnitTest
         public void characterConstructorTest()
         {
             Weapon longSword = CreateWeapon();
-            Character character1 = new NPC("sherrif_barney", 4, 100, longSword, "This man has a long beard.");
+            Character character1 = new NPC("sherrif_barney", 4, 100, longSword, "This man has a long beard.", 5);
             if (character1.Name != "sherrif_barney")
             {
                 Assert.Fail("The name of the character is not correct");
@@ -44,7 +44,7 @@ namespace ZorkUnitTest
         [TestMethod]
         public void NonExistingCharacterTest()
         {
-            NPC npc = new NPC("sdqoiwqjd", "Highly valuable person");
+            NPC npc = new NPC("sdqoiwqjd", "Highly valuable person", 5);
             Assert.IsTrue(npc.Text.RootNode == null);
         }
 
@@ -69,11 +69,11 @@ namespace ZorkUnitTest
         public void LookAroundTest()
         {
             CharacterDefinitions characters = new CharacterDefinitions();
-            Room room = new Room("A place");
+            Room room = new Room("A place", new System.Drawing.Point(0,0));
             Character character = characters.NPCS[0];
             room.CharactersInRoom.Add(character);
             room.ObjectsInRoom = CreateListOfThreeWeaponObjects();
-            string lookAroundTextString = room.LookAround();
+            string lookAroundTextString = room.PrintLookAroundString();
             string[] lookAroundTextList = lookAroundTextString.Split('\n');
 
             //Na feedback dit:
@@ -129,7 +129,7 @@ namespace ZorkUnitTest
         /// <returns>A character equipped with a longsword</returns>
         private Character CreateCharacter()
         {
-            return new NPC("sherrif_barney", 4, 100, CreateWeapon(), "This man has a long beard.");
+            return new NPC("sherrif_barney", 4, 100, CreateWeapon(), "This man has a long beard.", 5);
         }
 
         private List<BaseObject> CreateListOfThreeWeaponObjects()
@@ -143,7 +143,7 @@ namespace ZorkUnitTest
 
         private Character CreateCharacterWithoutWeapon()
         {
-            return new NPC("sherrif_barney", 4, 100, null, "This man has a long beard.");
+            return new NPC("sherrif_barney", 4, 100, null, "This man has a long beard.", 5);
         }
 
     }

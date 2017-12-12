@@ -44,14 +44,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviour\BattleOutcomeEnum.cs" />
-    <Compile Include="Behaviour\FightBehaviour.cs" />
     <Compile Include="Characters\Character.cs" />
     <Compile Include="Characters\CharacterDefinitions.cs" />
     <Compile Include="Characters\NPC.cs" />
     <Compile Include="Characters\Player.cs" />
     <Compile Include="Direction.cs" />
     <Compile Include="Extensions\ListNPCExtensions.cs" />
-    <Compile Include="Behaviour\FleeBehaviour.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Interactions.cs" />
     <Compile Include="Maze.cs" />

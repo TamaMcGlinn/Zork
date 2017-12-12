@@ -26,10 +26,10 @@ namespace Zork
             { 'e', (Game g, string s) => { g.TryGo(Direction.East); } },
             { 's', (Game g, string s) => { g.TryGo(Direction.South); } },
             { 'w', (Game g, string s) => { g.TryGo(Direction.West); } },
-            { 'l', (Game g, string s) => { Console.Write(g.maze[g.currentRoom].LookAround()); } },
+            { 'l', (Game g, string s) => { Console.Write(g.maze[g.currentRoom].PrintLookAroundString()); } },
             { 't', (Game g, string s) => { g.TryTalk(s); } },
             { 'p', (Game g, string s) => { Interactions.PickupItem(g.maze, g.currentRoom, g.characters.PlayerCharacter); } },
-            { 'i', (Game g, string s) => { g.characters.PlayerCharacter.PrintWeapon(); g.characters.PlayerCharacter.PrintInventory(); } },
+            { 'i', (Game g, string s) => { g.characters.PlayerCharacter.PrintEquippedWeapon(); g.characters.PlayerCharacter.PrintInventory(); } },
             { 'c', (Game g, string s) => { g.characters.PlayerCharacter.PrintStats(); } },
             { 'b', (Game g, string s) => { g.interactions.Battle(g.maze,g.currentRoom, g.characters.PlayerCharacter); } }
         };
@@ -51,7 +51,7 @@ namespace Zork
             PrintInstructions();
             while (true)
             {
-                maze[currentRoom].Print();
+                maze[currentRoom].PrintAvailableDirections();
                 ProcessInput(Console.ReadLine());
             }
         }

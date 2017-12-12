@@ -9,7 +9,7 @@ namespace Zork
 {
     public class Maze
     {
-        Room[,] rooms;
+        public Room[,] Rooms { get; set; }
         Random rng;
         public readonly int Width;
         public readonly int Height;
@@ -19,15 +19,15 @@ namespace Zork
             Width = xSize;
             Height = ySize;
             rng = new Random();
-            rooms = new Room[xSize, ySize];
-            rooms[StartX, StartY] = new Room("Your house");
+            Rooms = new Room[xSize, ySize];
+            Rooms[StartX, StartY] = new Room("Your house", new Point(StartX, StartY));
             CreateNeighbour(new Point(StartX, StartY));
             AddExtraConnections(xSize * ySize);
         }
 
         public Room this[int x, int y]
         {
-            get { return rooms[x, y]; }
+            get { return Rooms[x, y]; }
         }
 
         public Room this[Point p]
@@ -72,9 +72,9 @@ namespace Zork
 
         private void PrintVertical(int xi, int yi)
         {
-            if (rooms[xi, yi].CanGoThere[Direction.South])
+            if (Rooms[xi, yi].CanGoThere[Direction.South])
             {
-                Debug.Assert(yi == Height - 1 || rooms[xi, yi + 1].CanGoThere[Direction.North]);
+                Debug.Assert(yi == Height - 1 || Rooms[xi, yi + 1].CanGoThere[Direction.North]);
                 Console.Write("|");
             }
             else if (xi < Width - 1)
@@ -87,9 +87,9 @@ namespace Zork
         private void PrintHorizontal(int xi, int yi)
         {
             Console.Write("0");
-            if (rooms[xi, yi].CanGoThere[Direction.East])
+            if (Rooms[xi, yi].CanGoThere[Direction.East])
             {
-                Debug.Assert(xi == Width - 1 || rooms[xi + 1, yi].CanGoThere[Direction.West]);
+                Debug.Assert(xi == Width - 1 || Rooms[xi + 1, yi].CanGoThere[Direction.West]);
                 Console.Write("-");
             }
             else if (xi < Width - 1)
@@ -134,14 +134,14 @@ namespace Zork
         {
             if (a.X + 1 == b.X)
             {
-                rooms[a.X, a.Y].CanGoThere[Direction.East] = true;
-                rooms[b.X, b.Y].CanGoThere[Direction.West] = true;
+                Rooms[a.X, a.Y].CanGoThere[Direction.East] = true;
+                Rooms[b.X, b.Y].CanGoThere[Direction.West] = true;
             }
             else
             {
                 Debug.Assert(a.X - 1 == b.X);
-                rooms[a.X, a.Y].CanGoThere[Direction.West] = true;
-                rooms[b.X, b.Y].CanGoThere[Direction.East] = true;
+                Rooms[a.X, a.Y].CanGoThere[Direction.West] = true;
+                Rooms[b.X, b.Y].CanGoThere[Direction.East] = true;
             }
         }
 
@@ -149,14 +149,14 @@ namespace Zork
         {
             if (a.Y + 1 == b.Y)
             {
-                rooms[a.X, a.Y].CanGoThere[Direction.South] = true;
-                rooms[b.X, b.Y].CanGoThere[Direction.North] = true;
+                Rooms[a.X, a.Y].CanGoThere[Direction.South] = true;
+                Rooms[b.X, b.Y].CanGoThere[Direction.North] = true;
             }
             else
             {
                 Debug.Assert(a.Y - 1 == b.Y);
-                rooms[a.X, a.Y].CanGoThere[Direction.North] = true;
-                rooms[b.X, b.Y].CanGoThere[Direction.South] = true;
+                Rooms[a.X, a.Y].CanGoThere[Direction.North] = true;
+                Rooms[b.X, b.Y].CanGoThere[Direction.South] = true;
             }
         }
 
@@ -186,7 +186,7 @@ namespace Zork
                     return;
                 }
                 Point destPoint = options[rng.Next(0, options.Count)];
-                rooms[destPoint.X, destPoint.Y] = new Room("A busy street in London.");
+                Rooms[destPoint.X, destPoint.Y] = new Room("A busy street in London.", new Point(destPoint.X, destPoint.Y));
                 Connect(fromPoint, destPoint);
                 CreateNeighbour(destPoint); //recursive step
             }

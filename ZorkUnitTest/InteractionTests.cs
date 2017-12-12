@@ -31,23 +31,25 @@ namespace ZorkUnitTest
         [TestMethod]
         public void FightStrongEnemyTest()
         {
-            FightBehaviour fight = new FightBehaviour(new NPC("sherrif_barney", 30, 100, new Weapon("Strong weapon", 10, "desc"), "desc"), new Player());
-            while (fight.Player.Health > 0 && fight.Enemy.Health > 0)
-            {
-                fight.FightOneRound();
-            }
-            Assert.IsTrue(fight.Player.Health <= 0);
+            NPC npc = new NPC("sherrif_barney", 10, 100, new Weapon("Strong weapon", 10, "desc"), "", 5);
+            NPC npc1 = new NPC("sherrif_barney", 60, 100, new Weapon("Strong weapon", 10, "desc"), "", 5);
+            npc.Fight(npc1, CreateMaze().Rooms);
+            Assert.IsTrue(npc.Health <= 0);
         }
 
         [TestMethod]
         public void FightweakEnemyTest()
         {
-            FightBehaviour fight = new FightBehaviour(new NPC("sherrif_barney", 1, 10, new Weapon("Strong weapon", 10, "desc"), "desc"), new Player());
-            while (fight.Player.Health > 0 && fight.Enemy.Health > 0)
-            {
-                fight.FightOneRound();
-            }
-            Assert.IsTrue(fight.Enemy.Health <= 0);
+            NPC npc = new NPC("sherrif_barney", 30, 100, new Weapon("Strong weapon", 10, "desc"), "", 5);
+            NPC npc1 = new NPC("sherrif_barney", 1, 10, new Weapon("Strong weapon", 10, "desc"), "", 5);
+            npc.Fight(npc1, CreateMaze().Rooms);
+            Assert.IsTrue(npc.Health > 0);
+        }
+
+        public Maze CreateMaze()
+        {
+
+            return new Maze(10, 10, 0, 0);
         }
     }
 }

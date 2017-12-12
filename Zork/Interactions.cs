@@ -11,7 +11,10 @@ namespace Zork
         public void Battle(Maze maze, Point currentRoom, Player player)
         {
             Character enemy = null;
-            ChooseEnemyMessage(maze, currentRoom);
+            if (ChooseEnemyMessage(maze, currentRoom))
+            {
+                return;
+            }
             int enemyNumber;
             if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber >= 0)
             {
@@ -19,14 +22,14 @@ namespace Zork
             }
             if (enemy != null)
             {
-                FightBehaviour fightBehaviour = new FightBehaviour(enemy, player);
-                BattleOutcomeEnum battleOutcome = fightBehaviour.Fight(currentRoom);
+                BattleOutcomeEnum battleOutcome = player.Fight(enemy, maze.Rooms);
             }
         }
         /// <summary>
         /// Prints a list of characters you can fight and lets you choose a character
         /// </summary>
-        public void ChooseEnemyMessage(Maze maze, System.Drawing.Point currentRoom)
+        /// <returns>Whether there are enemies in the current room</returns>
+        public bool ChooseEnemyMessage(Maze maze, System.Drawing.Point currentRoom)
         {
             if (maze[currentRoom].CharactersInRoom.Count > 0)
             {
@@ -38,8 +41,9 @@ namespace Zork
             else
             {
                 Console.WriteLine("\nThere's no one here\n");
-
+                return false;
             }
+            return true;
         }
     
 

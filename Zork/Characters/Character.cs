@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
+using Zork.Behaviour;
 using Zork.Objects;
 using Zork.Texts;
 
@@ -71,6 +73,15 @@ namespace Zork
             set { _inventory = value; }
         }
 
+        private Room _currentRoom;
+
+        public Room CurrentRoom
+        {
+            get { return _currentRoom; }
+            set { _currentRoom = value; }
+        }
+
+
         #endregion properties
 
 
@@ -109,7 +120,7 @@ namespace Zork
         }
 
 
-        public void PrintWeapon()
+        public void PrintEquippedWeapon()
         {
             if (EquippedWeapon != null)
             {
@@ -154,6 +165,9 @@ namespace Zork
             return Health > 0;
         }
 
+        /// <summary>
+        /// Sets the texttree for this character so that the player can engage in a conversation with the character
+        /// </summary>
         private void SetTextTree()
         {
             this.Text = new TextTree(Name + ".txt");
@@ -223,5 +237,73 @@ namespace Zork
                 EquippedWeapon.PrintStats();
             }
         }
+
+
+
+        public Character Enemy { get; set; }
+
+        internal int TurnsPassed { get; set; }
+
+        /// <summary>
+        /// Fights the chosen enemy untill someone dies, if player dies he loses all his items, 
+        /// if enemy dies player picks up all his items.
+        /// </summary>
+        /// <returns>A boolean indicating wether the player won the fight</returns>
+        public virtual BattleOutcomeEnum Fight(Character enemy, Room[,] AllRooms)
+        {
+            Enemy = enemy;
+            while (enemy.Health > 0 && Health > 0)
+            {
+                FightOneRound();
+                Turn();
+            }
+            return CheckWhoWon();
+        }
+
+        public void Turn()
+        {
+            TurnsPassed++;
+        }
+
+        protected BattleOutcomeEnum CheckWhoWon()
+        {
+            if (Enemy.Health < 0)
+            {
+                Enemy.Inventory.Clear();
+                Enemy.ResetHealth();
+                Console.WriteLine("You died! But luckily you've returned without items.");
+                return BattleOutcomeEnum.EnemyWon;
+            }
+            else
+            {
+                Enemy.Inventory.AddRange(Enemy.Inventory);
+                Console.WriteLine($"You've won! You've picked up all {Enemy.Name}'s items, check your inventory!");
+                return BattleOutcomeEnum.PlayerWon;
+            }
+        }
+
+        protected virtual void FightOneRound()
+        {
+            int enemyDamage = Enemy.GenerateDamage();
+            int myDamage = GenerateDamage();
+            Enemy.TakeDamage(myDamage);
+            TakeDamage(enemyDamage);
+        }
+        
+        public int GenerateDamage()
+        {
+            Random turnBonusDamageGenerator = new Random();
+            const int maxBonusDamage = 10;
+            int bonusDamage = turnBonusDamageGenerator.Next(0, maxBonusDamage);
+
+            int damage = Strength + bonusDamage;
+            if (EquippedWeapon != null)
+            {
+                damage += EquippedWeapon.Strength;
+            }
+            return damage;
+        }
+
+       
     }
 }
