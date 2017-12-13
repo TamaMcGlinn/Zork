@@ -52,7 +52,8 @@ namespace Zork
             PrintInstructions();
             while (true)
             {
-                player.CurrentRoom.PrintAvailableDirections();
+                string roomDescription = player.CurrentRoom.DescribeAvailableDirections();
+                Console.WriteLine(roomDescription);
                 ProcessInput(Console.ReadLine());
             }
         }

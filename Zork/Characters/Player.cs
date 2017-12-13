@@ -28,7 +28,7 @@ namespace Zork.Characters
         /// </summary>
         public void LookAround()
         {
-            CurrentRoom.PrintLookAroundString();
+            Console.WriteLine(CurrentRoom.DescribeRoom());
         }
 
         public void UseHealthPickup(HealthPickup h)
@@ -67,9 +67,11 @@ namespace Zork.Characters
             Console.Write($"\n{enemy.Name} hits you for:" + enemyDamage + PrintGetHittedWithWeapon(enemy));
             Console.WriteLine($"\nYou have {Health} hp left, he has {enemy.Health} hp left.");
         }
+
         public void Battle(Maze maze)
         {
-            if (!CurrentRoom.PrintAvailableEnemiesInRoom())
+            Console.WriteLine(CurrentRoom.DescribeCharactersInRoom());
+            if(CurrentRoom.NPCsInRoom.Count == 0)
             {
                 return;
             }
