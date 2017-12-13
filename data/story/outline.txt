@@ -56,5 +56,3 @@ Burton leaves bloodied rags somewhere in London. He cleans the murderweapon (a c
 find an iron skillet; talk to Maxwell, who says he needed to buy a new skillet; talk to Burton; talk to Bevis/Barden
 talk to Bevis/Barden; talk to Maxwell " "
 find money; give Audrey money, she tells you who waylaid Reginald; talk to Ignatius -> Kelsey spent money on the whore; talk to Sir_Barclay about his Kelsey
-
-find 
