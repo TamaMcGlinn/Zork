@@ -7,7 +7,6 @@ Sherrif Barney
 	>Can you help me?
 		<What do you need?
 			>Find the murderer!
-				<[tornrag]He's wearing a red coat. I haven't seen that yet.
 				<First find out who did it.
 			>I'm looking for a weapon.
 				<If you're going to take the law into your own hands, I can't help you.
