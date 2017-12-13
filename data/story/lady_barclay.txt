@@ -1,5 +1,5 @@
 Lady Barclay
-[insulted_lady_barclay]<I have no words to exchange with thee.
+<[insulted_lady_barclay]<I have no words to exchange with thee.
 <I pray you, what is't o'clock, good sir?
 	>I think it two o'clock, madam.
 		<I thank thee, and my leave I take.

@@ -13,7 +13,8 @@ namespace Zork.Objects
 
         private static void AddClues(Maze maze)
         {
-            maze.AddItemToRandomRoom(new Clue("Chesspiece", "A white wooden rook"));
+            maze.AddItemToRandomRoom(new Clue("money", "Half a pound of good English money!"));
+            maze.AddItemToRandomRoom(new Clue("iron_skillet", "A cast-iron skillet, quite heavy. There's some blood on the bottom."));
         }
 
         private static void AddHealthPickups(Maze maze)
@@ -42,7 +43,6 @@ namespace Zork.Objects
             maze.AddItemToRandomRoom(new Weapon("Butterknife", 5, "Very lethal if you happen to encounter someone made of butter."));
             maze.AddItemToRandomRoom(new Weapon("Broom", 8, "A long wooden handle with straw bound in rope."));
             maze.AddItemToRandomRoom(new Weapon("Hammer", 25, "The heavy sort; could probably kill a human fairly quickly."));
-            maze.AddItemToRandomRoom(new Weapon("Pan", 10, "A cast-iron skillet, quite heavy."));
             int revolverDropChance = 33;
             if (DropChanceByPercentage(revolverDropChance))
             {
