@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Drawing;
 using System.IO;
+using System.Linq;
 using Zork;
 using Zork.Characters;
 using Zork.Objects;
@@ -69,10 +70,9 @@ namespace ZorkUnitTest
         [TestMethod]
         public void LookAroundTest()
         {
-            CharacterDefinitions characters = new CharacterDefinitions();
             Room room = new Room("A place", new System.Drawing.Point(0,0));
-            Character character = characters.NPCS[0];
-            room.NPCsInRoom.Add(character as NPC);
+            NPC npc = CreateNPC();
+            room.NPCsInRoom.Add(npc);
             room.ObjectsInRoom = CreateListOfThreeWeaponObjects();
             string lookAroundTextString = room.DescribeRoom();
             string[] lookAroundTextList = lookAroundTextString.Split('\n');
@@ -90,7 +90,7 @@ namespace ZorkUnitTest
 
 
             //checks whether the second line of text contains the name of the character (the character which is added to the room
-            if (!lookAroundTextList[3].Contains(character.Name.Replace('_', ' ')))
+            if (!lookAroundTextList[3].Contains(npc.Name.Replace('_', ' ')))
             {
                 Assert.Fail("The character's name is not printed in the second line of the look around method");
             }
@@ -104,13 +104,13 @@ namespace ZorkUnitTest
         [TestMethod]
         public void PrintInventoryTest()
         {
-            CharacterDefinitions characters = createPlayerCharacter();
+            Player player = CreatePlayerCharacter();
             StringWriter consoleOutput = new StringWriter();
             Console.SetOut(consoleOutput);
-            characters.PlayerCharacter.Inventory = new List<BaseObject>();
+            player.Inventory = new List<BaseObject>();
             Clue clue = new Clue("Red pants", "very nice pants");
-            characters.PlayerCharacter.Inventory.Add(clue);
-            characters.PlayerCharacter.PrintInventory();
+            player.Inventory.Add(clue);
+            player.PrintInventory();
             Assert.IsTrue(consoleOutput.ToString().Contains($"{clue.Name} : {clue.Description}"));
         }
        
@@ -150,68 +150,43 @@ namespace ZorkUnitTest
         }
         
         [TestMethod]
-        public void CharactersMovesAround()
+        public void CharactersMoveAround()
         {
-            CharacterDefinitions cd = new CharacterDefinitions();
-            Maze maze = new Maze(5, 5, 1, 1);
-            cd.AddCharacters(maze);
-            Dictionary<string, bool> characterHasMoved = InitialiseCharacterHasMoved();
-            Dictionary<NPC, Point> startLocations = InitialiseStartLocations(maze);
-            MoveCharactersAround(maze, characterHasMoved, startLocations, cd);
+            Game game = new Game();
+            Dictionary<string, bool> characterHasMoved = InitialiseCharacterHasMoved(game.NPCS);
+            Dictionary<string, Point> startLocations = GetCharacterLocations(game);
+            for (int i = 0; i < NPC.MaxTurnsBetweenMoves; i++)
+            {
+                foreach(NPC npc in game.NPCS)
+                {
+                    npc.OnPlayerMoved();
+                    if(npc.CurrentRoom.LocationOfRoom != startLocations[npc.Name])
+                    {
+                        characterHasMoved[npc.Name] = true;
+                    }
+                }
+            }
             foreach (bool charMoved in characterHasMoved.Values)
             {
                 Assert.IsTrue(charMoved);
             }
         }
-
-        private void MoveCharactersAround(Maze maze, Dictionary<string, bool> characterHasMoved, Dictionary<NPC, Point> startLocations, CharacterDefinitions cd)
+        
+        private static Dictionary<string, Point> GetCharacterLocations(Game game)
         {
-            for (int i = 0; i < NPC.MaxTurnsBetweenMoves; i++)
-            {
-                cd.MoveNPCs(maze);
-                foreach (NPC c in cd.NPCS)
-                {
-                    if (!maze[startLocations[c]].NPCsInRoom.Contains(c))
-                    {
-                        characterHasMoved[c.Name] = true;
-                    }
-                }
-            }
+            return game.NPCS.ToDictionary(x => x.Name, x => x.CurrentRoom.LocationOfRoom);
         }
 
-        private static Dictionary<NPC, Point> InitialiseStartLocations(Maze maze)
+        private static Dictionary<string, bool> InitialiseCharacterHasMoved(List<NPC> npcs)
         {
-            Dictionary<NPC, Point> startLocations = new Dictionary<NPC, Point>();
-            for (int xi = 0; xi < maze.Width; ++xi)
-            {
-                for (int yi = 0; yi < maze.Height; ++yi)
-                {
-                    foreach (NPC npc in maze[xi, yi].NPCsInRoom)
-                    {
-                        startLocations.Add(npc, new Point(xi, yi));
-                    }
-                }
-            }
-            return startLocations;
+            return npcs.ToDictionary(x => x.Name, x => false);
         }
 
-        private static Dictionary<string, bool> InitialiseCharacterHasMoved()
+        public static Player CreatePlayerCharacter()
         {
-            CharacterDefinitions cd = new CharacterDefinitions();
-            Dictionary<string, bool> characterHasMoved = new Dictionary<string, bool>();
-            foreach (Character c in cd.NPCS)
-            {
-                characterHasMoved.Add(c.Name, false);
-            }
-            return characterHasMoved;
-        }
-        public CharacterDefinitions createPlayerCharacter()
-        {
-            CharacterDefinitions characters = new CharacterDefinitions();
             Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)));
             p.EquippedWeapon = new Weapon("gun", 1, "description");
-            characters.PlayerCharacter = p;
-            return characters;
+            return p;
         }
     }
 }

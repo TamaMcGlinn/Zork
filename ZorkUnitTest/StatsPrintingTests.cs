@@ -16,9 +16,7 @@ namespace ZorkUnitTest
         [TestMethod]
         public void WeaponDescriptionIsCorrect()
         {
-
-            CharacterDefinitions characters = createPlayerCharacter();
-            Player p = characters.PlayerCharacter;
+            Player p = CharacterTests.CreatePlayerCharacter();
             string gunName = "gun";
             string gunDescription = "description";
             p.EquippedWeapon = new Weapon(gunName, 1, gunDescription);
@@ -33,17 +31,15 @@ namespace ZorkUnitTest
         [TestMethod]
         public void UnarmedPlayerDescriptionIsCorrect()
         {
-
-            CharacterDefinitions characters = createPlayerCharacter();
-            Player p = characters.PlayerCharacter;
-            characters.PlayerCharacter.EquippedWeapon = null;
+            Player p = CharacterTests.CreatePlayerCharacter();
+            p.EquippedWeapon = null;
             StringWriter consoleOutput = new StringWriter();
             Console.SetOut(consoleOutput);
             p.PrintStats();
-            Assert.AreEqual(characters.PlayerCharacter.Name + ": " 
-                + characters.PlayerCharacter.Description +
+            Assert.AreEqual(p.Name + ": " 
+                + p.Description +
                 "\r\nHealth: 100" +
-                "\r\nStrength: " + characters.PlayerCharacter.Strength + 
+                "\r\nStrength: " + p.Strength + 
                 "\r\nUnarmed.\r\n", consoleOutput.ToString());
         }
 
@@ -53,28 +49,18 @@ namespace ZorkUnitTest
           
             using (StringWriter consoleOutput = new StringWriter())
             {
-                CharacterDefinitions characters = createPlayerCharacter();
-                Player p = characters.PlayerCharacter;
+                Player p = CharacterTests.CreatePlayerCharacter();
                 Console.SetOut(consoleOutput);
-                characters.PlayerCharacter.PrintStats();
-                string expectedResult = characters.PlayerCharacter.Name + ": "
-                    + characters.PlayerCharacter.Description +
+                p.PrintStats();
+                string expectedResult = p.Name + ": "
+                    + p.Description +
                     "\r\nHealth: 100" +
-                    "\r\nStrength: " + characters.PlayerCharacter.Strength +
+                    "\r\nStrength: " + p.Strength +
                     "\r\nCurrent weapon:" +
                     "\r\n" + p.EquippedWeapon.Name + ": " + p.EquippedWeapon.Description +
                     "\r\nStrength: " + p.EquippedWeapon.Strength + "\r\n";
                 Assert.AreEqual(expectedResult, consoleOutput.ToString());
             }
-        }
-
-        public CharacterDefinitions createPlayerCharacter()
-        {
-            CharacterDefinitions characters = new CharacterDefinitions();
-            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)));
-            p.EquippedWeapon = new Weapon("gun", 1, "description");
-            characters.PlayerCharacter = p;
-            return characters;
         }
     }
 }
