@@ -89,24 +89,25 @@ namespace Zork.Characters
             {                
                 FightOneRound(enemy);
                 ++turn;
-                if (turn % enemy.LetsPlayerFleePerXRounds == 0 && AskFlee())
+                if( enemy.Health > 0 && Health > 0 && turn % enemy.LetsPlayerFleePerXRounds == 0 && AskFlee() )
                 {
                     Flee(game.maze);
                     return;
                 }
             }
-            CheckWhoWon(enemy);
-            if (enemy.Health > 0)
-            {
-                enemy.KillThisNPC(game);
-            }
+            CheckWhoWon(enemy, game);
         }
 
         protected bool AskFlee()
         {
             Console.WriteLine("Do you want to flee? Y/N");
-            char userInputCharacter = (char)Console.Read();
-            return (userInputCharacter == 'y' || userInputCharacter == 'Y');
+            string userInput = Console.ReadLine();
+            userInput = userInput.ToLower();
+            if ( userInput.Length != 1)
+            {
+                return false;
+            }
+            return (userInput[0] == 'y');
         }
 
         /// <summary>
