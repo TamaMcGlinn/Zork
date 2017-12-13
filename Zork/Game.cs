@@ -100,11 +100,9 @@ namespace Zork
             userInput = userInput.ToLower();
             if (userInput.Length > 0)
             {
-                Action<Game> action = commands[userInput[0]];
-                if (action != null)
+                if (commands.ContainsKey(userInput[0]))
                 {
-                    action(this);
-                    return;
+                    commands[userInput[0]](this);
                 }
             }
             PrintInstructions();
