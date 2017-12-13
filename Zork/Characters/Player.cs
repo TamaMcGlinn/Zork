@@ -11,9 +11,6 @@ namespace Zork.Characters
         public HashSet<string> Clues = new HashSet<string>();
         #endregion
 
-        public delegate void MovedDelegate();
-        public event MovedDelegate Moved;
-
         public Player(Room currentRoom) : base()
         {
             
@@ -153,7 +150,7 @@ namespace Zork.Characters
         /// </summary>
         /// <param name="currentRoom">The room you're in</param>
         /// <param name="direction">The direction to go in</param>
-        public void TryGo(Direction direction, Room[,] rooms)
+        public void TryGo(Direction direction, Game game)
         {
             Point towards = CurrentRoom.LocationOfRoom.Add(direction);
             if (towards.X < 0 || towards.X == Game.Width || towards.Y < 0 || towards.Y == Game.Height)
@@ -162,8 +159,11 @@ namespace Zork.Characters
             }
             else if (CurrentRoom.CanGoThere[direction])
             {
-                CurrentRoom = rooms[towards.X, towards.Y];
-                Moved?.Invoke();
+                CurrentRoom = game.maze[towards];
+                foreach(NPC npc in game.NPCS)
+                {
+                    npc.OnPlayerMoved();
+                }
             }
             else
             {

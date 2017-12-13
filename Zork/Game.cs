@@ -12,7 +12,7 @@ namespace Zork
     /// </summary>
     public class Game
     {
-        private Maze maze;
+        public Maze maze;
         public const int Width = 2;
         public const int Height = 2;
         const int StartX = 1;
@@ -39,10 +39,10 @@ namespace Zork
 
         private Dictionary<char, Action<Game>> commands = new Dictionary<char, Action<Game>>()
         {
-            { 'n', (Game g) => { g.player.TryGo(Direction.North, g.maze.Rooms); } },
-            { 'e', (Game g) => { g.player.TryGo(Direction.East,g.maze.Rooms); } },
-            { 's', (Game g) => { g.player.TryGo(Direction.South, g.maze.Rooms); } },
-            { 'w', (Game g) => { g.player.TryGo(Direction.West, g.maze.Rooms); } },
+            { 'n', (Game g) => { g.player.TryGo(Direction.North, g); } },
+            { 'e', (Game g) => { g.player.TryGo(Direction.East,g); } },
+            { 's', (Game g) => { g.player.TryGo(Direction.South, g); } },
+            { 'w', (Game g) => { g.player.TryGo(Direction.West, g); } },
             { 'l', (Game g) => { g.player.LookAround(); } },
             { 't', (Game g) => { g.player.TryTalk(); } },
             { 'p', (Game g) => { g.player.PickupItem(); } },
@@ -70,7 +70,10 @@ namespace Zork
                 npc.maze = maze;
                 room.NPCsInRoom.Add(npc);
                 npc.CurrentRoom = room;
-                player.Moved += npc.OnPlayerMoved;
+            }
+            foreach(NPC npc in NPCS)
+            {
+                npc.KillThisNPC();
             }
         }
 
