@@ -1,0 +1,28 @@
+Lady Barclay
+<[insulted_lady_barclay]<I have no words to exchange with thee.
+<I pray you, what is't o'clock, good sir?
+	>I think it two o'clock, madam.
+		<I thank thee, and my leave I take.
+	>I think it five o'clock, madam.
+		<I thank thee, in good grace.
+	>I think it eight o'clock, madam.
+		<Why, the sun doest speak otherwise, thou three-inch fool! Your wit’s as thick as a Tewkesbury mustard.[wrongtime]
+	>You should ask me what time o'day, for there isn't a clock in London rings truer than the sun on such a fine day.
+		<[wrongtime]Away, thou poisonous bunch-backed toad!
+		<If you mean to woo me, I must disappoint. However, it sounds more as if you mean to mask your lacking of a timepiece.
+			>Well, praised be the gods for thy foulness; sluttishness may come hereafter.
+				<... I have no words to envenom thee back, and must leave in shame.[insulted_lady_barclay]
+			>May I accompany you, milady? I have some questions that need answering.
+				<I must refuse, with apologies.
+			>Seen anything suspicious, milady?
+				<Not suspicious, rather curious; a man was set upon by villains thismorning, apparently.
+					>Villains, of what sort?
+						<It is unclear; Reginald's description of the assailants did seem to increase with each telling. First four did set upon him, later six, armed and armoured, finally seven that did bind him.[reginald_lied]
+							>What more did he say?
+								<The words of a witless drunkard should not be repeated, lest their villainy be increased with the telling.
+					>What mean you by apparently?
+						<Not all he said rang true. Upon encountering him, bound hand and foot, he was marry to be rescued; he said he had lain there since yestereve waiting upon a good Samaritan.
+							>You don't think this to be true?
+								<His description of the assailants did seem to increase with each telling. First four did set upon him, later six, armed and armoured, finally seven that did bind him.
+									>Who was this man that was assailed?
+										<A most notable coward, an infinite and endless liar, an hourly promise breaker, the owner of no one good quality. Himself he calls Reginald.[reginald_lied]

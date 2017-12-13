@@ -1,0 +1,13 @@
+Emerson
+<Can I offer you some sack at my inn, sir?
+	>Perhaps some other time. I'm investigating a murder here. Seen anything suspicious?
+		<Nay, save that Audrey had rather a lot of coin to spend last night.[audrey_rich]
+	>Indeed, lead the way!
+		<Oh... I.. nobody ever agrees. Honestly, I don't even know if there is an inn in this game.
+	>[ask_emerson]I spoke with your ostler, Geoffrey. Whatever is troubling him so?
+		<Good riddance to him! I sent him away; a useless cream faced loon is he. I had a distinguished guest whose horse was stolen on his watch! That leathern-jerkin, crystal-button, knot-pated, agatering, puke-stocking, caddis-garter, smooth-tongue, Spanish pouch!
+			>He also said you might know where Cecil is.
+				<Yesterday afternoon she left the inn, which is quite unusual as the evenings are her most profitable times. She must've had urgent business with a wealthy lord.
+			>I could be your new ostler.
+				<All due respect sir, you're no taller than 4 feet, have a peg-leg and two hooks for hands. I don't think you would make a good ostler. However, my fiddle player has also gone missing. Do you play?
+					>Thy sin’s not accidental, but a trade.

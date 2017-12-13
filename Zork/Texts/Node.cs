@@ -41,7 +41,7 @@ namespace Zork.Texts
         {
             foreach(string condition in _conditions)
             {
-                if (player.Clues.Contains(condition))
+                if (!player.Clues.Contains(condition))
                 {
                     return false;
                 }
@@ -52,6 +52,16 @@ namespace Zork.Texts
         public List<Node> AvailableChildren(Player player)
         {
             return Children.Where((Node n) => { return n.IsAvailable(player); }).ToList();
+        }
+
+        public Node FirstAvailableChild(Player player)
+        {
+            return FirstAvailable(Children, player);
+        }
+
+        public static Node FirstAvailable(List<Node> nodesList, Player player)
+        {
+            return nodesList.FirstOrDefault(n => n.IsAvailable(player));
         }
     }
 }

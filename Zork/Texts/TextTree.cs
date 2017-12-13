@@ -18,13 +18,7 @@ namespace Zork.Texts
             set { _name = value; }
         }
 
-        private Node _rootNode;
-
-        public Node RootNode
-        {
-            get { return _rootNode; }
-        }
-
+        public List<Node> RootNodes;
 
         public TextTree(string filename)
         {
@@ -32,13 +26,13 @@ namespace Zork.Texts
             string path = "../../../data/story/" + filename;
             if (!File.Exists(path))
             {
-                _rootNode = null;
+                RootNodes = null;
                 return;
             }
             text = System.IO.File.ReadAllText(path);
             var lines = text.Split('\n');
             Name = lines[0];
-            _rootNode = readNode(lines, 1);
+            RootNodes = ReadNodes(lines, 1);
         }
 
         private static int countInitialTabs(string line)
@@ -82,36 +76,57 @@ namespace Zork.Texts
             return conditions.Split(',').ToList();
         }
 
-        private static Node readNode(string[] lines, int line)
+        /// <summary>
+        /// Returns a list of Nodes read from lines starting at the given line
+        /// with child Nodes below each all the way to the leafnodes
+        /// </summary>
+        /// <param name="lines"></param>
+        /// <param name="line"></param>
+        /// <returns></returns>
+        private static List<Node> ReadNodes(string[] lines, int line)
         {
             if (line >= lines.Count())
             {
                 return null;
             }
+            List<Node> results = new List<Node>();
             int tabs = countInitialTabs(lines[line]);
-            string contents = lines[line].Substring(tabs + 1);
-            var requiredConditions = getRequiredConditions(ref contents);
-            var unlockedClues = getUnlockedClues(ref contents);
-            Node currentNode = new Node(contents, requiredConditions, unlockedClues);
-            List<int> childBeginLines = GetChildren(lines, line, tabs);
-            foreach (int beginLine in childBeginLines)
+            List<int> beginLines = GetChildren(lines, line, tabs);
+            foreach(int beginLine in beginLines)
             {
-                currentNode.Children.Add(readNode(lines, beginLine));
+                string contents = lines[beginLine].Substring(tabs + 1);
+                var requiredConditions = getRequiredConditions(ref contents);
+                var unlockedClues = getUnlockedClues(ref contents);
+                Node currentNode = new Node(contents, requiredConditions, unlockedClues);
+                int nextLine = beginLine + 1;
+                if (nextLine < lines.Count() && countInitialTabs(lines[nextLine]) == tabs+1)
+                {
+                    currentNode.Children.AddRange(ReadNodes(lines, nextLine));
+                }
+                results.Add(currentNode);
             }
-            return currentNode;
+            return results;
         }
 
+        /// <summary>
+        /// Returns a list of line numbers which start with the specified number of tabs.
+        /// Starts at the given line, ends when a line is encountered with less tabs than given.
+        /// </summary>
+        /// <param name="lines">All text lines</param>
+        /// <param name="line">Line number to start at</param>
+        /// <param name="tabs">Number of tabs to search for</param>
+        /// <returns></returns>
         private static List<int> GetChildren(string[] lines, int line, int tabs)
         {
             List<int> childBeginLines = new List<int>();
-            for (int endline = line + 1; endline != lines.Count(); ++endline)
+            for (; line != lines.Count(); ++line)
             {
-                int childTabs = countInitialTabs(lines[endline]);
-                if (childTabs == tabs + 1)
+                int childTabs = countInitialTabs(lines[line]);
+                if (childTabs == tabs)
                 {
-                    childBeginLines.Add(endline);
+                    childBeginLines.Add(line);
                 }
-                if (childTabs < tabs + 1)
+                if (childTabs < tabs)
                 {
                     break;
                 }

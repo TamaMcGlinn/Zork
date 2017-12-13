@@ -1,0 +1,60 @@
+Family trees
+
+Lady_Margaret_Beaufort
+	Henry_VII
+	Elizabeth_of_York
+		Arthur_Prince_of_Wales
+		Henry_VIII
+
+Catherine_of_Aragon
+Arthur_Prince_of_Wales
+
+Sir_Barclay
+Lady_Barclay
+	Ansley_Duke_of_York
+	Kelsey
+	
+Maxwell, Sir_Barclay's cook
+
+Burton, servant of Sir_Barclay
+
+Reginald
+Alfred (brother of Reginald)
+
+Brigands:
+Kelsey (15 years old)
+Barden (14 years old)
+Bevis (14 years old)
+Ignatius (your son, 15)
+
+Emerson, innkeeper
+
+Geoffrey, ostler
+
+Cecil (a whore)
+
+Audrey (a beggar)
+
+Sherlock
+	Ignatius
+		
+Brigands waylay a drunk Reginald and take 160d, leaving him bound on the road.
+Lady_Barclay chances upon Reginald on the way to the inn, and releases him. Lady Barclay knows Reginald's story is bullshit.
+Reginald goes to Constable Barney, who starts searching for 7 men; 3 in green cloaks, 4 in brown, 1 with an eye missing, all with swords and bucklers.
+Audrey hears the boys talking about the exploits, and presses Kelsey to atone. He refuses, instead bribing Audrey 60d to say nothing.
+Audrey gets drunk at the inn, and talks to Cecil there, who knows Audrey is penniless, and assumes she found a nobleman in need of love.
+Cecil wants his name, but gets no information, and asks others if there are any new nobles in town.
+Ignatius confides in Aldrich of their crime.
+Alfred steals a horse belonging to Ansley_Duke_of_York from the inn. Geoffrey is blamed for not being watchful enough.
+Barden goes to Cecil, paying handsomely.
+Having told of his adventure, Kelsey and Ignatius follow.
+Cecil approaches Sir_Barclay, first offering her services, but upon being turned down, requesting keepquiet-money. Sir_Barclay has her murdered by a servant (Burton).
+Cecil's body is dumped by Burton into a river and carried outside of London, where it is found by constable Barney.
+Burton is seen leaving Barclay manor with a suspicious bag by Barden, who had followed Cecil there.
+Burton leaves bloodied rags somewhere in London. He cleans the murderweapon (a cast-iron skillet) in the river, but flees, leaving the skillet, when Bevis sees him.
+
+find an iron skillet; talk to Maxwell, who says he needed to buy a new skillet; talk to Burton; talk to Bevis/Barden
+talk to Bevis/Barden; talk to Maxwell " "
+find money; give Audrey money, she tells you who waylaid Reginald; talk to Ignatius -> Kelsey spent money on the whore; talk to Sir_Barclay about his Kelsey
+
+find 
