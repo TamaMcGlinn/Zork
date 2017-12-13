@@ -48,7 +48,8 @@ namespace Zork
             { 'p', (Game g) => { g.player.PickupItem(); } },
             { 'i', (Game g) => { g.player.PrintInventory(); } },
             { 'c', (Game g) => { g.player.PrintStats(); } },
-            { 'b', (Game g) => { g.player.Battle(g.maze); } }
+            { 'b', (Game g) => { g.player.Battle(g.maze); } },
+            { 'm', (Game g) => { g.maze.Print(g.player.CurrentRoom.LocationOfRoom); } }
         };
 
         public Game()
@@ -78,7 +79,6 @@ namespace Zork
         /// </summary>
         public void Run()
         {
-            maze.Print();
             PrintPreamble();
             PrintInstructions();
             while (true)
@@ -100,11 +100,9 @@ namespace Zork
             userInput = userInput.ToLower();
             if (userInput.Length > 0)
             {
-                Action<Game> action = commands[userInput[0]];
-                if (action != null)
+                if (commands.ContainsKey(userInput[0]))
                 {
-                    action(this);
-                    return;
+                    commands[userInput[0]](this);
                 }
             }
             PrintInstructions();
@@ -112,9 +110,9 @@ namespace Zork
 
         private void PrintInstructions()
         {
-            Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around.");
-            Console.WriteLine("[L] to look around, [P] to pick up an item, [I] Inventory, [B] Battle");
-            Console.WriteLine("[C] to view stats");
+            Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around,");
+            Console.WriteLine("[L] to look around, [P] to pick up an item, [I] Inventory, [B] Battle,");
+            Console.WriteLine("[C] to view stats, or [M] to print the map.");
         }
     }
 }
