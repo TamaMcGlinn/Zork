@@ -31,7 +31,7 @@ namespace Zork
             { 'p', (Game g) => { g.player.PickupItem(); } },
             { 'i', (Game g) => { g.player.PrintInventory(); } },
             { 'c', (Game g) => { g.player.PrintStats(); } },
-            { 'b', (Game g) => { g.player.Battle(g.maze.Rooms); } }
+            { 'b', (Game g) => { g.player.Battle(g.maze); } }
         };
 
         public Game()

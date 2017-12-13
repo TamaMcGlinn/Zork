@@ -1,18 +1,22 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using Zork.Objects;
 
 namespace Zork
 {
-    public class Maze
+    public class Maze : IEnumerable<Room>
     {
         public Room[,] Rooms { get; set; }
+        public const string HouseDescription = "Your house";
         Random rng;
         public readonly int Width;
         public readonly int Height;
+        private List<string> streetNames = new List<string>();
 
         public Maze(int xSize, int ySize, int StartX, int StartY)
         {
@@ -20,7 +24,8 @@ namespace Zork
             Height = ySize;
             rng = new Random();
             Rooms = new Room[xSize, ySize];
-            Rooms[StartX, StartY] = new Room("Your house", new Point(StartX, StartY));
+            Rooms[StartX, StartY] = new Room(HouseDescription, new Point(StartX, StartY));
+            streetNames.AddRange(File.ReadAllText("../../../data/streetnames.txt").Split('\n'));
             CreateNeighbour(new Point(StartX, StartY));
             AddExtraConnections(xSize * ySize);
         }
@@ -211,6 +216,19 @@ namespace Zork
             }
         }
 
+        private string GetRoomDescription()
+        {
+            if( streetNames.Count == 0)
+            {
+                return "A busy street in London.";
+            }
+            Random rng = new Random();
+            int index = rng.Next(0, streetNames.Count);
+            var result = streetNames[index];
+            streetNames.RemoveAt(index);
+            return result;
+        }
+
         /// <summary>
         /// Create rooms next to the current one as long as there are still null neighbours
         /// </summary>
@@ -225,11 +243,20 @@ namespace Zork
                     return;
                 }
                 Point destPoint = options[rng.Next(0, options.Count)];
-                Rooms[destPoint.X, destPoint.Y] = new Room("A busy street in London.", new Point(destPoint.X, destPoint.Y));
+                Rooms[destPoint.X, destPoint.Y] = new Room(GetRoomDescription(), destPoint);
                 Connect(fromPoint, destPoint);
                 CreateNeighbour(destPoint); //recursive step
             }
         }
 
+        public IEnumerator<Room> GetEnumerator()
+        {
+            return new MazeEnumerator(this);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return (IEnumerator)GetEnumerator();
+        }
     }
 }

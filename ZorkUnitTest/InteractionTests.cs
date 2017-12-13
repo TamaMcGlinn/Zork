@@ -35,7 +35,7 @@ namespace ZorkUnitTest
             Room room = maze.Rooms[0, 0];
             Player player = new Player(room);
             NPC barney = createNPCBarney();
-            player.Fight(barney, maze.Rooms);
+            player.Fight(barney, maze);
             Assert.IsTrue(player.Health <= 0);
         }
 
@@ -46,7 +46,7 @@ namespace ZorkUnitTest
             Room room = maze.Rooms[0, 0];
             Player player = new Player(room);
             NPC barney = CreateWeakNPC();
-            player.Fight(barney, maze.Rooms);
+            player.Fight(barney, maze);
             Assert.IsTrue(player.Health > 0);
         }
 

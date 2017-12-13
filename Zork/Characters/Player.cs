@@ -67,7 +67,7 @@ namespace Zork.Characters
             Console.Write($"\n{enemy.Name} hits you for:" + enemyDamage + PrintGetHittedWithWeapon(enemy));
             Console.WriteLine($"\nYou have {Health} hp left, he has {enemy.Health} hp left.");
         }
-        public void Battle(Room[,] allRooms)
+        public void Battle(Maze maze)
         {
             if (!CurrentRoom.PrintAvailableEnemiesInRoom())
             {
@@ -77,11 +77,11 @@ namespace Zork.Characters
             if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber > 0 && enemyNumber <= CurrentRoom.NPCsInRoom.Count)
             {
                 NPC enemy = CurrentRoom.NPCsInRoom[enemyNumber - 1];
-                Fight(enemy, allRooms);
+                Fight(enemy, maze);
             }
         }
 
-        public void Fight(NPC enemy, Room[,] allRooms)
+        public void Fight(NPC enemy, Maze maze)
         {
             int turn = 0;
             while (enemy.Health > 0 && Health > 0)
@@ -90,7 +90,7 @@ namespace Zork.Characters
                 ++turn;
                 if (turn % enemy.LetsPlayerFleePerXRounds == 0 && AskFlee())
                 {
-                    Flee(allRooms);
+                    Flee(maze);
                     return;
                 }
             }
