@@ -46,7 +46,7 @@ namespace ZorkUnitTest
         [TestMethod]
         public void NonExistingCharacterTest()
         {
-            NPC npc = new NPC("sdqoiwqjd", "Highly valuable person", 0, 10, 5, null, false);
+            NPC npc = new NPC("sdqoiwqjd", "Highly valuable person", 0, 10, 5, null);
             Assert.IsTrue(npc.Text.RootNodes == null);
         }
 
@@ -113,8 +113,26 @@ namespace ZorkUnitTest
             player.PrintInventory();
             Assert.IsTrue(consoleOutput.ToString().Contains($"{clue.Name} : {clue.Description}"));
         }
-       
 
+        [TestMethod]
+        public void KillNPCTest()
+        {
+            NPC npc = CreateNPC();
+            npc.CurrentRoom = new Room("", new Point(0, 0));
+            Room npcRoom = npc.CurrentRoom;
+            npc.KillThisNPC();
+            Assert.IsFalse(npcRoom.NPCsInRoom.Count > 0);
+        }
+
+        [TestMethod]
+        public void TestIfNPCBecomesCorpseObject()
+        {
+            NPC npc = CreateNPC();
+            npc.CurrentRoom = new Room("", new Point(0, 0));
+            Room npcRoom = npc.CurrentRoom;
+            npc.KillThisNPC();
+            Assert.IsFalse(npcRoom.ObjectsInRoom[0] is CorpseNPCObject);
+        }
 
         /// <summary>
         /// Creates a weapon objects for testing purposes
@@ -132,7 +150,7 @@ namespace ZorkUnitTest
         /// <returns>A character equipped with a longsword</returns>
         private NPC CreateNPC()
         {
-            return new NPC("constable_barney", "This man has a long beard.", 4, 100, 5, CreateWeapon(), false);
+            return new NPC("constable_barney", "This man has a long beard.", 4, 100, 5, CreateWeapon());
         }
 
         private List<BaseObject> CreateListOfThreeWeaponObjects()
@@ -146,7 +164,7 @@ namespace ZorkUnitTest
 
         private Character CreateCharacterWithoutWeapon()
         {
-            return new NPC("constable_barney", "This man has a long beard.", 4, 100, 5, null, false);
+            return new NPC("sherrif_barney", "This man has a long beard.", 4, 100, 5, null);
         }
         
         [TestMethod]
@@ -188,5 +206,7 @@ namespace ZorkUnitTest
             p.EquippedWeapon = new Weapon("gun", 1, "description");
             return p;
         }
+
+        
     }
 }

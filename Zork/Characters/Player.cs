@@ -8,9 +8,7 @@ namespace Zork.Characters
     public class Player : Character
     {
         #region properties
-        
         public HashSet<string> Clues = new HashSet<string>();
-
         #endregion
 
         public delegate void MovedDelegate();
@@ -18,6 +16,7 @@ namespace Zork.Characters
 
         public Player(Room currentRoom) : base()
         {
+            
             Name = "Sherlock Holmes";
             Description = "A very good investigator.";
             EquippedWeapon = null;
@@ -50,7 +49,7 @@ namespace Zork.Characters
 
         private string PrintGetHittedWithWeapon(NPC enemy)
         {
-            if (EquippedWeapon != null)
+            if (enemy.EquippedWeapon != null)
             {
                 Console.Write($" with his stupid {enemy.EquippedWeapon.Name} ");
             }
@@ -100,6 +99,10 @@ namespace Zork.Characters
                 }
             }
             CheckWhoWon(enemy);
+            if (enemy.Health > 0)
+            {
+                enemy.KillThisNPC();
+            }
         }
 
         protected bool AskFlee()

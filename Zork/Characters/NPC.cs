@@ -3,14 +3,13 @@
 using System.Collections.Generic;
 using System.Linq;
 using Zork.Texts;
+using System.Drawing;
 
 namespace Zork.Characters
 {
     public class NPC : Character
     {
         public int LetsPlayerFleePerXRounds { get; set; }
-        public bool IsMurderer = false;
-
         public const int MinTurnsBetweenMoves = 2;
         public const int MaxTurnsBetweenMoves = 5;
 
@@ -23,18 +22,16 @@ namespace Zork.Characters
             get { return _text; }
             protected set { _text = value; }
         }
+        public NPC(string name, string description, int strength, int startHealth, int letsPlayerFleePerXRounds, Weapon weapon = null) : this(name, description, strength, startHealth, startHealth, letsPlayerFleePerXRounds, weapon)
+        {
 
+        }
         public Maze maze { get; set; }
 
-        public NPC(string name, string description, int strength, int startHealth, int letsPlayerFleePerXRounds, Weapon weapon = null, bool isMurderer = false) : this(name, description, strength, startHealth, startHealth, letsPlayerFleePerXRounds, weapon, isMurderer)
-        {
-        }
-
-        public NPC(string name, string description, int strength, int startHealth, int maxHealth,  int letsPlayerFleePerXRounds, Weapon weapon = null, bool isMurderer = false) : base(name, description, strength, startHealth, maxHealth, weapon)
+        public NPC(string name, string description, int strength, int startHealth, int maxHealth,  int letsPlayerFleePerXRounds, Weapon weapon = null) : base(name, description, strength, startHealth, maxHealth, weapon)
         {
             this.Text = new TextTree(Name + ".txt");
             PickNextTimeToMove();
-            this.IsMurderer = isMurderer;
             LetsPlayerFleePerXRounds = letsPlayerFleePerXRounds;
         }
 
@@ -47,7 +44,7 @@ namespace Zork.Characters
         /// <summary>
         /// Output text and accept player choices until the tree reaches a leaf node
         /// </summary>
-        public void Talk(Player player)
+        public virtual void Talk(Player player)
         {
             Node currentNode = Node.FirstAvailable(Text.RootNodes, player);
             while (currentNode != null)
@@ -73,7 +70,7 @@ namespace Zork.Characters
             return playerResponse.FirstAvailableChild(player);
         }
 
-        public void OnPlayerMoved()
+        public virtual void OnPlayerMoved()
         {
             _turnsUntilNextMove--;
             if( _turnsUntilNextMove == 0)
@@ -88,10 +85,13 @@ namespace Zork.Characters
             var rng = new Random();
             var currentLocation = CurrentRoom.LocationOfRoom;
             var options = maze.AccessibleNeighbours(currentLocation).ToList();
-            var newRoom = options[rng.Next(0, options.Count)];
-            maze[currentLocation].NPCsInRoom.Remove(this);
-            maze[newRoom].NPCsInRoom.Add(this);
-            CurrentRoom = maze[newRoom];
+            if (options.Count > 0)
+            {
+                var newRoom = options[rng.Next(0, options.Count)];
+                maze[currentLocation].NPCsInRoom.Remove(this);
+                maze[newRoom].NPCsInRoom.Add(this);
+                CurrentRoom = maze[newRoom];
+            }
         }
 
         private static Node GetPlayerResponse(Node currentNode, List<Node> options)
@@ -111,6 +111,15 @@ namespace Zork.Characters
             }
             Node playerResponse = options[chosenResponse - 1];
             return playerResponse;
+        }
+
+        public void KillThisNPC()
+        {
+            CurrentRoom.NPCsInRoom.Remove(this);
+            DropAllItems();
+            DropWeapon();
+            CurrentRoom.ObjectsInRoom.Add(new CorpseNPCObject(this.Name));
+            CurrentRoom = null;
         }
     }
 }

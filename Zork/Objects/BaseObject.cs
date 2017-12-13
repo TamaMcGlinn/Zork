@@ -16,6 +16,7 @@
         {
             get { return _description; }
         }
+        
         #endregion properties
 
         public BaseObject(string name, string description)

@@ -227,6 +227,21 @@ namespace Zork
             TryPickUp(CurrentRoom, inputInteger - 1);
         }
 
+        public void DropWeapon()
+        {
+            if (EquippedWeapon != null)
+            {
+                CurrentRoom.ObjectsInRoom.Add(EquippedWeapon);
+                EquippedWeapon = null;
+            }
+        }
+
+        public void DropAllItems()
+        {
+            CurrentRoom.ObjectsInRoom.AddRange(Inventory);
+            Inventory.Clear();
+        }
+
         private void TryPickUp(Room currentRoom, int choiceIndex)
         {
             if (choiceIndex >= 0 && choiceIndex < CurrentRoom.ObjectsInRoom.Count)
@@ -240,5 +255,6 @@ namespace Zork
                 Console.WriteLine("Cannot pick that item up.");
             }
         }
+
     }
 }

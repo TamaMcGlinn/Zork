@@ -22,6 +22,7 @@ namespace ZorkUnitTest
             {
                 Assert.Fail("Weapon name is not correct");
             }
+
             if(weapon.Strength != strength)
             {
                 Assert.Fail("Weapon strength is not correct");
