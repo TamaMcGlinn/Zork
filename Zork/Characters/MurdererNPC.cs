@@ -21,23 +21,18 @@ namespace Zork.Characters
         {
             StepsBeforeNextKill = KillEveryXPlayerSteps;
         }
-
-        //TODO als tama lopen heeft gepushd dat integreren met deze methode (overriden van NPC)
-        public void WalkingTurn(Maze m)
+        
+        public override void OnPlayerMoved()
         {
-            if (IsTimeToMove())
-            {
-                MoveNPCToRandomSurroundingRoom(m);
-            }
-            if (StepsBeforeNextKill == 0)
+            base.OnPlayerMoved();
+            StepsBeforeNextKill++;
+            if(StepsBeforeNextKill == KillEveryXPlayerSteps)
             {
                 KillRandomNPCInSameRoom();
-                StepsBeforeNextKill = KillEveryXPlayerSteps;
             }
-            LowerTurnsToNextMove();
-            StepsBeforeNextKill--;
-           
         }
+
+
 
         /// <summary>
         /// Kills someone in the current room

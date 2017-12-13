@@ -22,10 +22,11 @@ namespace Zork.Characters
             get { return _text; }
             protected set { _text = value; }
         }
-
         public NPC(string name, string description, int strength, int startHealth, int letsPlayerFleePerXRounds, Weapon weapon = null) : this(name, description, strength, startHealth, startHealth, letsPlayerFleePerXRounds, weapon)
         {
+
         }
+        public Maze maze { get; set; }
 
         public NPC(string name, string description, int strength, int startHealth, int maxHealth,  int letsPlayerFleePerXRounds, Weapon weapon = null) : base(name, description, strength, startHealth, maxHealth, weapon)
         {
@@ -34,10 +35,10 @@ namespace Zork.Characters
             LetsPlayerFleePerXRounds = letsPlayerFleePerXRounds;
         }
 
-        public void PickNextTimeToMove()
+        private void PickNextTimeToMove()
         {
             var rng = new Random();
-            _turnsUntilNextMove = rng.Next(MinTurnsBetweenMoves, MaxTurnsBetweenMoves);
+            _turnsUntilNextMove = rng.Next(MinTurnsBetweenMoves, MaxTurnsBetweenMoves + 1);
         }
 
         /// <summary>
@@ -56,29 +57,6 @@ namespace Zork.Characters
             }
         }
 
-
-        public void MoveNPCToRandomSurroundingRoom(Maze m)
-        {
-            var rng = new Random();
-            var options = CurrentRoom.CanGoThere;
-            Point[] newRoom = m.AccessibleNeighbours(CurrentRoom.LocationOfRoom).ToArray();
-            int randomRoom = rng.Next(0, newRoom.Count());
-            Point newRandomRoom = newRoom[randomRoom];
-            CurrentRoom.NPCsInRoom.Remove(this);
-            CurrentRoom = m.Rooms[newRandomRoom.X, newRandomRoom.Y];
-            CurrentRoom.NPCsInRoom.Add(this);
-        }
-
-        public bool IsTimeToMove()
-        {
-            return _turnsUntilNextMove == 0;
-        }
-
-        public void LowerTurnsToNextMove()
-        {
-            _turnsUntilNextMove--;
-        }
-
         private Node ProcessNode(Node currentNode, Player player)
         {
             Console.WriteLine(currentNode.Text);
@@ -95,6 +73,27 @@ namespace Zork.Characters
                 return null;
             }
             return npcResponses.First();
+        }
+
+        public virtual void OnPlayerMoved()
+        {
+            _turnsUntilNextMove--;
+            if( _turnsUntilNextMove == 0)
+            {
+                Move();
+                PickNextTimeToMove();
+            }
+        }
+
+        private void Move()
+        {
+            var rng = new Random();
+            var currentLocation = CurrentRoom.LocationOfRoom;
+            var options = maze.AccessibleNeighbours(currentLocation).ToList();
+            var newRoom = options[rng.Next(0, options.Count)];
+            maze[currentLocation].NPCsInRoom.Remove(this);
+            maze[newRoom].NPCsInRoom.Add(this);
+            CurrentRoom = maze[newRoom];
         }
 
         private static Node GetPlayerResponse(Node currentNode, List<Node> options)

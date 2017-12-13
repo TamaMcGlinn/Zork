@@ -12,15 +12,19 @@ namespace Zork
     /// </summary>
     public class Game
     {
-        Maze maze;
+        private Maze maze;
         public const int Width = 2;
         public const int Height = 2;
         const int StartX = 1;
         const int StartY = 1;
+        public Player player;
 
-        CharacterDefinitions characters = new CharacterDefinitions();
-        Player player;
-        Dictionary<char, Action<Game>> Commands = new Dictionary<char, Action<Game>>()
+        public List<NPC> NPCS = new List<NPC>() {
+            new NPC("sherrif_barney", "A fat man in a prim black sherrif's uniform. He has a mustache and short brown hair.",3 , 100, 5, null),
+            new NPC("henry", "A tall man with a round face, and a kingly red robe draped around his shoulders.", 12, 100, 5, new Objects.Weapon("Sword", 22, "Blackened steel sword. Looks pointy."))
+        };
+
+        private Dictionary<char, Action<Game>> commands = new Dictionary<char, Action<Game>>()
         {
             { 'n', (Game g) => { g.player.TryGo(Direction.North, g.maze.Rooms); } },
             { 'e', (Game g) => { g.player.TryGo(Direction.East,g.maze.Rooms); } },
@@ -36,19 +40,32 @@ namespace Zork
 
         public Game()
         {
-            Console.SetWindowSize(Console.WindowWidth, Console.WindowHeight + Console.WindowHeight);
+            Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
             maze = new Maze(Width, Height, StartX, StartY);
             player = new Player(maze[new Point(StartX, StartY)]);
-            maze.Print();
-            characters.AddCharacters(maze);
+            AddCharacters();
             ObjectDefinitions.AddItems(maze);
         }
-        
+
+        private void AddCharacters()
+        {
+            foreach (NPC npc in NPCS)
+            {
+                Point location = maze.GetRandomRoom();
+                Room room = maze[location];
+                npc.maze = maze;
+                room.NPCsInRoom.Add(npc);
+                npc.CurrentRoom = room;
+                player.Moved += npc.OnPlayerMoved;
+            }
+        }
+
         /// <summary>
         /// Print the room, get user input to accept commands
         /// </summary>
         public void Run()
         {
+            maze.Print();
             PrintInstructions();
             while (true)
             {
@@ -63,7 +80,7 @@ namespace Zork
             userInput = userInput.ToLower();
             if (userInput.Length > 0)
             {
-                Action<Game> action = Commands[userInput[0]];
+                Action<Game> action = commands[userInput[0]];
                 if (action != null)
                 {
                     action(this);
@@ -72,8 +89,6 @@ namespace Zork
             }
             PrintInstructions();
         }
-
-
 
         private void PrintInstructions()
         {

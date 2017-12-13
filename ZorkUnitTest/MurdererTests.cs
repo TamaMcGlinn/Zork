@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Zork.Characters;
 using Zork;
 using Zork.Objects;
+using System.Drawing;
 
 namespace ZorkUnitTest
 {
@@ -44,10 +45,11 @@ namespace ZorkUnitTest
         [TestMethod]
         public void MurdererCanKillTest()
         {
-            CharacterDefinitions characters = new CharacterDefinitions();
+            
             MurdererNPC murderer = CreateMurderer();
-            murderer.CurrentRoom.NPCsInRoom.Add(characters.NPCS[0]);
-            characters.NPCS[0].CurrentRoom = murderer.CurrentRoom;
+            MurdererNPC npc = CreateMurderer();
+            murderer.CurrentRoom.NPCsInRoom.Add(npc);
+            npc.CurrentRoom = murderer.CurrentRoom;
             int countNpcsInRoom = murderer.CurrentRoom.NPCsInRoom.Count;
             murderer.KillRandomNPCInSameRoom();
             Assert.IsTrue(countNpcsInRoom > murderer.CurrentRoom.NPCsInRoom.Count);
@@ -60,36 +62,6 @@ namespace ZorkUnitTest
             MurdererNPC murderer = CreateMurderer();
             murderer.CurrentRoom.NPCsInRoom.Clear();
             Assert.IsFalse(murderer.KillRandomNPCInSameRoom());
-        }
-
-        [TestMethod]
-        public void MurdererTriesToKillEveryXTurns()
-        {
-            Maze m = new Maze(2,2,0,0);
-            MurdererNPC murderer = CreateMurderer();
-            murderer.CurrentRoom.NPCsInRoom.Add(murderer);
-            murderer.CurrentRoom.NPCsInRoom.Add(CreateMurderer());
-            murderer.CurrentRoom.NPCsInRoom.Add(CreateMurderer());
-            murderer.CurrentRoom.NPCsInRoom.Add(CreateMurderer());
-            murderer.CurrentRoom.NPCsInRoom.Add(CreateMurderer());
-            for(int i = 0; i < murderer.KillEveryXPlayerSteps*4; i++)
-            {
-                murderer.WalkingTurn(m);
-            }
-            Assert.IsTrue(murderer.CurrentRoom.NPCsInRoom.Count == 1);
-        }
-
-        [TestMethod]
-        public void MurdererWalksAroundTest()
-        {
-            MurdererNPC murderer = CreateMurderer();
-            Room cur = murderer.CurrentRoom;
-            Maze m = createMaze();
-            while (!murderer.IsTimeToMove())
-            {
-                murderer.WalkingTurn(m);
-            }
-            Assert.IsFalse(murderer.CurrentRoom == cur);
         }
 
         public MurdererNPC CreateMurderer()

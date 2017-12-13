@@ -19,10 +19,10 @@ namespace ZorkUnitTest
             Point currentRoom = new Point(0, 0);
             Maze maze = new Maze(1, 1, currentRoom.X, currentRoom.Y);
             Player p = new Player(maze.Rooms[currentRoom.X,currentRoom.Y]);
-            List<NPC> NPCs = (new CharacterDefinitions()).NPCS;
-            maze[currentRoom.X, currentRoom.Y].NPCsInRoom.Add(NPCs[0]);
+            NPC npc = createNPCBarney();
+            maze[currentRoom.X, currentRoom.Y].NPCsInRoom.Add(npc);
             string characterDescription = p.CurrentRoom.DescribeCharactersInRoom();
-            Assert.IsTrue(characterDescription.Contains($"[1] {maze[currentRoom].NPCsInRoom[0].Name.Replace('_', ' ')}"));
+            Assert.IsTrue(characterDescription.Contains($"[1] {maze[currentRoom].NPCsInRoom[0].Name.Replace('_',' ')}"));
         }
 
         [TestMethod]

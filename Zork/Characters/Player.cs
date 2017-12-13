@@ -10,8 +10,11 @@ namespace Zork.Characters
         #region properties
         
         public HashSet<string> Clues = new HashSet<string>();
-        
+
         #endregion
+
+        public delegate void MovedDelegate();
+        public event MovedDelegate Moved;
 
         public Player(Room currentRoom) : base()
         {
@@ -161,6 +164,7 @@ namespace Zork.Characters
             else if (CurrentRoom.CanGoThere[direction])
             {
                 CurrentRoom = rooms[towards.X, towards.Y];
+                Moved?.Invoke();
             }
             else
             {
