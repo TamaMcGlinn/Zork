@@ -50,13 +50,13 @@ namespace Zork
             return new Point(rng.Next(0, Width), rng.Next(0, Height));
         }
 
-        public void Print()
+        public void Print(Point playerLocation)
         {
             for (int yi = 0; yi < Height; ++yi)
             {
                 for (int xi = 0; xi < Width; ++xi)
                 {
-                    PrintHorizontal(xi, yi);
+                    PrintHorizontal(xi, yi, playerLocation);
                 }
                 PrintLowerHalf(yi);
             }
@@ -89,9 +89,16 @@ namespace Zork
             Console.Write(" ");
         }
 
-        private void PrintHorizontal(int xi, int yi)
+        private void PrintHorizontal(int xi, int yi, Point playerLocation)
         {
-            Console.Write("0");
+            if (playerLocation.X == xi && playerLocation.Y == yi)
+            {
+                Console.Write("P");
+            }
+            else
+            {
+                Console.Write("0");
+            }
             if (Rooms[xi, yi].CanGoThere[Direction.East])
             {
                 Debug.Assert(xi == Width - 1 || Rooms[xi + 1, yi].CanGoThere[Direction.West]);
