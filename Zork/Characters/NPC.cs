@@ -24,6 +24,8 @@ namespace Zork.Characters
             protected set { _text = value; }
         }
 
+        public Maze maze { get; set; }
+
         public NPC(string name, string description, int strength, int startHealth, int letsPlayerFleePerXRounds, Weapon weapon = null, bool isMurderer = false) : this(name, description, strength, startHealth, startHealth, letsPlayerFleePerXRounds, weapon, isMurderer)
         {
         }
@@ -36,10 +38,10 @@ namespace Zork.Characters
             LetsPlayerFleePerXRounds = letsPlayerFleePerXRounds;
         }
 
-        public void PickNextTimeToMove()
+        private void PickNextTimeToMove()
         {
             var rng = new Random();
-            _turnsUntilNextMove = rng.Next(MinTurnsBetweenMoves, MaxTurnsBetweenMoves);
+            _turnsUntilNextMove = rng.Next(MinTurnsBetweenMoves, MaxTurnsBetweenMoves + 1);
         }
 
         /// <summary>
@@ -58,16 +60,6 @@ namespace Zork.Characters
             }
         }
 
-        public bool IsTimeToMove()
-        {
-            return _turnsUntilNextMove == 0;
-        }
-
-        public void LowerTurnsToNextMove()
-        {
-            _turnsUntilNextMove--;
-        }
-
         private Node ProcessNode(Node currentNode, Player player)
         {
             Console.WriteLine(currentNode.Text);
@@ -79,6 +71,27 @@ namespace Zork.Characters
             Node playerResponse = GetPlayerResponse(currentNode, options);
             Console.WriteLine("> " + playerResponse.Text);
             return playerResponse.FirstAvailableChild(player);
+        }
+
+        public void OnPlayerMoved()
+        {
+            _turnsUntilNextMove--;
+            if( _turnsUntilNextMove == 0)
+            {
+                Move();
+                PickNextTimeToMove();
+            }
+        }
+
+        private void Move()
+        {
+            var rng = new Random();
+            var currentLocation = CurrentRoom.LocationOfRoom;
+            var options = maze.AccessibleNeighbours(currentLocation).ToList();
+            var newRoom = options[rng.Next(0, options.Count)];
+            maze[currentLocation].NPCsInRoom.Remove(this);
+            maze[newRoom].NPCsInRoom.Add(this);
+            CurrentRoom = maze[newRoom];
         }
 
         private static Node GetPlayerResponse(Node currentNode, List<Node> options)

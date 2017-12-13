@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using Zork.Behaviour;
 using Zork.Objects;
 
 namespace Zork.Characters
@@ -12,8 +10,11 @@ namespace Zork.Characters
         #region properties
         
         public HashSet<string> Clues = new HashSet<string>();
-        
+
         #endregion
+
+        public delegate void MovedDelegate();
+        public event MovedDelegate Moved;
 
         public Player(Room currentRoom) : base()
         {
@@ -24,6 +25,14 @@ namespace Zork.Characters
             Health = MaxHealth;
             CurrentRoom = currentRoom;
         } 
+
+        /// <summary>
+        /// Prints what the player sees
+        /// </summary>
+        public void LookAround()
+        {
+            Console.WriteLine(CurrentRoom.DescribeRoom());
+        }
 
         public void UseHealthPickup(HealthPickup h)
         {
@@ -39,134 +48,101 @@ namespace Zork.Characters
             return "";
         }
 
-        private string PrintGetHittedWithWeapon()
+        private string PrintGetHittedWithWeapon(NPC enemy)
         {
             if (EquippedWeapon != null)
             {
-                Console.Write($" with his stupid {Enemy.EquippedWeapon.Name} ");
+                Console.Write($" with his stupid {enemy.EquippedWeapon.Name} ");
             }
             return "";
         }
 
-        protected override void FightOneRound()
+        protected override void FightOneRound(NPC enemy)
         {
-            int enemyDamage = Enemy.GenerateDamage();
+            int enemyDamage = enemy.GenerateDamage();
             int myDamage = GenerateDamage();
 
             Console.WriteLine("You hit eachother...");
-            Enemy.TakeDamage(myDamage);
+            enemy.TakeDamage(myDamage);
             TakeDamage(enemyDamage);
 
             Console.Write("You hit for: " + myDamage + PrintHittingWithWeapon());
-            Console.Write($"\n{Enemy.Name} hits you for:" + enemyDamage + PrintGetHittedWithWeapon());
-            Console.WriteLine($"\nYou have {Health} hp left, he has {Enemy.Health} hp left.");
+            Console.Write($"\n{enemy.Name} hits you for:" + enemyDamage + PrintGetHittedWithWeapon(enemy));
+            Console.WriteLine($"\nYou have {Health} hp left, he has {enemy.Health} hp left.");
         }
 
-        public override BattleOutcomeEnum Fight(NPC enemy, Room[,] allRooms)
+        public void Battle(Maze maze)
         {
-            Enemy = enemy;
-            while (enemy.Health > 0 && Health > 0 && !Fled)
+            Console.WriteLine(CurrentRoom.DescribeCharactersInRoom());
+            if(CurrentRoom.NPCsInRoom.Count == 0)
             {
-                if (TurnsPassed % enemy.LetsPlayerFleePerXRounds == 0)
-                {
-                    AskFlee();
-                }
-                FightOneRound();
-                Turn();
+                return;
             }
-            if (Fled)
+            int enemyNumber;
+            if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber > 0 && enemyNumber <= CurrentRoom.NPCsInRoom.Count)
             {
-                Flee(allRooms);
-                return BattleOutcomeEnum.PlayerFled;
+                NPC enemy = CurrentRoom.NPCsInRoom[enemyNumber - 1];
+                Fight(enemy, maze);
             }
-            return base.CheckWhoWon();
         }
 
+        public void Fight(NPC enemy, Maze maze)
+        {
+            int turn = 0;
+            while (enemy.Health > 0 && Health > 0)
+            {                
+                FightOneRound(enemy);
+                ++turn;
+                if (turn % enemy.LetsPlayerFleePerXRounds == 0 && AskFlee())
+                {
+                    Flee(maze);
+                    return;
+                }
+            }
+            CheckWhoWon(enemy);
+        }
 
-        public bool Fled { get; set; } = false;
-
-
-        protected void AskFlee()
+        protected bool AskFlee()
         {
             Console.WriteLine("Do you want to flee? Y/N");
             char userInputCharacter = (char)Console.Read();
-            if (userInputCharacter == 'y' || userInputCharacter == 'Y')
-            {
-                Fled = true;
-            }
-            else
-            {
-                Fled = false;
-            }
+            return (userInputCharacter == 'y' || userInputCharacter == 'Y');
         }
 
         /// <summary>
         /// Lets your character run to a random room
         /// </summary>
         /// <param name="allRooms"></param>
-        public void Flee(Room[,] allRooms)
+        public void Flee(Maze maze)
         {
-            Point newRoom;
-            if (CurrentRoom != null)
-            {
-                newRoom =  CurrentRoom.LocationOfRoom; 
-                while (newRoom.X == CurrentRoom.LocationOfRoom.X && newRoom.Y == CurrentRoom.LocationOfRoom.Y)
-                {
-                    newRoom = getRandomPointWithinGameBounds();
-                }
-            }
-            else
-            {
-               newRoom = getRandomPointWithinGameBounds();
-            }
-
-            foreach(Room r in allRooms)
-            {
-                if(r.LocationOfRoom.X == newRoom.X && r.LocationOfRoom.Y == newRoom.Y)
-                {
-                    CurrentRoom = r;
-                }
-            }
-
+            CurrentRoom = maze.GetRandomOtherRoom(CurrentRoom);
             Console.WriteLine("...What ...Where am i?");
         }
-
-        public Point getRandomPointWithinGameBounds()
-        {
-            Random r = new Random();
-            int X, Y;
-            X = r.Next(0, Game.Width);
-            Y = r.Next(0, Game.Height);
-            return new Point(X, Y);
-        }
-
+        
         #region talkMethods
 
-        public void TryTalk(string userInput)
+        public void TryTalk()
         {
-            var talkCommand = userInput.Split(' ');
-            if (talkCommand.Length >= 3 && talkCommand[1] == "to")
+            Console.WriteLine("With who do you want to talk?");
+            List<NPC> npcs =  CurrentRoom.NPCsInRoom;
+            for (int i = 0; i < npcs.Count; i++)
             {
-                TalkTo(String.Join("_", talkCommand.Skip(2)).ToLower());
+                Console.WriteLine($"[{i + 1}] {npcs[i].Name}");
+            }
+            int talkToNPCInt;
+            int.TryParse(Console.ReadLine(), out talkToNPCInt);
+            talkToNPCInt -= 1;
+            if(talkToNPCInt >= 0 && talkToNPCInt <= npcs.Count)
+            {
+                npcs[talkToNPCInt].Talk(this);
             }
             else
             {
-                Console.WriteLine("Did you mean; \"Talk to [character name]\"?");
+                Console.WriteLine("He's not here...");
+                return;
             }
         }
 
-        private void TalkTo(string charactername)
-        {
-            NPC talkTarget = CurrentRoom.NPCsInRoom.Find((c) => {
-                return c.Name == charactername;
-            });
-            if (talkTarget == null)
-            {
-                Console.WriteLine("There is nobody called " + charactername + " here.");
-                return;
-            }
-            talkTarget.Talk(this);
-        }
         #endregion
 
         /// <summary>
@@ -184,6 +160,7 @@ namespace Zork.Characters
             else if (CurrentRoom.CanGoThere[direction])
             {
                 CurrentRoom = rooms[towards.X, towards.Y];
+                Moved?.Invoke();
             }
             else
             {

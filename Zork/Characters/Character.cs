@@ -1,11 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Drawing;
-using System.Linq;
-using Zork.Behaviour;
 using Zork.Characters;
 using Zork.Objects;
-using Zork.Texts;
 
 namespace Zork
 {
@@ -127,6 +123,7 @@ namespace Zork
         /// </summary>
         public void PrintInventory()
         {
+            PrintEquippedWeapon();
             if (Inventory.Count == 0)
             {
                 Console.WriteLine("\nYou have no items in your inventory.\n");
@@ -170,54 +167,27 @@ namespace Zork
                 EquippedWeapon.PrintStats();
             }
         }
-        
-        public Character Enemy { get; set; }
 
-        internal int TurnsPassed { get; set; }
-
-        /// <summary>
-        /// Fights the chosen enemy untill someone dies, if player dies he loses all his items, 
-        /// if enemy dies player picks up all his items.
-        /// </summary>
-        /// <returns>A boolean indicating wether the player won the fight</returns>
-        public virtual BattleOutcomeEnum Fight(NPC enemy, Room[,] AllRooms)
+        protected void CheckWhoWon(NPC enemy)
         {
-            Enemy = enemy;
-            while (enemy.Health > 0 && Health > 0)
+            if (enemy.Health < 0)
             {
-                FightOneRound();
-                Turn();
-            }
-            return CheckWhoWon();
-        }
-
-        public void Turn()
-        {
-            TurnsPassed++;
-        }
-
-        protected BattleOutcomeEnum CheckWhoWon()
-        {
-            if (Enemy.Health < 0)
-            {
-                Enemy.Inventory.Clear();
-                Enemy.ResetHealth();
+                enemy.Inventory.Clear();
+                enemy.ResetHealth();
                 Console.WriteLine("You died! But luckily you've returned without items.");
-                return BattleOutcomeEnum.EnemyWon;
             }
             else
             {
-                Enemy.Inventory.AddRange(Enemy.Inventory);
-                Console.WriteLine($"You've won! You've picked up all {Enemy.Name}'s items, check your inventory!");
-                return BattleOutcomeEnum.PlayerWon;
+                enemy.Inventory.AddRange(enemy.Inventory);
+                Console.WriteLine($"You've won! You've picked up all {enemy.Name}'s items, check your inventory!");
             }
         }
 
-        protected virtual void FightOneRound()
+        protected virtual void FightOneRound(NPC enemy)
         {
-            int enemyDamage = Enemy.GenerateDamage();
+            int enemyDamage = enemy.GenerateDamage();
             int myDamage = GenerateDamage();
-            Enemy.TakeDamage(myDamage);
+            enemy.TakeDamage(myDamage);
             TakeDamage(enemyDamage);
         }
         
@@ -233,6 +203,42 @@ namespace Zork
                 damage += EquippedWeapon.Strength;
             }
             return damage;
+        }
+
+        /// <summary>
+        /// Lists all items in the room and gives options for the player to pick them up. 
+        /// If he chooses a valid item it gets added to the inventory.
+        /// </summary>
+        public void PickupItem()
+        {
+            
+            if (CurrentRoom.ObjectsInRoom.Count <= 0)
+            {
+                Console.WriteLine("There are no items to pickup in this room.");
+                return;
+            }
+            for (int i = 0; i < CurrentRoom.ObjectsInRoom.Count; i++)
+            {
+                Console.WriteLine($"[{i + 1}] to pickup:" + CurrentRoom.ObjectsInRoom[i].Name);
+            }
+            string input = Console.ReadLine();
+            int inputInteger;
+            int.TryParse(input, out inputInteger);
+            TryPickUp(CurrentRoom, inputInteger - 1);
+        }
+
+        private void TryPickUp(Room currentRoom, int choiceIndex)
+        {
+            if (choiceIndex >= 0 && choiceIndex < CurrentRoom.ObjectsInRoom.Count)
+            {
+                var obj = CurrentRoom.ObjectsInRoom[choiceIndex];
+                CurrentRoom.ObjectsInRoom.Remove(obj);
+                obj.PickupObject(this);
+            }
+            else
+            {
+                Console.WriteLine("Cannot pick that item up.");
+            }
         }
     }
 }
