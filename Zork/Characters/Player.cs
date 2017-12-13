@@ -113,16 +113,7 @@ namespace Zork.Characters
             CurrentRoom = maze.GetRandomOtherRoom(CurrentRoom);
             Console.WriteLine("...What ...Where am i?");
         }
-
-        public Point getRandomPointWithinGameBounds()
-        {
-            Random r = new Random();
-            int X, Y;
-            X = r.Next(0, Game.Width);
-            Y = r.Next(0, Game.Height);
-            return new Point(X, Y);
-        }
-
+        
         #region talkMethods
 
         public void TryTalk()
