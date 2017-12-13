@@ -43,7 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BattleOutcomeEnum.cs" />
     <Compile Include="Characters\Character.cs" />
     <Compile Include="Characters\CharacterDefinitions.cs" />
     <Compile Include="Characters\MurdererNPC.cs" />
@@ -53,6 +52,7 @@
     <Compile Include="Extensions\ListNPCExtensions.cs" />
     <Compile Include="Game.cs" />
     <Compile Include="Maze.cs" />
+    <Compile Include="MazeEnumerator.cs" />
     <Compile Include="Objects\BaseObject.cs" />
     <Compile Include="Objects\Clue.cs" />
     <Compile Include="Objects\HealthPickup.cs" />
@@ -66,7 +66,9 @@
     <Compile Include="Texts\TextTree.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

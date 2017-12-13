@@ -56,17 +56,6 @@ namespace Zork.Characters
             }
         }
 
-        public override void TurnInFight(Maze m)
-        {
-            LowerTurnsToNextMove();
-            if (IsTimeToMove())
-            {
-                PickNextTimeToMove();
-                MoveNPCToRandomSurroundingRoom(m);
-            }
-            base.TurnInFight(m);
-        }
-
 
         public void MoveNPCToRandomSurroundingRoom(Maze m)
         {

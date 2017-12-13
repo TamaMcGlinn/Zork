@@ -23,9 +23,10 @@ namespace ZorkUnitTest
             p.CurrentRoom = new Room("", new Point(0, 0));
             int oldX = p.CurrentRoom.LocationOfRoom.X;
             int oldY = p.CurrentRoom.LocationOfRoom.Y;
-            p.Flee(m.Rooms);
+            p.Flee(m);
             Assert.IsTrue(p.CurrentRoom.LocationOfRoom.X != oldX || p.CurrentRoom.LocationOfRoom.Y != oldY);
         }
+
         public CharacterDefinitions createPlayerCharacter()
         {
             CharacterDefinitions characters = new CharacterDefinitions();
