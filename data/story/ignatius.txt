@@ -7,6 +7,6 @@ Ignatius
 			>The *other* sins, son.
 				<Oh, well. I suppose since you know already, I can just excuse myself.
 					>Not so fast. Hand over the money you stole from Reginald.
-						<... I've already spent it, I'm afraid.
+						<... I've already spent it, I'm afraid. (hands over empty purse)[purse]
 							>What? How could you possibly have, so quickly!
 								<Err... well, Barden spent it on sack, and.. worse yet! Kelsey went to see Cecil, an infamous lady in this town.[kelsey_whored]

@@ -11,7 +11,7 @@ Lady Barclay
 		<[wrongtime]Away, thou poisonous bunch-backed toad!
 		<If you mean to woo me, I must disappoint. However, it sounds more as if you mean to mask your lacking of a timepiece.
 			>Well, praised be the gods for thy foulness; sluttishness may come hereafter.
-				<[insulted_lady_barclay]... I have no words to envenom thee back, and must leave in shame.
+				<... I have no words to envenom thee back, and must leave in shame.[insulted_lady_barclay]
 			>May I accompany you, milady? I have some questions that need answering.
 				<I must refuse, with apologies.
 			>Seen anything suspicious, milady?

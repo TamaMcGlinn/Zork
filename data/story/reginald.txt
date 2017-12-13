@@ -4,7 +4,7 @@ Reginald
 	>Indeed; how goes thee?
 		<If my wife were a hobby horse I would count myself luckier; this very morning I was waylaid, my purse ta'en and left to wait for better fortune!
 			>[purse]Indeed, did it look like this here purse?
-				<Why yes! (takes purse and counts contents) Indeed, although 80d lighter than when it left me. How came you by it?
+				<Why yes! (takes purse) It's rather lighter than when it left me! How came you by it?
 					>[villains_described]I came across the villains, precisely as you described; and one by one slew them in answering for their crimes.
 						<Good, good! Please excuse me.
 					>Upon pressing my son he confessed of having taken it, together with some other scallywags.
