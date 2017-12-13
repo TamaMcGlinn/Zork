@@ -50,6 +50,10 @@ namespace Zork
             return new Point(rng.Next(0, Width), rng.Next(0, Height));
         }
 
+        /// <summary>
+        /// Print the maze as a map created by 0's -'s and P for player characters.
+        /// </summary>
+        /// <param name="playerLocation"></param>
         public void Print(Point playerLocation)
         {
             Console.WriteLine();
