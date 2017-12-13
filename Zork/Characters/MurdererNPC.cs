@@ -39,25 +39,15 @@ namespace Zork.Characters
         /// Kills someone in the current room
         /// </summary>
         /// <returns>true if the murderer killed someone, false if he didnt</returns>
-        public bool KillRandomNPCInSameRoom()
+        public void KillRandomNPCInSameRoom()
         {
-            if (CurrentRoom.NPCsInRoom.Count > 0)
+            List<NPC> otherNPCs = CurrentRoom.NPCsInRoom.Where(x => x != this).ToList();
+            if (otherNPCs.Count > 0)
             {
                 Random rng = new Random();
-
-                int killNpc = rng.Next(0, CurrentRoom.NPCsInRoom.Count);
-                List<NPC> npcsInCurrentRoom = CurrentRoom.NPCsInRoom;
-                if (npcsInCurrentRoom[killNpc] != this)
-                {
-                    npcsInCurrentRoom[killNpc].DropWeapon();
-                    npcsInCurrentRoom[killNpc].DropAllItems();
-                    npcsInCurrentRoom.RemoveAt(killNpc);
-                }
-                return true;
-            }
-            else
-            {
-                return false;
+                int killNpc = rng.Next(0, otherNPCs.Count);
+                var victim = otherNPCs[killNpc];
+                victim.KillThisNPC();
             }
         }
     }

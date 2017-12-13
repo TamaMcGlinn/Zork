@@ -61,7 +61,8 @@ namespace ZorkUnitTest
         {
             MurdererNPC murderer = CreateMurderer();
             murderer.CurrentRoom.NPCsInRoom.Clear();
-            Assert.IsFalse(murderer.KillRandomNPCInSameRoom());
+            murderer.KillRandomNPCInSameRoom();
+            Assert.IsFalse(murderer.CurrentRoom.NPCsInRoom.Count == 0);
         }
 
         [TestMethod]
