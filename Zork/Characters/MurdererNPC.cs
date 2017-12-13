@@ -25,10 +25,11 @@ namespace Zork.Characters
         public override void OnPlayerMoved()
         {
             base.OnPlayerMoved();
-            StepsBeforeNextKill++;
-            if(StepsBeforeNextKill == KillEveryXPlayerSteps)
+            StepsBeforeNextKill--;
+            if(StepsBeforeNextKill == 0)
             {
                 KillRandomNPCInSameRoom();
+                StepsBeforeNextKill = KillEveryXPlayerSteps;
             }
         }
 

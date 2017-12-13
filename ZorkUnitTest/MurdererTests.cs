@@ -64,6 +64,37 @@ namespace ZorkUnitTest
             Assert.IsFalse(murderer.KillRandomNPCInSameRoom());
         }
 
+        [TestMethod]
+        public void MurdererTriesToKillEveryXTurns()
+        {
+            Maze m = new Maze(1,1,0,0);
+            MurdererNPC murderer = CreateMurderer();
+            murderer.maze = m;
+            murderer.CurrentRoom = m.Rooms[0,0];
+            murderer.CurrentRoom.NPCsInRoom.Add(CreateMurderer());
+            int totalNpcs = 0;
+            foreach (Room r in m.Rooms)
+            {
+                totalNpcs += r.NPCsInRoom.Count;
+            }
+            bool isLooped = false;
+            while (murderer.StepsBeforeNextKill >= 0 && isLooped == false)
+            {
+                murderer.OnPlayerMoved();
+                if(murderer.StepsBeforeNextKill == murderer.KillEveryXPlayerSteps)
+                {
+                    isLooped = true;
+                }
+            }
+
+            int totalnpcsAfterKill = 0;
+            foreach (Room r in m.Rooms)
+            {
+                totalnpcsAfterKill += r.NPCsInRoom.Count;
+            }
+            Assert.IsTrue(totalnpcsAfterKill < totalNpcs);
+        }
+
         public MurdererNPC CreateMurderer()
         {
             MurdererNPC murderer = new Zork.Characters.MurdererNPC("Murderer", "desc", 10, 100, 99, null);

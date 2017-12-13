@@ -8,9 +8,7 @@ namespace Zork.Characters
     public class Player : Character
     {
         #region properties
-        
         public HashSet<string> Clues = new HashSet<string>();
-
         #endregion
 
         public delegate void MovedDelegate();
@@ -18,6 +16,7 @@ namespace Zork.Characters
 
         public Player(Room currentRoom) : base()
         {
+            
             Name = "Sherlock Holmes";
             Description = "A very good investigator.";
             EquippedWeapon = null;

@@ -90,10 +90,13 @@ namespace Zork.Characters
             var rng = new Random();
             var currentLocation = CurrentRoom.LocationOfRoom;
             var options = maze.AccessibleNeighbours(currentLocation).ToList();
-            var newRoom = options[rng.Next(0, options.Count)];
-            maze[currentLocation].NPCsInRoom.Remove(this);
-            maze[newRoom].NPCsInRoom.Add(this);
-            CurrentRoom = maze[newRoom];
+            if (options.Count > 0)
+            {
+                var newRoom = options[rng.Next(0, options.Count)];
+                maze[currentLocation].NPCsInRoom.Remove(this);
+                maze[newRoom].NPCsInRoom.Add(this);
+                CurrentRoom = maze[newRoom];
+            }
         }
 
         private static Node GetPlayerResponse(Node currentNode, List<Node> options)
