@@ -40,7 +40,7 @@ namespace Zork
 
         public Game()
         {
-            Console.SetWindowSize(Console.WindowWidth, Console.WindowHeight + Console.WindowHeight);
+            Console.SetWindowSize(Console.LargestWindowWidth, Console.LargestWindowHeight);
             maze = new Maze(Width, Height, StartX, StartY);
             player = new Player(maze[new Point(StartX, StartY)]);
             AddCharacters();
