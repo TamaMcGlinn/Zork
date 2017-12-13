@@ -119,6 +119,23 @@ namespace Zork
             return roomToConnect.Add(direction);
         }
 
+        public Room GetRandomOtherRoom(Room currentRoom)
+        {
+            List<Room> otherRooms = new List<Room>();
+            foreach(Room room in this)
+            {
+                if (room.LocationOfRoom != currentRoom.LocationOfRoom)
+                {
+                    otherRooms.Add(room);
+                }
+            }
+            if(otherRooms.Count == 0)
+            {
+                return null;
+            }
+            return otherRooms[rng.Next(0, otherRooms.Count)];
+        }
+
         /// <summary>
         /// Set the canGoThere variable to true between the two locations.
         /// </summary>

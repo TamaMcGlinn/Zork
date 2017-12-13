@@ -108,30 +108,9 @@ namespace Zork.Characters
         /// Lets your character run to a random room
         /// </summary>
         /// <param name="allRooms"></param>
-        public void Flee(Room[,] allRooms)
+        public void Flee(Maze maze)
         {
-            Point newRoom;
-            if (CurrentRoom != null)
-            {
-                newRoom =  CurrentRoom.LocationOfRoom; 
-                while (newRoom.X == CurrentRoom.LocationOfRoom.X && newRoom.Y == CurrentRoom.LocationOfRoom.Y)
-                {
-                    newRoom = getRandomPointWithinGameBounds();
-                }
-            }
-            else
-            {
-               newRoom = getRandomPointWithinGameBounds();
-            }
-
-            foreach(Room r in allRooms)
-            {
-                if(r.LocationOfRoom.X == newRoom.X && r.LocationOfRoom.Y == newRoom.Y)
-                {
-                    CurrentRoom = r;
-                }
-            }
-
+            CurrentRoom = maze.GetRandomOtherRoom(CurrentRoom);
             Console.WriteLine("...What ...Where am i?");
         }
 
