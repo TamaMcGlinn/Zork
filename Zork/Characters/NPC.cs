@@ -43,7 +43,7 @@ namespace Zork.Characters
         /// <summary>
         /// Output text and accept player choices until the tree reaches a leaf node
         /// </summary>
-        public void Talk(Player player)
+        public virtual void Talk(Player player)
         {
             Node currentNode = Text.RootNode;
             while (currentNode != null)
@@ -114,6 +114,15 @@ namespace Zork.Characters
             }
             Node playerResponse = options[chosenResponse - 1];
             return playerResponse;
+        }
+
+        public void KillThisNPC()
+        {
+            CurrentRoom.NPCsInRoom.Remove(this);
+            DropAllItems();
+            DropWeapon();
+            CurrentRoom.ObjectsInRoom.Add(new CorpseNPCObject(this.Name));
+            CurrentRoom = null;
         }
     }
 }

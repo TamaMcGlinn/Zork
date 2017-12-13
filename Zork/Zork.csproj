@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Characters\Character.cs" />
     <Compile Include="Characters\CharacterDefinitions.cs" />
+    <Compile Include="Objects\CorpseNPCObject.cs" />
     <Compile Include="Characters\MurdererNPC.cs" />
     <Compile Include="Characters\NPC.cs" />
     <Compile Include="Characters\Player.cs" />

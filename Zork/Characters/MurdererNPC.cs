@@ -9,32 +9,33 @@ namespace Zork.Characters
 {
     public class MurdererNPC : NPC
     {
-        public int killEveryXPlayerSteps { get; set; } = 10;
-        public int stepsBeforeNewKill;
+        public int KillEveryXPlayerSteps { get; set; } = 20;
+        public int StepsBeforeNextKill { get; set; }
 
         public MurdererNPC(string name, string description, int strength, int startHealth, int letsPlayerFleePerXRounds, Weapon weapon = null) : base(name, description, strength, startHealth, letsPlayerFleePerXRounds, weapon)
         {
-            stepsBeforeNewKill = killEveryXPlayerSteps;
+            StepsBeforeNextKill = KillEveryXPlayerSteps;
         }
 
         public MurdererNPC(string name, string description, int strength, int startHealth, int maxHealth, int letsPlayerFleePerXRounds, Weapon weapon = null) : base(name, description, strength, startHealth, maxHealth, letsPlayerFleePerXRounds, weapon)
         {
-            stepsBeforeNewKill = killEveryXPlayerSteps;
+            StepsBeforeNextKill = KillEveryXPlayerSteps;
         }
 
+        //TODO als tama lopen heeft gepushd dat integreren met deze methode (overriden van NPC)
         public void WalkingTurn(Maze m)
         {
             if (IsTimeToMove())
             {
                 MoveNPCToRandomSurroundingRoom(m);
             }
-            if (stepsBeforeNewKill == 0)
+            if (StepsBeforeNextKill == 0)
             {
                 KillRandomNPCInSameRoom();
-                stepsBeforeNewKill = killEveryXPlayerSteps;
+                StepsBeforeNextKill = KillEveryXPlayerSteps;
             }
             LowerTurnsToNextMove();
-            stepsBeforeNewKill--;
+            StepsBeforeNextKill--;
            
         }
 

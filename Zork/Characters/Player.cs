@@ -47,7 +47,7 @@ namespace Zork.Characters
 
         private string PrintGetHittedWithWeapon(NPC enemy)
         {
-            if (EquippedWeapon != null)
+            if (enemy.EquippedWeapon != null)
             {
                 Console.Write($" with his stupid {enemy.EquippedWeapon.Name} ");
             }
@@ -78,7 +78,6 @@ namespace Zork.Characters
             int enemyNumber;
             if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber > 0 && enemyNumber <= CurrentRoom.NPCsInRoom.Count)
             {
-
                 NPC enemy = CurrentRoom.NPCsInRoom[enemyNumber - 1];
                 Fight(enemy, maze);
             }
@@ -98,6 +97,10 @@ namespace Zork.Characters
                 }
             }
             CheckWhoWon(enemy);
+            if (enemy.Health > 0)
+            {
+                enemy.KillThisNPC();
+            }
         }
 
         protected bool AskFlee()

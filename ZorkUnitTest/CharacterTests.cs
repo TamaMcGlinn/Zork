@@ -113,8 +113,26 @@ namespace ZorkUnitTest
             characters.PlayerCharacter.PrintInventory();
             Assert.IsTrue(consoleOutput.ToString().Contains($"{clue.Name} : {clue.Description}"));
         }
-       
 
+        [TestMethod]
+        public void KillNPCTest()
+        {
+            NPC npc = CreateNPC();
+            npc.CurrentRoom = new Room("", new Point(0, 0));
+            Room npcRoom = npc.CurrentRoom;
+            npc.KillThisNPC();
+            Assert.IsFalse(npcRoom.NPCsInRoom.Count > 0);
+        }
+
+        [TestMethod]
+        public void TestIfNPCBecomesCorpseObject()
+        {
+            NPC npc = CreateNPC();
+            npc.CurrentRoom = new Room("", new Point(0, 0));
+            Room npcRoom = npc.CurrentRoom;
+            npc.KillThisNPC();
+            Assert.IsFalse(npcRoom.ObjectsInRoom[0] is CorpseNPCObject);
+        }
 
         /// <summary>
         /// Creates a weapon objects for testing purposes
@@ -213,5 +231,7 @@ namespace ZorkUnitTest
             characters.PlayerCharacter = p;
             return characters;
         }
+
+        
     }
 }

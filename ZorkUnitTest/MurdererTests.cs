@@ -72,7 +72,7 @@ namespace ZorkUnitTest
             murderer.CurrentRoom.NPCsInRoom.Add(CreateMurderer());
             murderer.CurrentRoom.NPCsInRoom.Add(CreateMurderer());
             murderer.CurrentRoom.NPCsInRoom.Add(CreateMurderer());
-            for(int i = 0; i < murderer.killEveryXPlayerSteps*4; i++)
+            for(int i = 0; i < murderer.KillEveryXPlayerSteps*4; i++)
             {
                 murderer.WalkingTurn(m);
             }

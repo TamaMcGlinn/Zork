@@ -229,9 +229,11 @@ namespace Zork
 
         public void DropWeapon()
         {
-            CurrentRoom.ObjectsInRoom.Add(EquippedWeapon);
-            EquippedWeapon = null;
-            
+            if (EquippedWeapon != null)
+            {
+                CurrentRoom.ObjectsInRoom.Add(EquippedWeapon);
+                EquippedWeapon = null;
+            }
         }
 
         public void DropAllItems()
@@ -253,5 +255,6 @@ namespace Zork
                 Console.WriteLine("Cannot pick that item up.");
             }
         }
+
     }
 }
