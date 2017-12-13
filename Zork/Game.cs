@@ -79,6 +79,7 @@ namespace Zork
         public void Run()
         {
             maze.Print();
+            PrintPreamble();
             PrintInstructions();
             while (true)
             {
@@ -86,6 +87,12 @@ namespace Zork
                 Console.WriteLine(roomDescription);
                 ProcessInput(Console.ReadLine());
             }
+        }
+
+        private void PrintPreamble()
+        {
+            Console.WriteLine("You are Sherlock, a reknowned detective. In ye olde London, a most vile place to be,");
+            Console.WriteLine("thismorning dead was found dear Cecil, dear to many men. Serve justice to the murderer!\n");
         }
 
         private void ProcessInput(string userInput)
