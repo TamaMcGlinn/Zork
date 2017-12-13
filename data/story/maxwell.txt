@@ -1,4 +1,3 @@
-Maxwell
 <Good day, sir!
 	>[suspicious_bag_seen]A boy told me something unusual; that Cecil came into this manor last evening but left it not. Is she still here?
 		<I know nothing of that sir. But if you do speak with our servant Burton, do tell him to return the skillet; it is hard cooking without it. Curse his clay-brained guts, that knotty-pated fool![skillet_missing]

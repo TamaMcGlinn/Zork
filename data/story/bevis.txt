@@ -1,4 +1,3 @@
-Bevis
 <Hello mister.
 	>Seen anything suspicious?
 		<Not with my eyes, sir, but Barden told the strangest tale! He saw Cecil enter into the Barclay manor, and never leave, but a bag large enough to contain her did.[suspicious_bag_seen]

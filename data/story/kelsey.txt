@@ -1,4 +1,3 @@
-Kelsey
 <Hello sir!
 	>[brigands_stole_from_reginald]You sinner! Repent thy crimes to thy father immediately, or I shall tell him for you!
 		<Darn.

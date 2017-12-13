@@ -10,14 +10,6 @@ namespace Zork.Texts
     /// </summary>
     public class TextTree
     {
-        private string _name;
-
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
-
         public List<Node> RootNodes;
 
         public TextTree(string filename)
@@ -31,8 +23,7 @@ namespace Zork.Texts
             }
             text = System.IO.File.ReadAllText(path);
             var lines = text.Split('\n');
-            Name = lines[0];
-            RootNodes = ReadNodes(lines, 1);
+            RootNodes = ReadNodes(lines, 0);
         }
 
         private static int countInitialTabs(string line)

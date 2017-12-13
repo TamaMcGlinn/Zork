@@ -1,4 +1,3 @@
-Barden
 <Hello mister.
 	>Seen anything suspicious?
 		<Yes sir! I was following Cecil when she went into the Barclay's manor, but I think she left in a bag.[suspicious_bag_seen]

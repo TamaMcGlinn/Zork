@@ -1,4 +1,3 @@
-Burton
 <Good day, sir!
 	>[skillet_missing]I was speaking with the cook, Maxwell. He said you might know something about this skillet.
 		<I know naught, I assure thee.

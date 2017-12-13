@@ -1,4 +1,3 @@
-Sir Barclay
 <Hello sir.
 	>Good day. I'm looking for clues as to the murder of one Cecil, a lady of unsavoury profession.
 		<I know nothing.

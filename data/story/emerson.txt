@@ -1,4 +1,3 @@
-Emerson
 <Can I offer you some sack at my inn, sir?
 	>Perhaps some other time. I'm investigating a murder here. Seen anything suspicious?
 		<Nay, save that Audrey had rather a lot of coin to spend last night.[audrey_rich]
