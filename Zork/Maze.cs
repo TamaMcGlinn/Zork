@@ -52,6 +52,7 @@ namespace Zork
 
         public void Print(Point playerLocation)
         {
+            Console.WriteLine();
             for (int yi = 0; yi < Height; ++yi)
             {
                 for (int xi = 0; xi < Width; ++xi)
@@ -60,6 +61,7 @@ namespace Zork
                 }
                 PrintLowerHalf(yi);
             }
+            Console.WriteLine();
         }
 
         private void PrintLowerHalf(int yi)
