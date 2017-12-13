@@ -33,7 +33,7 @@ namespace ZorkUnitTest
         {
             NPC npc = CreateWeakNPC();
             NPC npc1 = createNPCBarney();
-            npc.Fight(npc1, CreateMaze().Rooms);
+            npc.Fight(npc1, CreateMaze());
             Assert.IsTrue(npc.Health <= 0);
         }
 
@@ -42,7 +42,7 @@ namespace ZorkUnitTest
         {
             NPC npc = createNPCBarney();
             NPC npc1 = CreateWeakNPC();
-            npc.Fight(npc1, CreateMaze().Rooms);
+            npc.Fight(npc1, CreateMaze());
             Assert.IsTrue(npc.Health > 0);
         }
 

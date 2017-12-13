@@ -65,27 +65,44 @@ namespace ZorkUnitTest
         [TestMethod]
         public void MurdererTriesToKillEveryXTurns()
         {
+            Maze m = new Maze(2,2,0,0);
             MurdererNPC murderer = CreateMurderer();
+            murderer.CurrentRoom.NPCsInRoom.Add(murderer);
             murderer.CurrentRoom.NPCsInRoom.Add(CreateMurderer());
             murderer.CurrentRoom.NPCsInRoom.Add(CreateMurderer());
             murderer.CurrentRoom.NPCsInRoom.Add(CreateMurderer());
             murderer.CurrentRoom.NPCsInRoom.Add(CreateMurderer());
-            int killEveryXRounds = murderer.roundsBeforeNewKill;
-            for (int i = 0; i < killEveryXRounds*4; i++)
+            for(int i = 0; i < murderer.killEveryXPlayerSteps*4; i++)
             {
-                murderer.Turn();
+                murderer.WalkingTurn(m);
             }
-            Assert.IsTrue(murderer.CurrentRoom.NPCsInRoom.Count == 0);
+            Assert.IsTrue(murderer.CurrentRoom.NPCsInRoom.Count == 1);
+        }
 
+        [TestMethod]
+        public void MurdererWalksAroundTest()
+        {
+            MurdererNPC murderer = CreateMurderer();
+            Room cur = murderer.CurrentRoom;
+            Maze m = createMaze();
+            while (!murderer.IsTimeToMove())
+            {
+                murderer.WalkingTurn(m);
+            }
+            Assert.IsFalse(murderer.CurrentRoom == cur);
         }
 
         public MurdererNPC CreateMurderer()
         {
             MurdererNPC murderer = new Zork.Characters.MurdererNPC("Murderer", "desc", 10, 100, 99, null);
-
             murderer.CurrentRoom = new Room("", new System.Drawing.Point(0,0));
             return murderer;
             
+        }
+
+        public Maze createMaze()
+        {
+            return new Maze(5, 5, 0, 0);
         }
     }
 }

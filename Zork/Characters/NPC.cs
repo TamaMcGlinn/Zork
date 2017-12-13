@@ -3,6 +3,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using Zork.Texts;
+using System.Drawing;
 
 namespace Zork.Characters
 {
@@ -53,6 +54,30 @@ namespace Zork.Characters
                 }
                 currentNode = ProcessNode(currentNode, player);
             }
+        }
+
+        public override void TurnInFight(Maze m)
+        {
+            LowerTurnsToNextMove();
+            if (IsTimeToMove())
+            {
+                PickNextTimeToMove();
+                MoveNPCToRandomSurroundingRoom(m);
+            }
+            base.TurnInFight(m);
+        }
+
+
+        public void MoveNPCToRandomSurroundingRoom(Maze m)
+        {
+            var rng = new Random();
+            var options = CurrentRoom.CanGoThere;
+            Point[] newRoom = m.AccessibleNeighbours(CurrentRoom.LocationOfRoom).ToArray();
+            int randomRoom = rng.Next(0, newRoom.Count());
+            Point newRandomRoom = newRoom[randomRoom];
+            CurrentRoom.NPCsInRoom.Remove(this);
+            CurrentRoom = m.Rooms[newRandomRoom.X, newRandomRoom.Y];
+            CurrentRoom.NPCsInRoom.Add(this);
         }
 
         public bool IsTimeToMove()

@@ -43,23 +43,9 @@ namespace Zork.Characters
         {
             foreach(NPC npc in NPCS)
             {
-                Point location = npc.CurrentRoom.LocationOfRoom;
-                if (npc.IsTimeToMove())
-                {
-                    MoveNPC(maze, location, npc);
-                    npc.PickNextTimeToMove();
-                }
-                npc.LowerTurnsToNextMove();
+                npc.MoveNPCToRandomSurroundingRoom(maze);
             }
         }
 
-        private void MoveNPC(Maze maze, Point currentLocation, NPC npc)
-        {
-            var rng = new Random();
-            var options = maze.AccessibleNeighbours(currentLocation).ToList();
-            var newRoom = options[rng.Next(0,options.Count)];
-            maze[currentLocation].NPCsInRoom.Remove(npc);
-            maze[newRoom].NPCsInRoom.Add(npc);
-        }
     }
 }

@@ -9,28 +9,32 @@ namespace Zork.Characters
 {
     public class MurdererNPC : NPC
     {
-        public int killEveryXRounds { get; set; } = 10;
-        public int roundsBeforeNewKill;
+        public int killEveryXPlayerSteps { get; set; } = 10;
+        public int stepsBeforeNewKill;
 
         public MurdererNPC(string name, string description, int strength, int startHealth, int letsPlayerFleePerXRounds, Weapon weapon = null) : base(name, description, strength, startHealth, letsPlayerFleePerXRounds, weapon)
         {
-            roundsBeforeNewKill = killEveryXRounds;
+            stepsBeforeNewKill = killEveryXPlayerSteps;
         }
 
         public MurdererNPC(string name, string description, int strength, int startHealth, int maxHealth, int letsPlayerFleePerXRounds, Weapon weapon = null) : base(name, description, strength, startHealth, maxHealth, letsPlayerFleePerXRounds, weapon)
         {
-            roundsBeforeNewKill = killEveryXRounds;
+            stepsBeforeNewKill = killEveryXPlayerSteps;
         }
 
-        public override void Turn()
+        public void WalkingTurn(Maze m)
         {
-            roundsBeforeNewKill--;
-            if (roundsBeforeNewKill == 0)
+            if (IsTimeToMove())
+            {
+                MoveNPCToRandomSurroundingRoom(m);
+            }
+            if (stepsBeforeNewKill == 0)
             {
                 KillRandomNPCInSameRoom();
-                roundsBeforeNewKill = killEveryXRounds;
+                stepsBeforeNewKill = killEveryXPlayerSteps;
             }
-            base.Turn();
+            LowerTurnsToNextMove();
+            stepsBeforeNewKill--;
            
         }
 
@@ -44,11 +48,14 @@ namespace Zork.Characters
             {
                 Random rng = new Random();
 
-                int killNpc = rng.Next(0, CurrentRoom.NPCsInRoom.Count - 1);
+                int killNpc = rng.Next(0, CurrentRoom.NPCsInRoom.Count);
                 List<NPC> npcsInCurrentRoom = CurrentRoom.NPCsInRoom;
-                npcsInCurrentRoom[killNpc].DropWeapon();
-                npcsInCurrentRoom[killNpc].DropAllItems();
-                npcsInCurrentRoom.RemoveAt(killNpc);
+                if (npcsInCurrentRoom[killNpc] != this)
+                {
+                    npcsInCurrentRoom[killNpc].DropWeapon();
+                    npcsInCurrentRoom[killNpc].DropAllItems();
+                    npcsInCurrentRoom.RemoveAt(killNpc);
+                }
                 return true;
             }
             else

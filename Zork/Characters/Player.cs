@@ -68,7 +68,7 @@ namespace Zork.Characters
             Console.WriteLine($"\nYou have {Health} hp left, he has {enemy.Health} hp left.");
         }
 
-        public override BattleOutcomeEnum Fight(NPC enemy, Room[,] allRooms)
+        public override BattleOutcomeEnum Fight(NPC enemy, Maze maze)
         {
             while (enemy.Health > 0 && Health > 0 && !Fled)
             {                
@@ -77,11 +77,11 @@ namespace Zork.Characters
                     AskFlee();
                 }
                 FightOneRound(enemy);
-                Turn();
+                TurnInFight(maze);
             }
             if (Fled)
             {
-                Flee(allRooms);
+                Flee(maze.Rooms);
                 return BattleOutcomeEnum.PlayerFled;
             }
             return base.CheckWhoWon(enemy);

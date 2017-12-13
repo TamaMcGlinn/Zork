@@ -170,7 +170,7 @@ namespace Zork
 
         internal int TurnsPassed { get; set; }
 
-        public void Battle(Room[,] allRooms)
+        public void Battle(Maze maze)
         {
             NPC enemy = null;
             if (!CurrentRoom.PrintAvailableEnemiesInRoom())
@@ -184,7 +184,7 @@ namespace Zork
             }
             if (enemy != null)
             {
-                BattleOutcomeEnum battleOutcome = Fight(enemy, allRooms);
+                BattleOutcomeEnum battleOutcome = Fight(enemy, maze);
             }
         }
 
@@ -193,19 +193,20 @@ namespace Zork
         /// if enemy dies player picks up all his items.
         /// </summary>
         /// <returns>A boolean indicating wether the player won the fight</returns>
-        public virtual BattleOutcomeEnum Fight(NPC enemy, Room[,] AllRooms)
+        public virtual BattleOutcomeEnum Fight(NPC enemy, Maze m)
         {
             while (enemy.Health > 0 && Health > 0)
             {
                 FightOneRound(enemy);
-                Turn();
+                TurnInFight(m);
             }
             return CheckWhoWon(enemy);
         }
 
-        public virtual void Turn()
+        public virtual void TurnInFight(Maze m)
         {
             TurnsPassed++;
+            
         }
 
         protected BattleOutcomeEnum CheckWhoWon(NPC enemy)
