@@ -17,13 +17,6 @@ namespace Zork
             get { return _canGoThere; }
         }
 
-        private string _name;
-
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
         private string _description;
 
         public string Description
@@ -39,7 +32,6 @@ namespace Zork
             get { return _locationOfRoom; }
             set { _locationOfRoom = value; }
         }
-
 
         private List<BaseObject> _objectsInRoom = new List<BaseObject>();
 
@@ -69,51 +61,31 @@ namespace Zork
             LocationOfRoom = locationOfRoom;
         }
 
-
-        public void PrintAvailableDirections() {
-            Console.WriteLine("\n"+Description + "\n");
-            Console.Write("You can go: ");
+        public string DescribeAvailableDirections() {
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine($"\n{Description}");
+            sb.AppendLine("You can go: ");
             foreach (var kvp in CanGoThere)
             {
                 if (kvp.Value)
                 {
-                    Console.Write(kvp.Key + " ");
+                    sb.AppendLine($"{kvp.Key} ");
                 }
-               
             }
-            Console.WriteLine();
+            sb.AppendLine();
+            return sb.ToString();
         }
 
         /// <summary>
-        /// Prints a list of characters you can fight and lets you choose a character
+        /// Returns a string containing all the objects in the room
         /// </summary>
-        /// <returns>Whether there are enemies in the current room</returns>
-        public bool PrintAvailableEnemiesInRoom()
-        {
-            if (NPCsInRoom.Count > 0)
-            {
-                for (int i = 0; i < NPCsInRoom.Count; i++)
-                {
-                    Console.WriteLine($"[{i + 1}] {NPCsInRoom[i].Name}");
-                }
-                return true;
-            }
-            else
-            {
-                Console.WriteLine("\nThere's no one here\n");
-                return false;
-            }
-        }
-
-        /// <summary>
-        /// Prints a string containing all the objects in the room
-        /// </summary>
-        /// <returns>The string which is printed</returns>
-        public string PrintObjectsInRoom()
+        /// <returns>A description of the objects in the room</returns>
+        public string DescribeObjectsInRoom()
         {
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < ObjectsInRoom.Count; i++)
             {
+                sb.Append($"[{i + 1}] ");
                 sb.Append(ObjectsInRoom[i].Name);
                 sb.Append(" ");
                 sb.AppendLine(ObjectsInRoom[i].Description);
@@ -122,25 +94,29 @@ namespace Zork
         }
 
         /// <summary>
-        /// Prints a string containing all the characters in the room
+        /// Returns a string containing all the characters in the room
         /// </summary>
-        /// <returns>The string which is printed</returns>
-        public string PrintCharactersInRoom()
+        /// <returns>A description of the characters in the room</returns>
+        public string DescribeCharactersInRoom()
         {
+            if(NPCsInRoom.Count == 0)
+            {
+                return "There's no one here.\n";
+            }
             StringBuilder sb = new StringBuilder();
             for (int i = 0; i < NPCsInRoom.Count; i++)
             {
                 string formattedName = NPCsInRoom[i].Name.Replace('_', ' ');
+                sb.Append($"[{i+1}] ");
                 sb.Append(formattedName);
                 sb.Append(" : ");
                 sb.Append(NPCsInRoom[i].Description);
                 sb.AppendLine();
             }
-
             return sb.ToString();
         }
 
-        public string PrintLookAroundString()
+        public string DescribeRoom()
         {
             StringBuilder sb = new StringBuilder();
 
@@ -151,8 +127,8 @@ namespace Zork
             if (NPCsInRoom.Count > 0)
             {
                 sb.AppendLine("\nThe following people are in this room:");
-                sb.Append(PrintCharactersInRoom());
-                sb.Append("\n");
+                sb.Append(DescribeCharactersInRoom());
+                sb.AppendLine();
             }
             else
             {
@@ -161,8 +137,7 @@ namespace Zork
 
             //prints all objects
             sb.AppendLine("You see the following objects laying around:");
-            sb.Append(PrintObjectsInRoom());
-            Console.WriteLine(sb.ToString());
+            sb.Append(DescribeObjectsInRoom());
             return sb.ToString();
         }
 

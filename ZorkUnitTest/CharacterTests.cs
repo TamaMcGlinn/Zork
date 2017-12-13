@@ -74,7 +74,7 @@ namespace ZorkUnitTest
             Character character = characters.NPCS[0];
             room.NPCsInRoom.Add(character as NPC);
             room.ObjectsInRoom = CreateListOfThreeWeaponObjects();
-            string lookAroundTextString = room.PrintLookAroundString();
+            string lookAroundTextString = room.DescribeRoom();
             string[] lookAroundTextList = lookAroundTextString.Split('\n');
 
             //Na feedback dit:

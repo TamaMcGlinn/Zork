@@ -28,7 +28,7 @@ namespace Zork.Characters
         /// </summary>
         public void LookAround()
         {
-            CurrentRoom.PrintLookAroundString();
+            Console.WriteLine(CurrentRoom.DescribeRoom());
         }
 
         public void UseHealthPickup(HealthPickup h)
@@ -68,83 +68,54 @@ namespace Zork.Characters
             Console.WriteLine($"\nYou have {Health} hp left, he has {enemy.Health} hp left.");
         }
 
-        public override BattleOutcomeEnum Fight(NPC enemy, Room[,] allRooms)
+        public void Battle(Maze maze)
         {
-            while (enemy.Health > 0 && Health > 0 && !Fled)
-            {                
-                if (TurnsPassed % enemy.LetsPlayerFleePerXRounds == 0)
-                {
-                    AskFlee();
-                }
-                FightOneRound(enemy);
-                Turn();
-            }
-            if (Fled)
+            Console.WriteLine(CurrentRoom.DescribeCharactersInRoom());
+            if(CurrentRoom.NPCsInRoom.Count == 0)
             {
-                Flee(allRooms);
-                return BattleOutcomeEnum.PlayerFled;
+                return;
             }
-            return base.CheckWhoWon(enemy);
+            int enemyNumber;
+            if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber > 0 && enemyNumber <= CurrentRoom.NPCsInRoom.Count)
+            {
+                NPC enemy = CurrentRoom.NPCsInRoom[enemyNumber - 1];
+                Fight(enemy, maze);
+            }
         }
 
+        public void Fight(NPC enemy, Maze maze)
+        {
+            int turn = 0;
+            while (enemy.Health > 0 && Health > 0)
+            {                
+                FightOneRound(enemy);
+                ++turn;
+                if (turn % enemy.LetsPlayerFleePerXRounds == 0 && AskFlee())
+                {
+                    Flee(maze);
+                    return;
+                }
+            }
+            CheckWhoWon(enemy);
+        }
 
-        public bool Fled { get; set; } = false;
-
-
-        protected void AskFlee()
+        protected bool AskFlee()
         {
             Console.WriteLine("Do you want to flee? Y/N");
             char userInputCharacter = (char)Console.Read();
-            if (userInputCharacter == 'y' || userInputCharacter == 'Y')
-            {
-                Fled = true;
-            }
-            else
-            {
-                Fled = false;
-            }
+            return (userInputCharacter == 'y' || userInputCharacter == 'Y');
         }
 
         /// <summary>
         /// Lets your character run to a random room
         /// </summary>
         /// <param name="allRooms"></param>
-        public void Flee(Room[,] allRooms)
+        public void Flee(Maze maze)
         {
-            Point newRoom;
-            if (CurrentRoom != null)
-            {
-                newRoom =  CurrentRoom.LocationOfRoom; 
-                while (newRoom.X == CurrentRoom.LocationOfRoom.X && newRoom.Y == CurrentRoom.LocationOfRoom.Y)
-                {
-                    newRoom = getRandomPointWithinGameBounds();
-                }
-            }
-            else
-            {
-               newRoom = getRandomPointWithinGameBounds();
-            }
-
-            foreach(Room r in allRooms)
-            {
-                if(r.LocationOfRoom.X == newRoom.X && r.LocationOfRoom.Y == newRoom.Y)
-                {
-                    CurrentRoom = r;
-                }
-            }
-
+            CurrentRoom = maze.GetRandomOtherRoom(CurrentRoom);
             Console.WriteLine("...What ...Where am i?");
         }
-
-        public Point getRandomPointWithinGameBounds()
-        {
-            Random r = new Random();
-            int X, Y;
-            X = r.Next(0, Game.Width);
-            Y = r.Next(0, Game.Height);
-            return new Point(X, Y);
-        }
-
+        
         #region talkMethods
 
         public void TryTalk()
