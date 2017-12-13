@@ -45,55 +45,56 @@ namespace ZorkUnitTest
         [TestMethod]
         public void MurdererCanKillTest()
         {
-            
+            Game game = new Game();
             MurdererNPC murderer = CreateMurderer();
             MurdererNPC npc = CreateMurderer();
             murderer.CurrentRoom.NPCsInRoom.Add(npc);
             npc.CurrentRoom = murderer.CurrentRoom;
             int countNpcsInRoom = murderer.CurrentRoom.NPCsInRoom.Count;
-            murderer.KillRandomNPCInSameRoom();
+            murderer.KillRandomNPCInSameRoom(game);
             Assert.IsTrue(countNpcsInRoom > murderer.CurrentRoom.NPCsInRoom.Count);
-
         }
 
         [TestMethod]
         public void MurdererCanKillNoOneIfRoomIsEmpty()
         {
+            Game game = new Game();
             MurdererNPC murderer = CreateMurderer();
             murderer.CurrentRoom.NPCsInRoom.Clear();
-            murderer.KillRandomNPCInSameRoom();
-            Assert.IsFalse(murderer.CurrentRoom.NPCsInRoom.Count == 0);
+            murderer.KillRandomNPCInSameRoom(game);
+            Assert.IsTrue(murderer.CurrentRoom.NPCsInRoom.Count == 0);
         }
 
         [TestMethod]
         public void MurdererTriesToKillEveryXTurns()
         {
-            Maze m = new Maze(1,1,0,0);
+            Game game = new Game();
+            Maze m = new Maze(1, 1, 0, 0);
             MurdererNPC murderer = CreateMurderer();
             murderer.maze = m;
-            murderer.CurrentRoom = m.Rooms[0,0];
-            murderer.CurrentRoom.NPCsInRoom.Add(CreateMurderer());
+            murderer.CurrentRoom = m.Rooms[0, 0];
+            NPC victim = CharacterTests.CreateNPC();
+            victim.CurrentRoom = murderer.CurrentRoom;
+            murderer.CurrentRoom.NPCsInRoom.Add(victim);
+            murderer.CurrentRoom.NPCsInRoom.Add(murderer);
+            int totalNpcs = CountNPCs(m);
+            for (int i = 0; i < murderer.KillEveryXPlayerSteps; ++i)
+            {
+                murderer.OnPlayerMoved(game);
+            }
+            int totalnpcsAfterKill = CountNPCs(m);
+            Assert.IsTrue(totalnpcsAfterKill < totalNpcs);
+        }
+
+        private static int CountNPCs(Maze m)
+        {
             int totalNpcs = 0;
             foreach (Room r in m.Rooms)
             {
                 totalNpcs += r.NPCsInRoom.Count;
             }
-            bool isLooped = false;
-            while (murderer.StepsBeforeNextKill >= 0 && isLooped == false)
-            {
-                murderer.OnPlayerMoved();
-                if(murderer.StepsBeforeNextKill == murderer.KillEveryXPlayerSteps)
-                {
-                    isLooped = true;
-                }
-            }
 
-            int totalnpcsAfterKill = 0;
-            foreach (Room r in m.Rooms)
-            {
-                totalnpcsAfterKill += r.NPCsInRoom.Count;
-            }
-            Assert.IsTrue(totalnpcsAfterKill < totalNpcs);
+            return totalNpcs;
         }
 
         public MurdererNPC CreateMurderer()

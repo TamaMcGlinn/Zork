@@ -28,23 +28,24 @@ namespace ZorkUnitTest
         [TestMethod]
         public void FightStrongEnemyTest()
         {
+            Game game = new Game();
             Maze maze = CreateMaze();
             Room room = maze.Rooms[0, 0];
             Player player = new Player(room);
             NPC barney = createNPCBarney();
-            player.Fight(barney, maze);
+            player.Fight(barney, game);
             Assert.IsTrue(player.Health <= 0);
-
         }
 
         [TestMethod]
         public void FightweakEnemyTest()
         {
+            Game game = new Game();
             Maze maze = CreateMaze();
             Room room = maze.Rooms[0, 0];
             Player player = new Player(room);
             NPC barney = CreateWeakNPC();
-            player.Fight(barney, maze);
+            player.Fight(barney, game);
             Assert.IsTrue(player.Health > 0);
         }
 

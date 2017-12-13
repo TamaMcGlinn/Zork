@@ -117,20 +117,22 @@ namespace ZorkUnitTest
         [TestMethod]
         public void KillNPCTest()
         {
+            Game game = new Game();
             NPC npc = CreateNPC();
             npc.CurrentRoom = new Room("", new Point(0, 0));
             Room npcRoom = npc.CurrentRoom;
-            npc.KillThisNPC();
+            npc.KillThisNPC(game);
             Assert.IsFalse(npcRoom.NPCsInRoom.Count > 0);
         }
 
         [TestMethod]
         public void TestIfNPCBecomesCorpseObject()
         {
+            Game game = new Game();
             NPC npc = CreateNPC();
             npc.CurrentRoom = new Room("", new Point(0, 0));
             Room npcRoom = npc.CurrentRoom;
-            npc.KillThisNPC();
+            npc.KillThisNPC(game);
             Assert.IsFalse(npcRoom.ObjectsInRoom[0] is CorpseNPCObject);
         }
 
@@ -138,7 +140,7 @@ namespace ZorkUnitTest
         /// Creates a weapon objects for testing purposes
         /// </summary>
         /// <returns></returns>
-        private Weapon CreateWeapon()
+        private static Weapon CreateWeapon()
         {
             return new Weapon("Longsword", 16, "a heavy longsword");
            
@@ -148,7 +150,7 @@ namespace ZorkUnitTest
         /// Creates a character holding a weapon for testing purposes
         /// </summary>
         /// <returns>A character equipped with a longsword</returns>
-        private NPC CreateNPC()
+        public static NPC CreateNPC()
         {
             return new NPC("constable_barney", "This man has a long beard.", 4, 100, 5, CreateWeapon());
         }
@@ -177,7 +179,7 @@ namespace ZorkUnitTest
             {
                 foreach(NPC npc in game.NPCS)
                 {
-                    npc.OnPlayerMoved();
+                    npc.OnPlayerMoved(game);
                     if(npc.CurrentRoom.LocationOfRoom != startLocations[npc.Name])
                     {
                         characterHasMoved[npc.Name] = true;

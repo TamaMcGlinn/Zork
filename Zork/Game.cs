@@ -48,7 +48,7 @@ namespace Zork
             { 'p', (Game g) => { g.player.PickupItem(); } },
             { 'i', (Game g) => { g.player.PrintInventory(); } },
             { 'c', (Game g) => { g.player.PrintStats(); } },
-            { 'b', (Game g) => { g.player.Battle(g.maze); } },
+            { 'b', (Game g) => { g.player.Battle(g); } },
             { 'm', (Game g) => { g.maze.Print(g.player.CurrentRoom.LocationOfRoom); } }
         };
 
@@ -70,10 +70,6 @@ namespace Zork
                 npc.maze = maze;
                 room.NPCsInRoom.Add(npc);
                 npc.CurrentRoom = room;
-            }
-            foreach(NPC npc in NPCS)
-            {
-                npc.KillThisNPC();
             }
         }
 

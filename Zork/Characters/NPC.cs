@@ -70,7 +70,7 @@ namespace Zork.Characters
             return playerResponse.FirstAvailableChild(player);
         }
 
-        public virtual void OnPlayerMoved()
+        public virtual void OnPlayerMoved(Game game)
         {
             _turnsUntilNextMove--;
             if( _turnsUntilNextMove == 0)
@@ -113,13 +113,14 @@ namespace Zork.Characters
             return playerResponse;
         }
 
-        public void KillThisNPC()
+        public void KillThisNPC(Game game)
         {
             CurrentRoom.NPCsInRoom.Remove(this);
             DropAllItems();
             DropWeapon();
             CurrentRoom.ObjectsInRoom.Add(new CorpseNPCObject(this.Name));
             CurrentRoom = null;
+            game.NPCS.Remove(this);
         }
     }
 }
