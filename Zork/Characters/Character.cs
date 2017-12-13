@@ -168,60 +168,18 @@ namespace Zork
             }
         }
 
-        internal int TurnsPassed { get; set; }
-
-        public void Battle(Room[,] allRooms)
-        {
-            NPC enemy = null;
-            if (!CurrentRoom.PrintAvailableEnemiesInRoom())
-            {
-                return;
-            }
-            int enemyNumber;
-            if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber > 0 && enemyNumber <= CurrentRoom.NPCsInRoom.Count)
-            {
-                enemy = CurrentRoom.NPCsInRoom[enemyNumber - 1];
-            }
-            if (enemy != null)
-            {
-                BattleOutcomeEnum battleOutcome = Fight(enemy, allRooms);
-            }
-        }
-
-        /// <summary>
-        /// Fights the chosen enemy untill someone dies, if player dies he loses all his items, 
-        /// if enemy dies player picks up all his items.
-        /// </summary>
-        /// <returns>A boolean indicating wether the player won the fight</returns>
-        public virtual BattleOutcomeEnum Fight(NPC enemy, Room[,] AllRooms)
-        {
-            while (enemy.Health > 0 && Health > 0)
-            {
-                FightOneRound(enemy);
-                Turn();
-            }
-            return CheckWhoWon(enemy);
-        }
-
-        public void Turn()
-        {
-            TurnsPassed++;
-        }
-
-        protected BattleOutcomeEnum CheckWhoWon(NPC enemy)
+        protected void CheckWhoWon(NPC enemy)
         {
             if (enemy.Health < 0)
             {
                 enemy.Inventory.Clear();
                 enemy.ResetHealth();
                 Console.WriteLine("You died! But luckily you've returned without items.");
-                return BattleOutcomeEnum.EnemyWon;
             }
             else
             {
                 enemy.Inventory.AddRange(enemy.Inventory);
                 Console.WriteLine($"You've won! You've picked up all {enemy.Name}'s items, check your inventory!");
-                return BattleOutcomeEnum.PlayerWon;
             }
         }
 

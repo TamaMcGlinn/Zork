@@ -67,42 +67,41 @@ namespace Zork.Characters
             Console.Write($"\n{enemy.Name} hits you for:" + enemyDamage + PrintGetHittedWithWeapon(enemy));
             Console.WriteLine($"\nYou have {Health} hp left, he has {enemy.Health} hp left.");
         }
-
-        public override BattleOutcomeEnum Fight(NPC enemy, Room[,] allRooms)
+        public void Battle(Room[,] allRooms)
         {
-            while (enemy.Health > 0 && Health > 0 && !Fled)
-            {                
-                if (TurnsPassed % enemy.LetsPlayerFleePerXRounds == 0)
-                {
-                    AskFlee();
-                }
-                FightOneRound(enemy);
-                Turn();
-            }
-            if (Fled)
+            if (!CurrentRoom.PrintAvailableEnemiesInRoom())
             {
-                Flee(allRooms);
-                return BattleOutcomeEnum.PlayerFled;
+                return;
             }
-            return base.CheckWhoWon(enemy);
+            int enemyNumber;
+            if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber > 0 && enemyNumber <= CurrentRoom.NPCsInRoom.Count)
+            {
+                NPC enemy = CurrentRoom.NPCsInRoom[enemyNumber - 1];
+                Fight(enemy, allRooms);
+            }
         }
 
+        public void Fight(NPC enemy, Room[,] allRooms)
+        {
+            int turn = 0;
+            while (enemy.Health > 0 && Health > 0)
+            {                
+                FightOneRound(enemy);
+                ++turn;
+                if (turn % enemy.LetsPlayerFleePerXRounds == 0 && AskFlee())
+                {
+                    Flee(allRooms);
+                    return;
+                }
+            }
+            CheckWhoWon(enemy);
+        }
 
-        public bool Fled { get; set; } = false;
-
-
-        protected void AskFlee()
+        protected bool AskFlee()
         {
             Console.WriteLine("Do you want to flee? Y/N");
             char userInputCharacter = (char)Console.Read();
-            if (userInputCharacter == 'y' || userInputCharacter == 'Y')
-            {
-                Fled = true;
-            }
-            else
-            {
-                Fled = false;
-            }
+            return (userInputCharacter == 'y' || userInputCharacter == 'Y');
         }
 
         /// <summary>
