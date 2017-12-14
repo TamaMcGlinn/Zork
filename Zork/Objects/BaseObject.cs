@@ -37,5 +37,6 @@ namespace Zork.Objects
         {
             character.Inventory.Add(this);
         }
+
     }
 }

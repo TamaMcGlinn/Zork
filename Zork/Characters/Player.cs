@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using Zork.Objects;
 using Zork.UIContext;
 
@@ -37,7 +38,7 @@ namespace Zork.Characters
 
         public void UseHealthPickup(HealthPickup h)
         {
-            Health = Math.Min(MaxHealth, Health + h.Potency);
+            h.UseObject(this);
         }
 
         private string PrintHittingWithWeapon()
@@ -122,6 +123,48 @@ namespace Zork.Characters
             }
             Console.WriteLine($"\nYou have {Health} hp left, he has {enemy.Health} hp left.");
         }
+        
+        public void UseObject()
+        {
+            //check for useable items and display a list of which to use, otherwise show a non item available message
+            List<UseableObject> useables = Inventory.Where(x => x is UseableObject).Cast<UseableObject>().ToList();
+            if (useables.Count > 0)
+            {
+                Console.WriteLine("Choose which item you would like to use:");
+                PrintUseableItems(useables);
+                ChooseObjectToUse(useables);
+            }
+            else
+            {
+                Console.WriteLine("You have no useable items in your inventory.");
+            }
+        }
+
+        private void PrintUseableItems(List<UseableObject> useableItems)
+        {
+            for (int counter = 0; counter < useableItems.Count; ++counter)
+            {
+                UseableObject useable = useableItems[counter];
+                Console.WriteLine($"[{counter + 1}] : {useable.Name}, {useable.Description}");
+            }
+        }
+
+        private void ChooseObjectToUse(List<UseableObject> useableItems)
+        {
+            string userInput = Console.ReadLine();
+
+            if (userInput.Length <= 0)
+            {
+                return;
+            }
+            int userInputNumber;
+            int.TryParse(userInput, out userInputNumber);
+            userInputNumber--;
+            if (userInputNumber >= 0 && userInputNumber < useableItems.Count)
+            {
+                useableItems[userInputNumber].UseObject(this);
+            }
+        }
 
         public void Battle(Game game)
         {
@@ -142,27 +185,33 @@ namespace Zork.Characters
         {
             int turn = 0;
             while (enemy.Health > 0 && Health > 0)
-            {                
+            {
                 FightOneRound(enemy);
                 ++turn;
-                if (turn % enemy.LetsPlayerFleePerXRounds == 0 && AskFlee())
+                if (UserFlees(enemy, turn))
                 {
                     Flee(game.maze);
                     return;
                 }
             }
-            CheckWhoWon(enemy);
-            if (enemy.Health > 0)
-            {
-                enemy.KillThisNPC(game);
-            }
+            CheckWhoWon(enemy, game);
+        }
+
+        private bool UserFlees(NPC enemy, int turn)
+        {
+            return enemy.Health > 0 && Health > 0 && turn % enemy.LetsPlayerFleePerXRounds == 0 && AskFlee();
         }
 
         protected bool AskFlee()
         {
             Console.WriteLine("Do you want to flee? Y/N");
-            char userInputCharacter = (char)Console.Read();
-            return (userInputCharacter == 'y' || userInputCharacter == 'Y');
+            string userInput = Console.ReadLine();
+            userInput = userInput.ToLower();
+            if ( userInput.Length != 1)
+            {
+                return false;
+            }
+            return (userInput[0] == 'y');
         }
 
         /// <summary>

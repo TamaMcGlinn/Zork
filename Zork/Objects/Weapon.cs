@@ -2,7 +2,7 @@
 
 namespace Zork.Objects
 {
-    public class Weapon : BaseObject
+    public class Weapon : UseableObject
     {
         #region properties
         private int _strength;
@@ -23,13 +23,31 @@ namespace Zork.Objects
 
         public override void PickupObject(Character character)
         {
-            character.EquippedWeapon = this;
+            if (character.EquippedWeapon == null)
+            {
+                character.EquippedWeapon = this;
+            }
+            else
+            {
+                character.Inventory.Add(this);
+            }
         }
 
         public void PrintStats()
         {
             Console.WriteLine(Name + ": " + Description);
             Console.WriteLine("Strength: " + Strength);
+        }
+
+        public override void UseObject(Character c)
+        {
+            c.Inventory.Remove(this);
+            if (c.EquippedWeapon != null)
+            {
+                c.Inventory.Add(c.EquippedWeapon);
+            }
+            c.EquippedWeapon = this;
+            Console.WriteLine($"You've equipped a: {Name}");
         }
     }
 }

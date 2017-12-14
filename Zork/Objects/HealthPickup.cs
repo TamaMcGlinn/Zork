@@ -2,7 +2,7 @@
 
 namespace Zork.Objects
 {
-    public class HealthPickup : BaseObject
+    public class HealthPickup : UseableObject
     {
         private int _potency;
 
@@ -19,6 +19,13 @@ namespace Zork.Objects
         public HealthPickup(string name, int potency, string description) : base(name, description)
         {
             _potency = potency;
+        }
+
+        public override void UseObject(Character c)
+        {
+            c.Health = Math.Min(c.MaxHealth, c.Health + Potency);
+            Console.WriteLine("Ahhh that's refreshing! Health:" + c.Health);
+            c.Inventory.Remove(this);
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Zork
     {
         #region properties
         
-        protected int MaxHealth = 100;
+        public int MaxHealth = 100;
 
         private string _name;
 
@@ -33,7 +33,7 @@ namespace Zork
         public int Health
         {
             get { return _health; }
-            protected set { _health = value; }
+            set { _health = value; }
         }
 
         private Weapon _weapon;
@@ -138,9 +138,9 @@ namespace Zork
             }
         }
 
-        protected void CheckWhoWon(NPC enemy)
+        protected void CheckWhoWon(NPC enemy, Game game)
         {
-            if (enemy.Health < 0)
+            if (Health < 0)
             {
                 enemy.Inventory.Clear();
                 enemy.ResetHealth();
@@ -152,9 +152,21 @@ namespace Zork
             else
             {
                 enemy.Inventory.AddRange(enemy.Inventory);
+                enemy.KillThisNPC(game);
+                bool gameWon = enemy is MurdererNPC;
                 using (new ColourContext(ColourContext.BattleWin))
                 {
-                    Console.WriteLine($"You've won! You've picked up all {enemy.Name}'s items, check your inventory!");
+                    if (gameWon)
+                    {
+                        Console.WriteLine($"You win! {enemy.Name} was served justice by death!");
+                        Console.WriteLine($"Press a button to exit the game.");
+                        Console.ReadLine();
+                        Environment.Exit(0);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Oh my god, you killed poor innocent {enemy.Name}! You've picked up all {enemy.Name}'s items, check your inventory!");
+                    }
                 }
             }
         }

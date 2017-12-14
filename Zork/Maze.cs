@@ -26,7 +26,19 @@ namespace Zork
             rng = new Random();
             Rooms = new Room[xSize, ySize];
             Rooms[StartX, StartY] = new Room(HouseDescription, new Point(StartX, StartY));
-            streetNames.AddRange(File.ReadAllText("../../../data/streetnames.txt").Split('\n'));
+
+            string streetnamesFilePath = "../../../data/streetnames.txt";
+            if (File.Exists(streetnamesFilePath))
+            {
+                streetNames.AddRange(File.ReadAllText(streetnamesFilePath).Split('\n'));
+            }
+            else
+            {
+                //a few default streetnames
+                streetNames.Add("Wallstreet");
+                streetNames.Add("Derproad");
+                streetNames.Add("Sherhome");
+            }
             CreateNeighbour(new Point(StartX, StartY));
             AddExtraConnections(xSize * ySize);
         }

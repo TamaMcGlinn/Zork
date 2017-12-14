@@ -19,6 +19,5 @@ namespace Zork.Objects
         {
             Console.WriteLine("Can't pickup a dead body");
         }
-
     }
 }

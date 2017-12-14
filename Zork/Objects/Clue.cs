@@ -8,6 +8,7 @@ namespace Zork.Objects
         public Clue(string name, string description) : base(name, description)
         {
         }
+        
 
         public override ConsoleColor Colour => ConsoleColor.Cyan;
 
