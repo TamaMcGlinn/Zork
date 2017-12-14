@@ -184,6 +184,9 @@ namespace Zork
                 if (gameWon)
                 {
                     Console.WriteLine($"You win! {enemy.Name} was served justice by death!");
+                    Console.WriteLine($"Press a button to exit the game.");
+                    Console.ReadLine();
+                    Environment.Exit(0);
                 }
                 else
                 {
