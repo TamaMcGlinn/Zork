@@ -172,7 +172,7 @@ namespace Zork.Characters
         public void Flee(Maze maze)
         {
             CurrentRoom = maze.GetRandomOtherRoom(CurrentRoom);
-            Console.WriteLine("...What ...Where am i?");
+            Console.WriteLine("When danger reared its ugly head,\nyou bravely turned your tail and fled...");
         }
         
         #region talkMethods
