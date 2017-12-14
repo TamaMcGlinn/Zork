@@ -72,12 +72,29 @@ namespace Zork.Characters
             using (new ColourContext(ColourContext.HeaderColor))
             {
                 Console.WriteLine("You currently have the following items:");
-            }
-            using (var writer = new ColourContext(ColourContext.ItemColor))
-            {
                 for (int i = 0; i < Inventory.Count; i++)
                 {
+                    Console.ForegroundColor = Inventory[i].Colour;
                     Console.WriteLine($"{Inventory[i].Name} : {Inventory[i].Description}");
+                }
+                Console.WriteLine();
+            }
+        }
+
+        public void PrintEquippedWeapon()
+        {
+            if (EquippedWeapon != null)
+            {
+                using (new ColourContext(EquippedWeapon.Colour))
+                {
+                    Console.WriteLine($"You're holding a {EquippedWeapon.Name} :  {EquippedWeapon.Description}");
+                }
+            }
+            else
+            {
+                using (new ColourContext(ColourContext.FailureColor))
+                {
+                    Console.WriteLine("You're not holding a weapon");
                 }
             }
         }

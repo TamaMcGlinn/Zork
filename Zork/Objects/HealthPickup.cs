@@ -1,4 +1,6 @@
-﻿namespace Zork.Objects
+﻿using System;
+
+namespace Zork.Objects
 {
     public class HealthPickup : BaseObject
     {
@@ -11,6 +13,8 @@
         {
             get { return _potency; }
         }
+
+        public override ConsoleColor Colour => ConsoleColor.Red;
 
         public HealthPickup(string name, int potency, string description) : base(name, description)
         {

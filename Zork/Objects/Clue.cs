@@ -1,4 +1,5 @@
-﻿using Zork.Characters;
+﻿using System;
+using Zork.Characters;
 
 namespace Zork.Objects
 {
@@ -7,6 +8,8 @@ namespace Zork.Objects
         public Clue(string name, string description) : base(name, description)
         {
         }
+
+        public override ConsoleColor Colour => ConsoleColor.Cyan;
 
         public override void PickupObject(Character character)
         {

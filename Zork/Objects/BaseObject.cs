@@ -1,4 +1,6 @@
-﻿namespace Zork.Objects
+﻿using System;
+
+namespace Zork.Objects
 {
     public abstract class BaseObject
     {
@@ -16,7 +18,9 @@
         {
             get { return _description; }
         }
-        
+
+        public abstract ConsoleColor Colour { get; }
+
         #endregion properties
 
         public BaseObject(string name, string description)

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Zork.Characters;
 using Zork.Objects;
+using Zork.UIContext;
 
 namespace Zork
 {
@@ -104,18 +105,6 @@ namespace Zork
             this.MaxHealth = maxHealth;
             this.Health = Math.Min(maxHealth, startHealth);
             this.EquippedWeapon = weapon;
-        }
-
-        public void PrintEquippedWeapon()
-        {
-            if (EquippedWeapon != null)
-            {
-                Console.WriteLine($"You're holding a {EquippedWeapon.Name} :  {EquippedWeapon.Description}");
-            }
-            else
-            {
-                Console.WriteLine("You're not holding a weapon");
-            }
         }
 
         public void ResetHealth()

@@ -12,15 +12,18 @@ namespace Zork.UIContext
     public class ColourContext : IDisposable
     {
         public static ConsoleColor HeaderColor = ConsoleColor.DarkMagenta;
-        public static ConsoleColor ItemColor = ConsoleColor.DarkMagenta;
         public static ConsoleColor FailureColor = ConsoleColor.Red;
+
+        private ConsoleColor _originalForegroundColor;
+        private ConsoleColor _originalBackgroundColor;
 
         public ColourContext(ConsoleColor foregroundColor, ConsoleColor backgroundColor = ConsoleColor.Black)
         {
+            _originalForegroundColor = Console.ForegroundColor;
+            _originalBackgroundColor = Console.BackgroundColor;
             Console.ForegroundColor = foregroundColor;
             Console.BackgroundColor = backgroundColor;
         }
-
 
         /// <summary>
         /// Write the value padded to the window width, so that the backgroundcolor applies to the whole line,
@@ -34,7 +37,8 @@ namespace Zork.UIContext
 
         public void Dispose()
         {
-            Console.ResetColor();
+            Console.ForegroundColor = _originalForegroundColor;
+            Console.BackgroundColor = _originalBackgroundColor;
         }
     }
 }
