@@ -50,7 +50,7 @@ namespace Zork
             { 'c', (Game g) => { g.player.PrintStats(); } },
             { 'b', (Game g) => { g.player.Battle(g); } },
             { 'm', (Game g) => { g.maze.Print(g.player.CurrentRoom.LocationOfRoom); } },
-            { 'h', (Game g) => { g.player.printHealthPickupList(); }}
+            { 'u', (Game g) => { g.player.UseObject(); }}
         };
 
         public Game()
