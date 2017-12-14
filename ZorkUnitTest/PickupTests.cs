@@ -68,7 +68,7 @@ namespace ZorkUnitTest
             Player p = createPlayer();
             Weapon w = new Weapon("Longsword", 5, "a big sword");
             w.PickupObject(p);
-            Assert.IsTrue(p.Inventory.Contains(w));
+            Assert.IsTrue(p.EquippedWeapon == w);
         }
 
         [TestMethod]

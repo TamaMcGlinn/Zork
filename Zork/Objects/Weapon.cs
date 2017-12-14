@@ -21,7 +21,14 @@ namespace Zork.Objects
 
         public override void PickupObject(Character character)
         {
-            character.Inventory.Add(this);
+            if (character.EquippedWeapon == null)
+            {
+                character.EquippedWeapon = this;
+            }
+            else
+            {
+                character.Inventory.Add(this);
+            }
         }
 
         public void PrintStats()
