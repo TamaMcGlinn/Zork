@@ -9,6 +9,14 @@ namespace Zork.Characters
 {
     public class NPC : Character
     {
+        private bool _isHostile = false;
+
+        public bool IsHostile
+        {
+            get { return _isHostile; }
+            private set { _isHostile = value; }
+        }
+
         public int LetsPlayerFleePerXRounds { get; set; }
         public const int MinTurnsBetweenMoves = 2;
         public const int MaxTurnsBetweenMoves = 5;
@@ -121,6 +129,11 @@ namespace Zork.Characters
             CurrentRoom.ObjectsInRoom.Add(new CorpseNPCObject(this.Name));
             CurrentRoom = null;
             game.NPCS.Remove(this);
+        }
+
+        public void MarkHostile()
+        {
+            IsHostile = true;
         }
     }
 }

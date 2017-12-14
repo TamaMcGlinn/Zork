@@ -181,6 +181,7 @@ namespace Zork.Characters
 
         public void Fight(NPC enemy, Game game)
         {
+            enemy.MarkHostile();
             int turn = 0;
             while (enemy.Health > 0 && Health > 0)
             {
