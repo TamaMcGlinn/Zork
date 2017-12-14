@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using Zork.Characters;
 using Zork.Objects;
+using Zork.UIContext;
 
 namespace Zork
 {
@@ -82,16 +83,18 @@ namespace Zork
             PrintInstructions();
             while (true)
             {
-                string roomDescription = player.CurrentRoom.DescribeAvailableDirections();
-                Console.WriteLine(roomDescription);
+                player.CurrentRoom.PrintRoom();
                 ProcessInput(Console.ReadLine());
             }
         }
 
         private void PrintPreamble()
         {
-            Console.WriteLine("You are Sherlock, a reknowned detective. In ye olde London, a most vile place to be,");
-            Console.WriteLine("thismorning dead was found dear Cecil, dear to many men. Serve justice to the murderer!\n");
+            using (new ColourContext(ColourContext.PreambleColor))
+            {
+                Console.WriteLine("You are Sherlock, a reknowned detective. In ye olde London, a most vile place to be,");
+                Console.WriteLine("thismorning dead was found dear Cecil, dear to many men. Serve justice to the murderer!\n");
+            }
         }
 
         private void ProcessInput(string userInput)
@@ -109,9 +112,12 @@ namespace Zork
 
         private void PrintInstructions()
         {
-            Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around,");
-            Console.WriteLine("[L] to look around, [P] to pick up an item, [I] Inventory, [B] Battle,");
-            Console.WriteLine("[C] to view stats, or [M] to print the map.");
+            using (new ColourContext(ColourContext.InstructionsColor))
+            {
+                ColourContext.PrintWithKeyCodes("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around,\n");
+                ColourContext.PrintWithKeyCodes("[L] to look around, [P] to pick up an item, [I] for Inventory, [B] for Battle,\n");
+                ColourContext.PrintWithKeyCodes("[C] to view stats, or [M] to print the map.\n\n");
+            }
         }
     }
 }

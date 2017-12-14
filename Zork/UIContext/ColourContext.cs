@@ -13,6 +13,10 @@ namespace Zork.UIContext
     {
         public static ConsoleColor HeaderColor = ConsoleColor.DarkMagenta;
         public static ConsoleColor FailureColor = ConsoleColor.Red;
+        public static ConsoleColor PreambleColor = ConsoleColor.DarkGreen;
+        public static ConsoleColor InstructionsColor = ConsoleColor.Yellow;
+        public static ConsoleColor DirectionsColor = ConsoleColor.Gray;
+        public static ConsoleColor KeyCodeColor = ConsoleColor.Green;
 
         private ConsoleColor _originalForegroundColor;
         private ConsoleColor _originalBackgroundColor;
@@ -33,6 +37,23 @@ namespace Zork.UIContext
         public static void WriteFullLine(string value)
         {
             Console.WriteLine(value.PadRight(Console.WindowWidth - 1));
+        }
+
+        public static void PrintWithKeyCodes(string value)
+        {
+            ConsoleColor startColor = Console.ForegroundColor;
+            for(int i = 0; i < value.Length; i++)
+            {
+                if(value[i] == ']')
+                {
+                    Console.ForegroundColor = startColor;
+                }
+                Console.Write(value[i]);
+                if (value[i] == '[')
+                {
+                    Console.ForegroundColor = KeyCodeColor;
+                }
+            }
         }
 
         public void Dispose()

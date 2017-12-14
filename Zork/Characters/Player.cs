@@ -28,7 +28,11 @@ namespace Zork.Characters
         /// </summary>
         public void LookAround()
         {
-            Console.WriteLine(CurrentRoom.DescribeRoom());
+            using (new ColourContext(ColourContext.HeaderColor))
+            {
+                Console.WriteLine(CurrentRoom.Description);
+            }
+            CurrentRoom.PrintRoomContents();
         }
 
         public void UseHealthPickup(HealthPickup h)
@@ -115,7 +119,7 @@ namespace Zork.Characters
 
         public void Battle(Game game)
         {
-            Console.WriteLine(CurrentRoom.DescribeCharactersInRoom());
+            CurrentRoom.PrintNPCs();
             if(CurrentRoom.NPCsInRoom.Count == 0)
             {
                 return;

@@ -15,14 +15,15 @@ namespace ZorkUnitTest
         [TestMethod]
         public void ChooseEnemyTest()
         {
-            //TODO: ask how to test private methods and user input from console. (console.readlines)
             Point currentRoom = new Point(0, 0);
             Maze maze = new Maze(1, 1, currentRoom.X, currentRoom.Y);
             Player p = new Player(maze.Rooms[currentRoom.X,currentRoom.Y]);
             NPC npc = createNPCBarney();
             maze[currentRoom.X, currentRoom.Y].NPCsInRoom.Add(npc);
-            string characterDescription = p.CurrentRoom.DescribeCharactersInRoom();
-            Assert.IsTrue(characterDescription.Contains($"[1] {maze[currentRoom].NPCsInRoom[0].Name.Replace('_',' ')}"));
+            StringWriter consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
+            p.CurrentRoom.PrintNPCs();
+            Assert.IsTrue(consoleOutput.ToString().Contains($"[1] {maze[currentRoom].NPCsInRoom[0].Name.Replace('_',' ')}"));
         }
 
         [TestMethod]

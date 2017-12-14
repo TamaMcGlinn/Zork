@@ -239,7 +239,7 @@ namespace Zork
             int index = rng.Next(0, streetNames.Count);
             var result = streetNames[index];
             streetNames.RemoveAt(index);
-            return result;
+            return result.Substring(0, result.Length-1);
         }
 
         /// <summary>
