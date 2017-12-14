@@ -50,9 +50,14 @@ namespace Zork
             { 'i', (Game g) => { g.player.PrintInventory(); } },
             { 'c', (Game g) => { g.player.PrintStats(); } },
             { 'b', (Game g) => { g.player.Battle(g); } },
-            { 'm', (Game g) => { g.maze.Print(g.player.CurrentRoom.LocationOfRoom); } },
+            { 'm', (Game g) => { g.maze.Print(g.player.CurrentRoom.LocationOfRoom, g.GetNPCLocations()); } },
             { 'u', (Game g) => { g.player.UseObject(); }}
         };
+
+        private List<Point> GetNPCLocations()
+        {
+            return NPCS.ConvertAll((NPC npc) => { return npc.CurrentRoom.LocationOfRoom; }).ToList();
+        }
 
         public Game()
         {

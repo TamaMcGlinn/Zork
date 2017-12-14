@@ -23,7 +23,7 @@ namespace Zork
         /// Print the maze as a map created by 0's -'s and P for player characters.
         /// </summary>
         /// <param name="playerLocation"></param>
-        public void Print(Point playerLocation)
+        public void Print(Point playerLocation, List<Point> npcLocations)
         {
             PrintEnclosingBorder();
             for (int yi = 0; yi < _maze.Height; ++yi)
@@ -31,7 +31,7 @@ namespace Zork
                 PrintLineEnclosingBorder();
                 for (int xi = 0; xi < _maze.Width; ++xi)
                 {
-                    PrintHorizontal(xi, yi, playerLocation);
+                    PrintHorizontal(xi, yi, playerLocation, npcLocations);
                 }
                 PrintLineEnclosingBorder();
                 Console.WriteLine();
@@ -104,18 +104,19 @@ namespace Zork
             }
         }
 
-        private void PrintHorizontal(int xi, int yi, Point playerLocation)
+        private void PrintHorizontal(int xi, int yi, Point playerLocation, List<Point> npcLocations)
         {
-            if (playerLocation.X == xi && playerLocation.Y == yi)
+            using (new ColorContext(ColorContext.MapPlayerLocation, ColorContext.MapAvailableSquare))
             {
-                using (new ColorContext(ColorContext.MapPlayerLocation, ColorContext.MapAvailableSquare))
+                if (playerLocation.X == xi && playerLocation.Y == yi)
                 {
                     Console.Write("X");
                 }
-            }
-            else
-            {
-                using (new ColorContext(ColorContext.MapAvailableSquare, ColorContext.MapAvailableSquare))
+                else if (npcLocations.Any((Point p) => { return p.X == xi && p.Y == yi; }))
+                {
+                    Console.Write("+");
+                }
+                else
                 {
                     Console.Write(" ");
                 }

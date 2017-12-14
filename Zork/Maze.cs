@@ -118,9 +118,9 @@ namespace Zork
             }
         }
 
-        public void Print(Point playerLocation)
+        public void Print(Point playerLocation, List<Point> npcLocations)
         {
-            new MapPrinter(this).Print(playerLocation);
+            new MapPrinter(this).Print(playerLocation, npcLocations);
         }
 
         private void ConnectHorizontal(Point a, Point b)
