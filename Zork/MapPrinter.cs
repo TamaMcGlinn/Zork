@@ -11,6 +11,7 @@ namespace Zork
 {
     public class MapPrinter
     {
+        private const int BorderSize = 2;
         private Maze _maze;
 
         public MapPrinter(Maze maze)
@@ -24,26 +25,60 @@ namespace Zork
         /// <param name="playerLocation"></param>
         public void Print(Point playerLocation)
         {
+            PrintEnclosingBorder();
             for (int yi = 0; yi < _maze.Height; ++yi)
             {
+                PrintLineEnclosingBorder();
                 for (int xi = 0; xi < _maze.Width; ++xi)
                 {
                     PrintHorizontal(xi, yi, playerLocation);
                 }
+                PrintLineEnclosingBorder();
+                Console.WriteLine();
                 PrintLowerHalf(yi);
             }
+            PrintEnclosingBorder();
             Console.WriteLine();
+        }
+
+        private void PrintLineEnclosingBorder()
+        {
+            for (int border = 0; border < BorderSize; ++border)
+            {
+                PlaceBorder();
+            }
+        }
+
+        private void PrintEnclosingBorder()
+        {
+            for (int verticalBorder = 0; verticalBorder < BorderSize; ++verticalBorder)
+            {
+                for (int border = 0; border < (_maze.Width + BorderSize) * 2 - 1; ++border)
+                {
+                    PlaceBorder();
+                }
+                Console.WriteLine();
+            }
+        }
+
+        private void PlaceBorder()
+        {
+            using (new ColourContext(ColourContext.MapBorder, ColourContext.MapBorder))
+            {
+                Console.Write(" ");
+            }
         }
 
         private void PrintLowerHalf(int yi)
         {
-            Console.WriteLine();
             if (yi < _maze.Height - 1)
             {
+                PrintLineEnclosingBorder();
                 for (int xi = 0; xi < _maze.Width; ++xi)
                 {
                     PrintVertical(xi, yi);
                 }
+                PrintLineEnclosingBorder();
                 Console.WriteLine();
             }
         }
