@@ -68,7 +68,7 @@ namespace Zork.Characters
             Console.WriteLine($"\nYou have {Health} hp left, he has {enemy.Health} hp left.");
         }
         
-        internal void UseObject()
+        public void UseObject()
         {
             //check for useable items and display a list of which to use, otherwise show a non item available message
             List<BaseObject> useables = Inventory.Where(x => x is IUseableObject).ToList();
@@ -76,31 +76,21 @@ namespace Zork.Characters
             {
                 Console.WriteLine("Choose which item you would like to use:");
                 PrintUseableItems(useables);
+                ChooseObjectToUse(useables);
             }
             else
             {
-
                 Console.WriteLine("You have no useable items in your inventory.");
             }
         }
 
         private void PrintUseableItems(List<BaseObject> useableItems)
         {
-
-            int counter = 0;
-            foreach (BaseObject useable in useableItems)
+            for (int counter = 0; counter < useableItems.Count; ++counter)
             {
-                counter++;
-                if (useable is HealthPickup)
-                {
-                    Console.WriteLine($"[{counter}] : {useable.Name}, {useable.Description}, Heals for: {(useable as HealthPickup).Potency}");
-                }
-                else
-                {
-                    Console.WriteLine($"[{counter}] : {useable.Name}, {useable.Description}");
-                }
+                BaseObject useable = useableItems[counter];
+                Console.WriteLine($"[{counter + 1}] : {useable.Name}, {useable.Description}");
             }
-            ChooseObjectToUse(useableItems);
         }
 
         private void ChooseObjectToUse(List<BaseObject> useableItems)
