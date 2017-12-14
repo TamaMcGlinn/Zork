@@ -194,27 +194,6 @@ namespace Zork
             return damage;
         }
 
-        /// <summary>
-        /// Lists all items in the room and gives options for the player to pick them up. 
-        /// If he chooses a valid item it gets added to the inventory.
-        /// </summary>
-        public void PickupItem()
-        {
-            if (CurrentRoom.ObjectsInRoom.Count <= 0)
-            {
-                using (new ColorContext(ColorContext.FailureColor))
-                {
-                    Console.WriteLine("There are no items to pickup in this room.");
-                }
-                return;
-            }
-            CurrentRoom.PrintItems(CurrentRoom.ObjectsInRoom);
-            string input = Console.ReadLine();
-            int inputInteger;
-            int.TryParse(input, out inputInteger);
-            TryPickUp(inputInteger - 1);
-        }
-
         public void DropWeapon()
         {
             if (EquippedWeapon != null)
@@ -228,21 +207,6 @@ namespace Zork
         {
             CurrentRoom.ObjectsInRoom.AddRange(Inventory);
             Inventory.Clear();
-        }
-
-        private void TryPickUp(int choiceIndex)
-        {
-            if (choiceIndex >= 0 && choiceIndex < CurrentRoom.ObjectsInRoom.Count)
-            {
-                PickUpObject(CurrentRoom.ObjectsInRoom[choiceIndex]);
-            }
-            else
-            {
-                using (new ColorContext(ColorContext.FailureColor))
-                {
-                    Console.WriteLine("Cannot pick that item up.");
-                }
-            }
         }
 
         protected void PickUpObject(BaseObject obj)
