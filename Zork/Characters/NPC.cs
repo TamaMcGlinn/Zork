@@ -104,7 +104,7 @@ namespace Zork.Characters
             }
             Console.Write("> ");
             int chosenResponse = -1;
-            while (Int32.TryParse(Console.ReadLine(), out chosenResponse) == false || chosenResponse < 0 || chosenResponse > currentNode.Children.Count)
+            while (Int32.TryParse(Console.ReadLine(), out chosenResponse) == false || chosenResponse <= 0 || chosenResponse > currentNode.Children.Count)
             {
                 Console.WriteLine("Write a number for one of the responses");
                 Console.Write("> ");
