@@ -212,7 +212,7 @@ namespace Zork
             string input = Console.ReadLine();
             int inputInteger;
             int.TryParse(input, out inputInteger);
-            TryPickUp(CurrentRoom, inputInteger - 1);
+            TryPickUp(inputInteger - 1);
         }
 
         public void DropWeapon()
@@ -230,13 +230,11 @@ namespace Zork
             Inventory.Clear();
         }
 
-        private void TryPickUp(Room currentRoom, int choiceIndex)
+        private void TryPickUp(int choiceIndex)
         {
             if (choiceIndex >= 0 && choiceIndex < CurrentRoom.ObjectsInRoom.Count)
             {
-                var obj = CurrentRoom.ObjectsInRoom[choiceIndex];
-                CurrentRoom.ObjectsInRoom.Remove(obj);
-                obj.PickupObject(this);
+                PickUpObject(CurrentRoom.ObjectsInRoom[choiceIndex]);
             }
             else
             {
@@ -245,6 +243,12 @@ namespace Zork
                     Console.WriteLine("Cannot pick that item up.");
                 }
             }
+        }
+
+        protected void PickUpObject(BaseObject obj)
+        {
+            CurrentRoom.ObjectsInRoom.Remove(obj);
+            obj.PickupObject(this);
         }
     }
 }

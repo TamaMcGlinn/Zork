@@ -92,6 +92,23 @@ namespace Zork.Characters
                 maze[newRoom].NPCsInRoom.Add(this);
                 CurrentRoom = maze[newRoom];
             }
+            PossiblyPickSomethingUp();
+        }
+
+        private void PossiblyPickSomethingUp()
+        {
+            Random rng = new Random();
+            if (CurrentRoom.ObjectsInRoom.Count > 0)
+            {
+                int pickupIndex = rng.Next(0, CurrentRoom.ObjectsInRoom.Count);
+                PickUpObject(CurrentRoom.ObjectsInRoom[pickupIndex]);
+            }
+            if( Inventory.Count >= 3)
+            {
+                int dropIndex = rng.Next(0, Inventory.Count);
+                CurrentRoom.ObjectsInRoom.Add(Inventory[dropIndex]);
+                Inventory.RemoveAt(dropIndex);
+            }
         }
 
         private static Node GetPlayerResponse(Node currentNode, List<Node> options)
