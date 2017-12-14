@@ -13,10 +13,9 @@ namespace Zork.UIContext
         public static ConsoleColor InstructionsColor = ConsoleColor.Yellow;
         public static ConsoleColor DirectionsColor = ConsoleColor.Gray;
         public static ConsoleColor KeyCodeColor = ConsoleColor.Green;
-        public static ConsoleColor MapBorder = ConsoleColor.DarkGray;
-        public static ConsoleColor MapPlayerLocation = ConsoleColor.Green;
+        public static ConsoleColor MapPlayerLocation = ConsoleColor.Red;
         public static ConsoleColor MapAvailableSquare = ConsoleColor.White;
-        public static ConsoleColor MapWall = ConsoleColor.Blue;
+        public static ConsoleColor MapWall = ConsoleColor.DarkGray;
         public static ConsoleColor BattleHit = ConsoleColor.DarkGreen;
         public static ConsoleColor BattleDamage = ConsoleColor.DarkRed;
         public static ConsoleColor BattleWin = ConsoleColor.Green;

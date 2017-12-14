@@ -63,7 +63,7 @@ namespace Zork
 
         private void PlaceBorder()
         {
-            using (new ColorContext(ColorContext.MapBorder, ColorContext.MapBorder))
+            using (new ColorContext(ColorContext.MapWall, ColorContext.MapWall))
             {
                 Console.Write(" ");
             }
