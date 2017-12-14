@@ -9,7 +9,7 @@ namespace Zork.UIContext
     /// <summary>
     /// Sets the ConsoleColour as specified, and resets the colours upon disposal.
     /// </summary>
-    public class ColourContext : IDisposable
+    public class ColorContext : IDisposable
     {
         public static ConsoleColor HeaderColor = ConsoleColor.DarkMagenta;
         public static ConsoleColor FailureColor = ConsoleColor.Red;
@@ -29,7 +29,7 @@ namespace Zork.UIContext
         private ConsoleColor _originalForegroundColor;
         private ConsoleColor _originalBackgroundColor;
 
-        public ColourContext(ConsoleColor foregroundColor, ConsoleColor backgroundColor = ConsoleColor.Black)
+        public ColorContext(ConsoleColor foregroundColor, ConsoleColor backgroundColor = ConsoleColor.Black)
         {
             _originalForegroundColor = Console.ForegroundColor;
             _originalBackgroundColor = Console.BackgroundColor;

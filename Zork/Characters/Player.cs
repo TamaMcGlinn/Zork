@@ -29,7 +29,7 @@ namespace Zork.Characters
         /// </summary>
         public void LookAround()
         {
-            using (new ColourContext(ColourContext.HeaderColor))
+            using (new ColorContext(ColorContext.HeaderColor))
             {
                 Console.WriteLine(CurrentRoom.Description);
             }
@@ -67,14 +67,14 @@ namespace Zork.Characters
             PrintEquippedWeapon();
             if (Inventory.Count == 0)
             {
-                using (new ColourContext(ColourContext.FailureColor))
+                using (new ColorContext(ColorContext.FailureColor))
                 {
                     Console.WriteLine("You have no items in your inventory.\n");
                 }
                 return;
             }
 
-            using (new ColourContext(ColourContext.HeaderColor))
+            using (new ColorContext(ColorContext.HeaderColor))
             {
                 Console.WriteLine("You currently have the following items:");
                 for (int i = 0; i < Inventory.Count; i++)
@@ -90,14 +90,14 @@ namespace Zork.Characters
         {
             if (EquippedWeapon != null)
             {
-                using (new ColourContext(EquippedWeapon.Colour))
+                using (new ColorContext(EquippedWeapon.Colour))
                 {
                     Console.WriteLine($"You're holding a {EquippedWeapon.Name} :  {EquippedWeapon.Description}");
                 }
             }
             else
             {
-                using (new ColourContext(ColourContext.FailureColor))
+                using (new ColorContext(ColorContext.FailureColor))
                 {
                     Console.WriteLine("You're not holding a weapon");
                 }
@@ -113,11 +113,11 @@ namespace Zork.Characters
             enemy.TakeDamage(myDamage);
             TakeDamage(enemyDamage);
 
-            using (new ColourContext(ColourContext.BattleHit))
+            using (new ColorContext(ColorContext.BattleHit))
             {
                 Console.Write("You hit for: " + myDamage + PrintHittingWithWeapon());
             }
-            using (new ColourContext(ColourContext.BattleDamage))
+            using (new ColorContext(ColorContext.BattleDamage))
             {
                 Console.Write($"\n{enemy.Name} hits you for:" + enemyDamage + PrintGetHittedWithWeapon(enemy));
             }

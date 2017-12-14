@@ -63,7 +63,7 @@ namespace Zork
 
         private void PlaceBorder()
         {
-            using (new ColourContext(ColourContext.MapBorder, ColourContext.MapBorder))
+            using (new ColorContext(ColorContext.MapBorder, ColorContext.MapBorder))
             {
                 Console.Write(" ");
             }
@@ -90,14 +90,14 @@ namespace Zork
             {
                 Debug.Assert(_maze.Rooms[xi, yi + 1].CanGoThere[Direction.North] == CanGoSouth);
             }
-            var ConnectionColor = CanGoSouth ? ColourContext.MapAvailableSquare : ColourContext.MapWall;
-            using (new ColourContext(ColourContext.MapAvailableSquare, ConnectionColor))
+            var ConnectionColor = CanGoSouth ? ColorContext.MapAvailableSquare : ColorContext.MapWall;
+            using (new ColorContext(ColorContext.MapAvailableSquare, ConnectionColor))
             {
                 Console.Write(" ");
             }
             if (xi < _maze.Width - 1)
             {
-                using (new ColourContext(ColourContext.MapAvailableSquare, ColourContext.MapWall))
+                using (new ColorContext(ColorContext.MapAvailableSquare, ColorContext.MapWall))
                 {
                     Console.Write(" ");
                 }
@@ -108,14 +108,14 @@ namespace Zork
         {
             if (playerLocation.X == xi && playerLocation.Y == yi)
             {
-                using (new ColourContext(ColourContext.MapPlayerLocation, ColourContext.MapAvailableSquare))
+                using (new ColorContext(ColorContext.MapPlayerLocation, ColorContext.MapAvailableSquare))
                 {
                     Console.Write("X");
                 }
             }
             else
             {
-                using (new ColourContext(ColourContext.MapAvailableSquare, ColourContext.MapAvailableSquare))
+                using (new ColorContext(ColorContext.MapAvailableSquare, ColorContext.MapAvailableSquare))
                 {
                     Console.Write(" ");
                 }
@@ -123,14 +123,14 @@ namespace Zork
             if (_maze.Rooms[xi, yi].CanGoThere[Direction.East])
             {
                 Debug.Assert(xi == _maze.Width - 1 || _maze.Rooms[xi + 1, yi].CanGoThere[Direction.West]);
-                using (new ColourContext(ColourContext.MapAvailableSquare, ColourContext.MapAvailableSquare))
+                using (new ColorContext(ColorContext.MapAvailableSquare, ColorContext.MapAvailableSquare))
                 {
                     Console.Write(" ");
                 }
             }
             else if (xi < _maze.Width - 1)
             {
-                using (new ColourContext(ColourContext.MapAvailableSquare, ColourContext.MapWall))
+                using (new ColorContext(ColorContext.MapAvailableSquare, ColorContext.MapWall))
                 {
                     Console.Write(" ");
                 }

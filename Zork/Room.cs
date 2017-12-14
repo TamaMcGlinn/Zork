@@ -63,11 +63,11 @@ namespace Zork
         }
 
         public void PrintRoom() {
-            using (new ColourContext(ColourContext.HeaderColor))
+            using (new ColorContext(ColorContext.HeaderColor))
             {
                 Console.WriteLine(Description + ". You can go:");
             }
-            using (new ColourContext(ColourContext.DirectionsColor))
+            using (new ColorContext(ColorContext.DirectionsColor))
             {
                 foreach (var kvp in CanGoThere)
                 {
@@ -102,7 +102,7 @@ namespace Zork
         {
             if(NPCsInRoom.Count == 0)
             {
-                using (new ColourContext(ColourContext.FailureColor))
+                using (new ColorContext(ColorContext.FailureColor))
                 {
                     Console.WriteLine("There's no one here.");
                 }

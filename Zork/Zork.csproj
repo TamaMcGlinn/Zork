@@ -67,7 +67,7 @@
     <Compile Include="Room.cs" />
     <Compile Include="Texts\Node.cs" />
     <Compile Include="Texts\TextTree.cs" />
-    <Compile Include="UIContext\ColourContext.cs" />
+    <Compile Include="UIContext\ColorContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

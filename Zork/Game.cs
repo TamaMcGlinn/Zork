@@ -91,7 +91,7 @@ namespace Zork
 
         private void PrintPreamble()
         {
-            using (new ColourContext(ColourContext.PreambleColor))
+            using (new ColorContext(ColorContext.PreambleColor))
             {
                 Console.WriteLine("You are Sherlock, a reknowned detective. In ye olde London, a most vile place to be,");
                 Console.WriteLine("thismorning dead was found dear Cecil, dear to many men. Serve justice to the murderer!\n");
@@ -114,11 +114,11 @@ namespace Zork
 
         private void PrintInstructions()
         {
-            using (new ColourContext(ColourContext.InstructionsColor))
+            using (new ColorContext(ColorContext.InstructionsColor))
             {
-                ColourContext.PrintWithKeyCodes("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around,\n");
-                ColourContext.PrintWithKeyCodes("[L] to look around, [P] to pick up an item, [I] for Inventory, [B] for Battle,\n");
-                ColourContext.PrintWithKeyCodes("[C] to view stats, or [M] to print the map. [U] to use items.\n\n");
+                ColorContext.PrintWithKeyCodes("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around,\n");
+                ColorContext.PrintWithKeyCodes("[L] to look around, [P] to pick up an item, [I] for Inventory, [B] for Battle,\n");
+                ColorContext.PrintWithKeyCodes("[C] to view stats, or [M] to print the map. [U] to use items.\n\n");
             }
         }
     }

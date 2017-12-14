@@ -144,7 +144,7 @@ namespace Zork
             {
                 enemy.Inventory.Clear();
                 enemy.ResetHealth();
-                using (new ColourContext(ColourContext.BattleLose))
+                using (new ColorContext(ColorContext.BattleLose))
                 {
                     Console.WriteLine("You died! But luckily you've returned without items.");
                 }
@@ -154,7 +154,7 @@ namespace Zork
                 enemy.Inventory.AddRange(enemy.Inventory);
                 enemy.KillThisNPC(game);
                 bool gameWon = enemy is MurdererNPC;
-                using (new ColourContext(ColourContext.BattleWin))
+                using (new ColorContext(ColorContext.BattleWin))
                 {
                     if (gameWon)
                     {

@@ -16,7 +16,7 @@ namespace Zork
                 foreach (ConsoleColor foregroundColor in Enum.GetValues(typeof(ConsoleColor)))
                 {
                     Console.ForegroundColor = foregroundColor;
-                    ColourContext.WriteFullLine($"{foregroundColor} on {backgroundColor}");
+                    ColorContext.WriteFullLine($"{foregroundColor} on {backgroundColor}");
                 }
             }
         }
