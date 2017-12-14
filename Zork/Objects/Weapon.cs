@@ -2,7 +2,7 @@
 
 namespace Zork.Objects
 {
-    public class Weapon : BaseObject, IUseableObject
+    public class Weapon : UseableObject
     {
         #region properties
         private int _strength;
@@ -30,7 +30,7 @@ namespace Zork.Objects
             Console.WriteLine("Strength: " + Strength);
         }
 
-        public void UseObject(Character c)
+        public override void UseObject(Character c)
         {
             c.Inventory.Remove(this);
             if (c.EquippedWeapon != null)

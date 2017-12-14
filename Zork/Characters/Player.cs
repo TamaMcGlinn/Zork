@@ -71,7 +71,7 @@ namespace Zork.Characters
         public void UseObject()
         {
             //check for useable items and display a list of which to use, otherwise show a non item available message
-            List<BaseObject> useables = Inventory.Where(x => x is IUseableObject).ToList();
+            List<UseableObject> useables = Inventory.Where(x => x is UseableObject).Cast<UseableObject>().ToList();
             if (useables.Count > 0)
             {
                 Console.WriteLine("Choose which item you would like to use:");
@@ -84,16 +84,16 @@ namespace Zork.Characters
             }
         }
 
-        private void PrintUseableItems(List<BaseObject> useableItems)
+        private void PrintUseableItems(List<UseableObject> useableItems)
         {
             for (int counter = 0; counter < useableItems.Count; ++counter)
             {
-                BaseObject useable = useableItems[counter];
+                UseableObject useable = useableItems[counter];
                 Console.WriteLine($"[{counter + 1}] : {useable.Name}, {useable.Description}");
             }
         }
 
-        private void ChooseObjectToUse(List<BaseObject> useableItems)
+        private void ChooseObjectToUse(List<UseableObject> useableItems)
         {
             string userInput = Console.ReadLine();
 
@@ -106,7 +106,7 @@ namespace Zork.Characters
             userInputNumber--;
             if (userInputNumber >= 0 && userInputNumber < useableItems.Count)
             {
-                (useableItems[userInputNumber] as IUseableObject).UseObject(this);
+                useableItems[userInputNumber].UseObject(this);
             }
         }
 

@@ -2,7 +2,7 @@
 
 namespace Zork.Objects
 {
-    public class HealthPickup : BaseObject, IUseableObject
+    public class HealthPickup : UseableObject
     {
         private int _potency;
 
@@ -19,7 +19,7 @@ namespace Zork.Objects
             _potency = potency;
         }
 
-        public void UseObject(Character c)
+        public override void UseObject(Character c)
         {
             c.Health = Math.Min(c.MaxHealth, c.Health + Potency);
             Console.WriteLine("Ahhh that's refreshing! Health:" + c.Health);
