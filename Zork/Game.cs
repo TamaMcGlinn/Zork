@@ -105,6 +105,7 @@ namespace Zork
                 if (commands.ContainsKey(userInput[0]))
                 {
                     commands[userInput[0]](this);
+                    return;
                 }
             }
             PrintInstructions();
