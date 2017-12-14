@@ -144,12 +144,18 @@ namespace Zork
             {
                 enemy.Inventory.Clear();
                 enemy.ResetHealth();
-                Console.WriteLine("You died! But luckily you've returned without items.");
+                using (new ColourContext(ColourContext.BattleLose))
+                {
+                    Console.WriteLine("You died! But luckily you've returned without items.");
+                }
             }
             else
             {
                 enemy.Inventory.AddRange(enemy.Inventory);
-                Console.WriteLine($"You've won! You've picked up all {enemy.Name}'s items, check your inventory!");
+                using (new ColourContext(ColourContext.BattleWin))
+                {
+                    Console.WriteLine($"You've won! You've picked up all {enemy.Name}'s items, check your inventory!");
+                }
             }
         }
 

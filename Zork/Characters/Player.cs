@@ -112,8 +112,14 @@ namespace Zork.Characters
             enemy.TakeDamage(myDamage);
             TakeDamage(enemyDamage);
 
-            Console.Write("You hit for: " + myDamage + PrintHittingWithWeapon());
-            Console.Write($"\n{enemy.Name} hits you for:" + enemyDamage + PrintGetHittedWithWeapon(enemy));
+            using (new ColourContext(ColourContext.BattleHit))
+            {
+                Console.Write("You hit for: " + myDamage + PrintHittingWithWeapon());
+            }
+            using (new ColourContext(ColourContext.BattleDamage))
+            {
+                Console.Write($"\n{enemy.Name} hits you for:" + enemyDamage + PrintGetHittedWithWeapon(enemy));
+            }
             Console.WriteLine($"\nYou have {Health} hp left, he has {enemy.Health} hp left.");
         }
 
