@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using Zork.Objects;
+using Zork.UIContext;
 
 namespace Zork.Characters
 {
@@ -51,6 +52,34 @@ namespace Zork.Characters
                 Console.Write($" with his stupid {enemy.EquippedWeapon.Name} ");
             }
             return "";
+        }
+
+        /// <summary>
+        /// Lists all items in the inventory
+        /// </summary>
+        public void PrintInventory()
+        {
+            PrintEquippedWeapon();
+            if (Inventory.Count == 0)
+            {
+                using (new ColourContext(ColourContext.FailureColor))
+                {
+                    Console.WriteLine("You have no items in your inventory.\n");
+                }
+                return;
+            }
+
+            using (new ColourContext(ColourContext.HeaderColor))
+            {
+                Console.WriteLine("You currently have the following items:");
+            }
+            using (var writer = new ColourContext(ColourContext.ItemColor))
+            {
+                for (int i = 0; i < Inventory.Count; i++)
+                {
+                    Console.WriteLine($"{Inventory[i].Name} : {Inventory[i].Description}");
+                }
+            }
         }
 
         protected override void FightOneRound(NPC enemy)

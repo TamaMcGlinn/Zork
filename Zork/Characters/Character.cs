@@ -118,25 +118,6 @@ namespace Zork
             }
         }
 
-        /// <summary>
-        /// Lists all items in the character's inventory
-        /// </summary>
-        public void PrintInventory()
-        {
-            PrintEquippedWeapon();
-            if (Inventory.Count == 0)
-            {
-                Console.WriteLine("\nYou have no items in your inventory.\n");
-                return;
-            }
-
-            Console.WriteLine("You currently have the following items:");
-            for (int i = 0; i < Inventory.Count; i++)
-            {
-                Console.WriteLine($"{Inventory[i].Name} : {Inventory[i].Description}");
-            };
-        }
-
         public void ResetHealth()
         {
             Health = MaxHealth;
