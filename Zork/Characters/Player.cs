@@ -86,16 +86,21 @@ namespace Zork.Characters
         {
             int turn = 0;
             while (enemy.Health > 0 && Health > 0)
-            {                
+            {
                 FightOneRound(enemy);
                 ++turn;
-                if( enemy.Health > 0 && Health > 0 && turn % enemy.LetsPlayerFleePerXRounds == 0 && AskFlee() )
+                if (UserFlees(enemy, turn))
                 {
                     Flee(game.maze);
                     return;
                 }
             }
             CheckWhoWon(enemy, game);
+        }
+
+        private bool UserFlees(NPC enemy, int turn)
+        {
+            return enemy.Health > 0 && Health > 0 && turn % enemy.LetsPlayerFleePerXRounds == 0 && AskFlee();
         }
 
         protected bool AskFlee()
