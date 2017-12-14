@@ -239,7 +239,7 @@ namespace Zork.Characters
             int talkToNPCInt;
             int.TryParse(Console.ReadLine(), out talkToNPCInt);
             talkToNPCInt -= 1;
-            if(talkToNPCInt >= 0 && talkToNPCInt <= CurrentRoom.NPCsInRoom.Count)
+            if(talkToNPCInt >= 0 && talkToNPCInt < CurrentRoom.NPCsInRoom.Count)
             {
                 CurrentRoom.NPCsInRoom[talkToNPCInt].Talk(this);
             }
