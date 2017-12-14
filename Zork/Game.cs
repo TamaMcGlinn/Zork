@@ -14,8 +14,8 @@ namespace Zork
     public class Game
     {
         public Maze maze;
-        public const int Width = 2;
-        public const int Height = 2;
+        public const int Width = 30;
+        public const int Height = 18;
         const int StartX = 1;
         const int StartY = 1;
         public Player player;
