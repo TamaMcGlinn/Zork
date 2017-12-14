@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using Zork.Objects;
 
 namespace Zork.Characters
@@ -30,9 +31,38 @@ namespace Zork.Characters
             Console.WriteLine(CurrentRoom.DescribeRoom());
         }
 
+        public void printHealthPickupList()
+        {
+            int healthPickups = 0;
+            List<BaseObject> healthPickupsInInventory = Inventory.Where(x => x is HealthPickup).ToList();
+            foreach (HealthPickup healthPickup in healthPickupsInInventory)
+            {
+                healthPickups++;
+                Console.WriteLine($"[{healthPickups}] : {healthPickup.Name}, {healthPickup.Description}, Heals for: {healthPickup.Potency}");
+
+            }
+            string userInput = Console.ReadLine();
+
+            if (userInput.Length <= 0)
+            {
+                return;
+            }
+            int userInputNumber;
+            int.TryParse(userInput, out userInputNumber);
+            userInputNumber--;
+            if (userInputNumber >= 0 && userInputNumber < healthPickups)
+            {
+                UseHealthPickup(healthPickupsInInventory[userInputNumber] as HealthPickup);
+                Console.WriteLine("Ahhh that's refreshing! Health:" + Health);
+            }
+
+        }
+
         public void UseHealthPickup(HealthPickup h)
         {
+         
             Health = Math.Min(MaxHealth, Health + h.Potency);
+            Inventory.Remove(h);
         }
 
         private string PrintHittingWithWeapon()

@@ -29,7 +29,7 @@ namespace ZorkUnitTest
         public void HealthLimited()
         {
             var health = makeVial();
-            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)));
+            Player p = createPlayer();
             p.UseHealthPickup(health);
             Assert.AreEqual(p.Health, 100);
         }
@@ -38,10 +38,21 @@ namespace ZorkUnitTest
         public void CanHeal()
         {
             var health = makeVial();
-            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)));
+            Player p = createPlayer();
             p.TakeDamage(50);
             p.UseHealthPickup(health);
             Assert.AreEqual(p.Health, 80);
+        }
+
+        [TestMethod]
+        public void HealObjectGetsRemovedAfterUsingTest()
+        {
+            var health = makeVial();
+            Player p = createPlayer();
+            p.TakeDamage(50);
+            p.Inventory.Add(health);
+            p.UseHealthPickup(health);
+            Assert.IsFalse(p.Inventory.Contains(health));
         }
 
         [TestMethod]
@@ -54,7 +65,7 @@ namespace ZorkUnitTest
         [TestMethod]
         public void PickUpWeaponTest()
         {
-            Player p = CharacterTests.CreatePlayerCharacter();
+            Player p = createPlayer();
             Weapon w = new Weapon("Longsword", 5, "a big sword");
             w.PickupObject(p);
             Assert.IsTrue(p.EquippedWeapon == w);
@@ -63,7 +74,7 @@ namespace ZorkUnitTest
         [TestMethod]
         public void PickupObjectTest()
         {
-            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)));
+            Player p = createPlayer();
             Clue bo = new Clue("pants", "description");
             bo.PickupObject(p);
             Assert.IsTrue(p.Inventory.Contains(bo));
@@ -73,9 +84,14 @@ namespace ZorkUnitTest
         public void TestClues()
         {
             string clue = "c";
-            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)));
+            Player p = createPlayer();
             p.Clues.Add(clue);
             Assert.IsTrue(p.Clues.Contains(clue));
+        }
+
+        public Player createPlayer()
+        {
+            return new Player(new Zork.Room("", new System.Drawing.Point(0, 0))); ;
         }
     }
 }
