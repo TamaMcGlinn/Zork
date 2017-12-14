@@ -79,7 +79,7 @@ namespace Zork.Characters
                 Console.WriteLine("You currently have the following items:");
                 for (int i = 0; i < Inventory.Count; i++)
                 {
-                    Console.ForegroundColor = Inventory[i].Colour;
+                    Console.ForegroundColor = Inventory[i].Color;
                     Console.WriteLine($"{Inventory[i].Name} : {Inventory[i].Description}");
                 }
                 Console.WriteLine();
@@ -90,7 +90,7 @@ namespace Zork.Characters
         {
             if (EquippedWeapon != null)
             {
-                using (new ColorContext(EquippedWeapon.Colour))
+                using (new ColorContext(EquippedWeapon.Color))
                 {
                     Console.WriteLine($"You're holding a {EquippedWeapon.Name} :  {EquippedWeapon.Description}");
                 }

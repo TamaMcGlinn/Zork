@@ -19,7 +19,7 @@ namespace Zork.Objects
             get { return _description; }
         }
 
-        public abstract ConsoleColor Colour { get; }
+        public abstract ConsoleColor Color { get; }
 
         #endregion properties
 

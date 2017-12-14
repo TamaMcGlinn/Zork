@@ -13,7 +13,7 @@ namespace Zork.Objects
         {
         }
 
-        public override ConsoleColor Colour => ConsoleColor.DarkRed;
+        public override ConsoleColor Color => ConsoleColor.DarkRed;
 
         public override void PickupObject(Character character)
         {

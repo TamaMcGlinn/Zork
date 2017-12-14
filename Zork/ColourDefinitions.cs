@@ -3,10 +3,10 @@ using Zork.UIContext;
 
 namespace Zork
 {
-    public static class ColourDefinitions
+    public static class ColorDefinitions
     {
         /// <summary>
-        /// Show all available console colours for background and foreground
+        /// Show all available console colors for background and foreground
         /// </summary>
         public static void TestColors()
         {

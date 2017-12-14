@@ -13,7 +13,7 @@ namespace Zork.Objects
             set { _strength = value; }
         }
 
-        public override ConsoleColor Colour => ConsoleColor.Magenta;
+        public override ConsoleColor Color => ConsoleColor.Magenta;
         #endregion
 
         public Weapon(string name, int strength, string description) : base(name,description)

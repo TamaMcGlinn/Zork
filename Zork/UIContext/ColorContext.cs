@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Zork.UIContext
 {
     /// <summary>
-    /// Sets the ConsoleColour as specified, and resets the colours upon disposal.
+    /// Sets the ConsoleColor as specified, and resets the colors upon disposal.
     /// </summary>
     public class ColorContext : IDisposable
     {
