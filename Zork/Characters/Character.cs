@@ -136,6 +136,7 @@ namespace Zork
                 Console.WriteLine("Current weapon:");
                 EquippedWeapon.PrintStats();
             }
+            Console.WriteLine();
         }
 
         protected void CheckWhoWon(NPC enemy, Game game)
@@ -199,16 +200,15 @@ namespace Zork
         /// </summary>
         public void PickupItem()
         {
-            
             if (CurrentRoom.ObjectsInRoom.Count <= 0)
             {
-                Console.WriteLine("There are no items to pickup in this room.");
+                using (new ColorContext(ColorContext.FailureColor))
+                {
+                    Console.WriteLine("There are no items to pickup in this room.");
+                }
                 return;
             }
-            for (int i = 0; i < CurrentRoom.ObjectsInRoom.Count; i++)
-            {
-                Console.WriteLine($"[{i + 1}] to pickup:" + CurrentRoom.ObjectsInRoom[i].Name);
-            }
+            CurrentRoom.PrintItems(CurrentRoom.ObjectsInRoom);
             string input = Console.ReadLine();
             int inputInteger;
             int.TryParse(input, out inputInteger);
@@ -240,9 +240,11 @@ namespace Zork
             }
             else
             {
-                Console.WriteLine("Cannot pick that item up.");
+                using (new ColorContext(ColorContext.FailureColor))
+                {
+                    Console.WriteLine("Cannot pick that item up.");
+                }
             }
         }
-
     }
 }

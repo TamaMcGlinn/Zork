@@ -6,6 +6,11 @@ namespace Zork
 {
     public static class PointExtensions
     {
+        public static bool OutOfBounds(this Point place)
+        {
+            return place.X < 0 || place.X == Game.Width || place.Y < 0 || place.Y == Game.Height;
+        }
+
         public static Point Add(this Point origin, Direction dir)
         {
             switch (dir)

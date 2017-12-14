@@ -45,7 +45,7 @@ namespace Zork.Characters
         {
             if (EquippedWeapon != null)
             {
-                Console.Write($" with your mighty {EquippedWeapon.Name} ");
+                return $" with your mighty {EquippedWeapon.Name}";
             }
             return "";
         }
@@ -54,7 +54,7 @@ namespace Zork.Characters
         {
             if (enemy.EquippedWeapon != null)
             {
-                Console.Write($" with his stupid {enemy.EquippedWeapon.Name} ");
+                return $" with his stupid {enemy.EquippedWeapon.Name}";
             }
             return "";
         }
@@ -77,10 +77,13 @@ namespace Zork.Characters
             using (new ColorContext(ColorContext.HeaderColor))
             {
                 Console.WriteLine("You currently have the following items:");
+
                 for (int i = 0; i < Inventory.Count; i++)
                 {
-                    Console.ForegroundColor = Inventory[i].Color;
-                    Console.WriteLine($"{Inventory[i].Name} : {Inventory[i].Description}");
+                    using (new ColorContext(Inventory[i].Color))
+                    {
+                        Console.WriteLine($"{Inventory[i].Name} {Inventory[i].Description}");
+                    }
                 }
                 Console.WriteLine();
             }
@@ -109,17 +112,16 @@ namespace Zork.Characters
             int enemyDamage = enemy.GenerateDamage();
             int myDamage = GenerateDamage();
 
-            Console.WriteLine("You hit eachother...");
             enemy.TakeDamage(myDamage);
             TakeDamage(enemyDamage);
 
             using (new ColorContext(ColorContext.BattleHit))
             {
-                Console.Write("You hit for: " + myDamage + PrintHittingWithWeapon());
+                Console.Write("You hit for " + myDamage + " damage" + PrintHittingWithWeapon() + ".");
             }
             using (new ColorContext(ColorContext.BattleDamage))
             {
-                Console.Write($"\n{enemy.Name} hits you for:" + enemyDamage + PrintGetHittedWithWeapon(enemy));
+                Console.Write($"\n{enemy.Name} hits you for " + enemyDamage + " damage" + PrintGetHittedWithWeapon(enemy) + ".");
             }
             Console.WriteLine($"\nYou have {Health} hp left, he has {enemy.Health} hp left.");
         }
@@ -127,11 +129,11 @@ namespace Zork.Characters
         public void UseObject()
         {
             //check for useable items and display a list of which to use, otherwise show a non item available message
-            List<UseableObject> useables = Inventory.Where(x => x is UseableObject).Cast<UseableObject>().ToList();
+            List<UseableObject> useables = GetUseables();
             if (useables.Count > 0)
             {
                 Console.WriteLine("Choose which item you would like to use:");
-                PrintUseableItems(useables);
+                CurrentRoom.PrintItems(useables);
                 ChooseObjectToUse(useables);
             }
             else
@@ -140,13 +142,9 @@ namespace Zork.Characters
             }
         }
 
-        private void PrintUseableItems(List<UseableObject> useableItems)
+        private List<UseableObject> GetUseables()
         {
-            for (int counter = 0; counter < useableItems.Count; ++counter)
-            {
-                UseableObject useable = useableItems[counter];
-                Console.WriteLine($"[{counter + 1}] : {useable.Name}, {useable.Description}");
-            }
+            return Inventory.Where(x => x is UseableObject).Cast<UseableObject>().ToList();
         }
 
         private void ChooseObjectToUse(List<UseableObject> useableItems)
@@ -258,9 +256,12 @@ namespace Zork.Characters
         public void TryGo(Direction direction, Game game)
         {
             Point towards = CurrentRoom.LocationOfRoom.Add(direction);
-            if (towards.X < 0 || towards.X == Game.Width || towards.Y < 0 || towards.Y == Game.Height)
+            if (towards.OutOfBounds())
             {
-                Console.WriteLine("You attempt to go " + direction.ToString().ToLower() + " but face the end of the world.");
+                using (new ColorContext(ColorContext.FailureColor))
+                {
+                    Console.WriteLine("You attempt to go " + direction.ToString().ToLower() + " but face the end of the world.");
+                }
             }
             else if (CurrentRoom.CanGoThere[direction])
             {
@@ -272,7 +273,10 @@ namespace Zork.Characters
             }
             else
             {
-                Console.WriteLine("You cannot go " + direction.ToString().ToLower());
+                using (new ColorContext(ColorContext.FailureColor))
+                {
+                    Console.WriteLine("You cannot go " + direction.ToString().ToLower());
+                }
             }
         }
     }

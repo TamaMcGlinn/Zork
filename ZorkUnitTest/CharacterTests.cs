@@ -54,7 +54,7 @@ namespace ZorkUnitTest
         /// Tests if it is possible to have a character without location
         /// </summary>
         [TestMethod]
-        public void characterWithoutWeaponTest()
+        public void CharacterWithoutWeaponTest()
         {
             Character character1 = CreateCharacterWithoutWeapon();
             if (character1.EquippedWeapon != null)
@@ -85,7 +85,7 @@ namespace ZorkUnitTest
                 Assert.Fail("The character's name is not printed in the second line of the look around method");
             }
             //checks for the descriptions of the three weapons (the objects in the room)
-            for (int i = 2; i < 5; i++)
+            for (int i = 3; i < 6; i++)
             {
                 Assert.IsTrue(lookAroundTextList[i].Contains(CreateWeapon().Description), "The objects do not match the right description");
             }
@@ -100,7 +100,7 @@ namespace ZorkUnitTest
             Clue clue = new Clue("Red pants", "very nice pants");
             player.Inventory.Add(clue);
             player.PrintInventory();
-            Assert.IsTrue(consoleOutput.ToString().Contains($"{clue.Name} : {clue.Description}"));
+            Assert.IsTrue(consoleOutput.ToString().Contains($"{clue.Name} {clue.Description}"));
         }
 
         [TestMethod]

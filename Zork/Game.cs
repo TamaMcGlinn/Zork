@@ -86,6 +86,7 @@ namespace Zork
             {
                 player.CurrentRoom.PrintRoom();
                 ProcessInput(Console.ReadLine());
+                Console.WriteLine();
             }
         }
 

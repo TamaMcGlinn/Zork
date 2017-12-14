@@ -86,12 +86,24 @@ namespace Zork
         /// <returns>A description of the objects in the room</returns>
         private void DescribeObjectsInRoom()
         {
-            Console.WriteLine("You see the following objects laying around:");
-            for (int i = 0; i < ObjectsInRoom.Count; i++)
+            using (new ColorContext(ColorContext.HeaderColor))
             {
-                var item = ObjectsInRoom[i];
-                Console.WriteLine($"[{i + 1}] {item.Name} {item.Description}");
+                Console.WriteLine("You see the following objects laying around:");
             }
+            PrintItems(ObjectsInRoom);
+        }
+
+        public void PrintItems<T>(List<T> items) where T : BaseObject
+        {
+            for (int i = 0; i < items.Count; i++)
+            {
+                var item = items[i];
+                using (new ColorContext(item.Color))
+                {
+                    ColorContext.PrintWithKeyCodes($"[{i + 1}] {item.Name} {item.Description}\n");
+                }
+            }
+            Console.WriteLine();
         }
 
         /// <summary>
@@ -110,8 +122,9 @@ namespace Zork
             for (int i = 0; i < NPCsInRoom.Count; i++)
             {
                 string formattedName = NPCsInRoom[i].Name.Replace('_', ' ');
-                Console.Write($"[{i+1}] {formattedName} : {NPCsInRoom[i].Description}\n");
+                ColorContext.PrintWithKeyCodes($"[{i+1}] {formattedName} : {NPCsInRoom[i].Description}\n");
             }
+            Console.WriteLine();
         }
 
         public void PrintRoomContents()
