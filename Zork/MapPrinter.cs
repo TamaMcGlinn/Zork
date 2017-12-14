@@ -114,7 +114,10 @@ namespace Zork
                 }
                 else if (npcLocations.Any((Point p) => { return p.X == xi && p.Y == yi; }))
                 {
-                    Console.Write("+");
+                    using (new ColorContext(ColorContext.MapNPCLocation, ColorContext.MapAvailableSquare))
+                    {
+                        Console.Write("+");
+                    }
                 }
                 else
                 {

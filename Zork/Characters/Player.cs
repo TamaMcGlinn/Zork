@@ -226,22 +226,29 @@ namespace Zork.Characters
 
         public void TryTalk()
         {
-            Console.WriteLine("With who do you want to talk?");
-            List<NPC> npcs =  CurrentRoom.NPCsInRoom;
-            for (int i = 0; i < npcs.Count; i++)
+            if(CurrentRoom.NPCsInRoom.Count == 0)
             {
-                Console.WriteLine($"[{i + 1}] {npcs[i].Name}");
+                using (new ColorContext(ColorContext.FailureColor))
+                {
+                    Console.WriteLine("There's no one in the room.");
+                }
+                return;
             }
+            Console.WriteLine("With whom do you want to talk?");
+            CurrentRoom.PrintNPCs();
             int talkToNPCInt;
             int.TryParse(Console.ReadLine(), out talkToNPCInt);
             talkToNPCInt -= 1;
-            if(talkToNPCInt >= 0 && talkToNPCInt <= npcs.Count)
+            if(talkToNPCInt >= 0 && talkToNPCInt <= CurrentRoom.NPCsInRoom.Count)
             {
-                npcs[talkToNPCInt].Talk(this);
+                CurrentRoom.NPCsInRoom[talkToNPCInt].Talk(this);
             }
             else
             {
-                Console.WriteLine("He's not here...");
+                using (new ColorContext(ColorContext.FailureColor))
+                {
+                    Console.WriteLine("He's not here...");
+                }
                 return;
             }
         }
