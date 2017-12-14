@@ -110,7 +110,7 @@ namespace Zork
         {
             if (EquippedWeapon != null)
             {
-                Console.WriteLine($"Youre holding a {EquippedWeapon.Name} :  {EquippedWeapon.Description}");
+                Console.WriteLine($"You're holding a {EquippedWeapon.Name} :  {EquippedWeapon.Description}");
             }
             else
             {
