@@ -116,7 +116,7 @@ namespace Zork
             {
                 ColourContext.PrintWithKeyCodes("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around,\n");
                 ColourContext.PrintWithKeyCodes("[L] to look around, [P] to pick up an item, [I] for Inventory, [B] for Battle,\n");
-                ColourContext.PrintWithKeyCodes("[C] to view stats, or [M] to print the map.\n\n");
+                ColourContext.PrintWithKeyCodes("[C] to view stats, or [M] to print the map. [U] to use items.\n\n");
             }
         }
     }
