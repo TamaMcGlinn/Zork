@@ -1,4 +1,5 @@
-﻿using Zork.Characters;
+﻿using System;
+using Zork.Characters;
 
 namespace Zork.Objects
 {
@@ -8,6 +9,8 @@ namespace Zork.Objects
         {
         }
         
+
+        public override ConsoleColor Color => ConsoleColor.Cyan;
 
         public override void PickupObject(Character character)
         {

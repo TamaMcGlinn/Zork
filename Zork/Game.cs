@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Linq;
 using Zork.Characters;
 using Zork.Objects;
+using Zork.UIContext;
 
 namespace Zork
 {
@@ -83,16 +84,19 @@ namespace Zork
             PrintInstructions();
             while (true)
             {
-                string roomDescription = player.CurrentRoom.DescribeAvailableDirections();
-                Console.WriteLine(roomDescription);
+                player.CurrentRoom.PrintRoom();
                 ProcessInput(Console.ReadLine());
+                Console.WriteLine();
             }
         }
 
         private void PrintPreamble()
         {
-            Console.WriteLine("You are Sherlock, a reknowned detective. In ye olde London, a most vile place to be,");
-            Console.WriteLine("thismorning dead was found dear Cecil, dear to many men. Serve justice to the murderer!\n");
+            using (new ColorContext(ColorContext.PreambleColor))
+            {
+                Console.WriteLine("You are Sherlock, a reknowned detective. In ye olde London, a most vile place to be,");
+                Console.WriteLine("thismorning dead was found dear Cecil, dear to many men. Serve justice to the murderer!\n");
+            }
         }
 
         private void ProcessInput(string userInput)
@@ -103,6 +107,7 @@ namespace Zork
                 if (commands.ContainsKey(userInput[0]))
                 {
                     commands[userInput[0]](this);
+                    return;
                 }
             }
             PrintInstructions();
@@ -110,9 +115,12 @@ namespace Zork
 
         private void PrintInstructions()
         {
-            Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around,");
-            Console.WriteLine("[L] to look around, [P] to pick up an item, [I] Inventory, [B] Battle,");
-            Console.WriteLine("[C] to view stats, or [M] to print the map.");
+            using (new ColorContext(ColorContext.InstructionsColor))
+            {
+                ColorContext.PrintWithKeyCodes("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around,\n");
+                ColorContext.PrintWithKeyCodes("[L] to look around, [P] to pick up an item, [I] for Inventory, [B] for Battle,\n");
+                ColorContext.PrintWithKeyCodes("[C] to view stats, or [M] to print the map. [U] to use items.\n\n");
+            }
         }
     }
 }

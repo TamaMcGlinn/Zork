@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Text;
 using Zork.Characters;
 using Zork.Objects;
+using Zork.UIContext;
 
 namespace Zork
 {
@@ -61,84 +62,75 @@ namespace Zork
             LocationOfRoom = locationOfRoom;
         }
 
-        public string DescribeAvailableDirections() {
-            StringBuilder sb = new StringBuilder();
-            sb.AppendLine($"\n{Description}");
-            sb.AppendLine("You can go: ");
-            foreach (var kvp in CanGoThere)
+        public void PrintRoom() {
+            using (new ColorContext(ColorContext.HeaderColor))
             {
-                if (kvp.Value)
+                Console.WriteLine(Description + ". You can go:");
+            }
+            using (new ColorContext(ColorContext.DirectionsColor))
+            {
+                foreach (var kvp in CanGoThere)
                 {
-                    sb.AppendLine($"{kvp.Key} ");
+                    if (kvp.Value)
+                    {
+                        Console.WriteLine($"{kvp.Key}");
+                    }
                 }
             }
-            sb.AppendLine();
-            return sb.ToString();
+            Console.WriteLine();
         }
 
         /// <summary>
         /// Returns a string containing all the objects in the room
         /// </summary>
         /// <returns>A description of the objects in the room</returns>
-        public string DescribeObjectsInRoom()
+        private void DescribeObjectsInRoom()
         {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < ObjectsInRoom.Count; i++)
+            using (new ColorContext(ColorContext.HeaderColor))
             {
-                sb.Append($"[{i + 1}] ");
-                sb.Append(ObjectsInRoom[i].Name);
-                sb.Append(" ");
-                sb.AppendLine(ObjectsInRoom[i].Description);
+                Console.WriteLine("You see the following objects laying around:");
             }
-            return sb.ToString();
+            PrintItems(ObjectsInRoom);
+        }
+
+        public void PrintItems<T>(List<T> items) where T : BaseObject
+        {
+            for (int i = 0; i < items.Count; i++)
+            {
+                var item = items[i];
+                using (new ColorContext(item.Color))
+                {
+                    ColorContext.PrintWithKeyCodes($"[{i + 1}] {item.Name} {item.Description}\n");
+                }
+            }
+            Console.WriteLine();
         }
 
         /// <summary>
         /// Returns a string containing all the characters in the room
         /// </summary>
         /// <returns>A description of the characters in the room</returns>
-        public string DescribeCharactersInRoom()
+        public void PrintNPCs()
         {
             if(NPCsInRoom.Count == 0)
             {
-                return "There's no one here.\n";
+                using (new ColorContext(ColorContext.FailureColor))
+                {
+                    Console.WriteLine("There's no one here.");
+                }
             }
-            StringBuilder sb = new StringBuilder();
             for (int i = 0; i < NPCsInRoom.Count; i++)
             {
                 string formattedName = NPCsInRoom[i].Name.Replace('_', ' ');
-                sb.Append($"[{i+1}] ");
-                sb.Append(formattedName);
-                sb.Append(" : ");
-                sb.Append(NPCsInRoom[i].Description);
-                sb.AppendLine();
+                ColorContext.PrintWithKeyCodes($"[{i+1}] {formattedName} : {NPCsInRoom[i].Description}\n");
             }
-            return sb.ToString();
+            Console.WriteLine();
         }
 
-        public string DescribeRoom()
+        public void PrintRoomContents()
         {
-            StringBuilder sb = new StringBuilder();
-
-            //prints the description of the room
-            sb.AppendLine(Description);
-
-            //prints all characters
-            if (NPCsInRoom.Count > 0)
-            {
-                sb.AppendLine("\nThe following people are in this room:");
-                sb.Append(DescribeCharactersInRoom());
-                sb.AppendLine();
-            }
-            else
-            {
-                sb.AppendLine("\nThere are no other people here.\n");
-            }
-
-            //prints all objects
-            sb.AppendLine("You see the following objects laying around:");
-            sb.Append(DescribeObjectsInRoom());
-            return sb.ToString();
+            PrintNPCs();
+            DescribeObjectsInRoom();
         }
 
     }

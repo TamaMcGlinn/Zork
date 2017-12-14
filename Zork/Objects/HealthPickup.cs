@@ -14,6 +14,8 @@ namespace Zork.Objects
             get { return _potency; }
         }
 
+        public override ConsoleColor Color => ConsoleColor.Red;
+
         public HealthPickup(string name, int potency, string description) : base(name, description)
         {
             _potency = potency;

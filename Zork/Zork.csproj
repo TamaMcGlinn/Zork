@@ -44,6 +44,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Characters\Character.cs" />
+    <Compile Include="ColourDefinitions.cs" />
+    <Compile Include="MapPrinter.cs" />
     <Compile Include="Objects\CorpseNPCObject.cs" />
     <Compile Include="Characters\MurdererNPC.cs" />
     <Compile Include="Characters\NPC.cs" />
@@ -65,6 +67,7 @@
     <Compile Include="Room.cs" />
     <Compile Include="Texts\Node.cs" />
     <Compile Include="Texts\TextTree.cs" />
+    <Compile Include="UIContext\ColorContext.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config">

@@ -40,7 +40,7 @@ namespace ZorkUnitTest
                 + p.Description +
                 "\r\nHealth: 100" +
                 "\r\nStrength: " + p.Strength + 
-                "\r\nUnarmed.\r\n", consoleOutput.ToString());
+                "\r\nUnarmed.\r\n\r\n", consoleOutput.ToString());
         }
 
         [TestMethod]
@@ -58,7 +58,7 @@ namespace ZorkUnitTest
                     "\r\nStrength: " + p.Strength +
                     "\r\nCurrent weapon:" +
                     "\r\n" + p.EquippedWeapon.Name + ": " + p.EquippedWeapon.Description +
-                    "\r\nStrength: " + p.EquippedWeapon.Strength + "\r\n";
+                    "\r\nStrength: " + p.EquippedWeapon.Strength + "\r\n\r\n";
                 Assert.AreEqual(expectedResult, consoleOutput.ToString());
             }
         }

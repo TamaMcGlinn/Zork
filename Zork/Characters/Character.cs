@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Zork.Characters;
 using Zork.Objects;
+using Zork.UIContext;
 
 namespace Zork
 {
@@ -106,37 +107,6 @@ namespace Zork
             this.EquippedWeapon = weapon;
         }
 
-        public void PrintEquippedWeapon()
-        {
-            if (EquippedWeapon != null)
-            {
-                Console.WriteLine($"Youre holding a {EquippedWeapon.Name} :  {EquippedWeapon.Description}");
-            }
-            else
-            {
-                Console.WriteLine("You're not holding a weapon");
-            }
-        }
-
-        /// <summary>
-        /// Lists all items in the character's inventory
-        /// </summary>
-        public void PrintInventory()
-        {
-            PrintEquippedWeapon();
-            if (Inventory.Count == 0)
-            {
-                Console.WriteLine("\nYou have no items in your inventory.\n");
-                return;
-            }
-
-            Console.WriteLine("You currently have the following items:");
-            for (int i = 0; i < Inventory.Count; i++)
-            {
-                Console.WriteLine($"{Inventory[i].Name} : {Inventory[i].Description}");
-            };
-        }
-
         public void ResetHealth()
         {
             Health = MaxHealth;
@@ -166,6 +136,7 @@ namespace Zork
                 Console.WriteLine("Current weapon:");
                 EquippedWeapon.PrintStats();
             }
+            Console.WriteLine();
         }
 
         protected void CheckWhoWon(NPC enemy, Game game)
@@ -174,23 +145,29 @@ namespace Zork
             {
                 enemy.Inventory.Clear();
                 enemy.ResetHealth();
-                Console.WriteLine("You died! But luckily you've returned without items.");
+                using (new ColorContext(ColorContext.BattleLose))
+                {
+                    Console.WriteLine("You died! But luckily you've returned without items.");
+                }
             }
             else
             {
                 enemy.Inventory.AddRange(enemy.Inventory);
                 enemy.KillThisNPC(game);
                 bool gameWon = enemy is MurdererNPC;
-                if (gameWon)
+                using (new ColorContext(ColorContext.BattleWin))
                 {
-                    Console.WriteLine($"You win! {enemy.Name} was served justice by death!");
-                    Console.WriteLine($"Press a button to exit the game.");
-                    Console.ReadLine();
-                    Environment.Exit(0);
-                }
-                else
-                {
-                    Console.WriteLine($"Oh my god, you killed poor innocent {enemy.Name}! You've picked up all {enemy.Name}'s items, check your inventory!");
+                    if (gameWon)
+                    {
+                        Console.WriteLine($"You win! {enemy.Name} was served justice by death!");
+                        Console.WriteLine($"Press a button to exit the game.");
+                        Console.ReadLine();
+                        Environment.Exit(0);
+                    }
+                    else
+                    {
+                        Console.WriteLine($"Oh my god, you killed poor innocent {enemy.Name}! You've picked up all {enemy.Name}'s items, check your inventory!");
+                    }
                 }
             }
         }
@@ -223,16 +200,15 @@ namespace Zork
         /// </summary>
         public void PickupItem()
         {
-            
             if (CurrentRoom.ObjectsInRoom.Count <= 0)
             {
-                Console.WriteLine("There are no items to pickup in this room.");
+                using (new ColorContext(ColorContext.FailureColor))
+                {
+                    Console.WriteLine("There are no items to pickup in this room.");
+                }
                 return;
             }
-            for (int i = 0; i < CurrentRoom.ObjectsInRoom.Count; i++)
-            {
-                Console.WriteLine($"[{i + 1}] to pickup:" + CurrentRoom.ObjectsInRoom[i].Name);
-            }
+            CurrentRoom.PrintItems(CurrentRoom.ObjectsInRoom);
             string input = Console.ReadLine();
             int inputInteger;
             int.TryParse(input, out inputInteger);
@@ -264,9 +240,11 @@ namespace Zork
             }
             else
             {
-                Console.WriteLine("Cannot pick that item up.");
+                using (new ColorContext(ColorContext.FailureColor))
+                {
+                    Console.WriteLine("Cannot pick that item up.");
+                }
             }
         }
-
     }
 }

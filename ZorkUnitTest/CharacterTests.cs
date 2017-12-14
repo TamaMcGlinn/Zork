@@ -54,7 +54,7 @@ namespace ZorkUnitTest
         /// Tests if it is possible to have a character without location
         /// </summary>
         [TestMethod]
-        public void characterWithoutWeaponTest()
+        public void CharacterWithoutWeaponTest()
         {
             Character character1 = CreateCharacterWithoutWeapon();
             if (character1.EquippedWeapon != null)
@@ -74,29 +74,18 @@ namespace ZorkUnitTest
             NPC npc = CreateNPC();
             room.NPCsInRoom.Add(npc);
             room.ObjectsInRoom = CreateListOfThreeWeaponObjects();
-            string lookAroundTextString = room.DescribeRoom();
+            StringWriter consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
+            room.PrintRoomContents();
+            string lookAroundTextString = consoleOutput.ToString();
             string[] lookAroundTextList = lookAroundTextString.Split('\n');
-
-            //Na feedback dit:
-            //checks if the current room's description is being printed first.
-            Assert.IsTrue(lookAroundTextString.Contains(room.Description));
-            //in plaats van:
-            //checks if the current room's description is being printed first.
-            //if (!lookAroundTextList[0].Contains(character.Location.Description))
-            //{
-            //    Assert.Fail("The first object seen is not the room description, should start with room description");
-            //}
-            //en voor de volgtijdelijkheid dan: assert.istrue(indexof(1) < indexof(2));
-
-
-            //checks whether the second line of text contains the name of the character (the character which is added to the room
-            if (!lookAroundTextList[3].Contains(npc.Name.Replace('_', ' ')))
+            //check whether the second line of text contains the name of the character added to the room
+            if (!lookAroundTextList[0].Contains(npc.Name.Replace('_', ' ')))
             {
                 Assert.Fail("The character's name is not printed in the second line of the look around method");
             }
-
-            //checks if lines 4, 5, 6 are the description of the three weapons (the objects in the room)
-            for (int i = 6; i < 9; i++)
+            //checks for the descriptions of the three weapons (the objects in the room)
+            for (int i = 3; i < 6; i++)
             {
                 Assert.IsTrue(lookAroundTextList[i].Contains(CreateWeapon().Description), "The objects do not match the right description");
             }
@@ -111,7 +100,7 @@ namespace ZorkUnitTest
             Clue clue = new Clue("Red pants", "very nice pants");
             player.Inventory.Add(clue);
             player.PrintInventory();
-            Assert.IsTrue(consoleOutput.ToString().Contains($"{clue.Name} : {clue.Description}"));
+            Assert.IsTrue(consoleOutput.ToString().Contains($"{clue.Name} {clue.Description}"));
         }
 
         [TestMethod]

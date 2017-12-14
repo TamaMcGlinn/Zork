@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using Zork.Objects;
+using Zork.UIContext;
 
 namespace Zork
 {
@@ -62,72 +63,6 @@ namespace Zork
             return new Point(rng.Next(0, Width), rng.Next(0, Height));
         }
 
-        /// <summary>
-        /// Print the maze as a map created by 0's -'s and P for player characters.
-        /// </summary>
-        /// <param name="playerLocation"></param>
-        public void Print(Point playerLocation)
-        {
-            Console.WriteLine();
-            for (int yi = 0; yi < Height; ++yi)
-            {
-                for (int xi = 0; xi < Width; ++xi)
-                {
-                    PrintHorizontal(xi, yi, playerLocation);
-                }
-                PrintLowerHalf(yi);
-            }
-            Console.WriteLine();
-        }
-
-        private void PrintLowerHalf(int yi)
-        {
-            Console.Write("\n");
-            if (yi < Height - 1)
-            {
-                for (int xi = 0; xi < Width; ++xi)
-                {
-                    PrintVertical(xi, yi);
-                }
-                Console.Write("\n");
-            }
-        }
-
-        private void PrintVertical(int xi, int yi)
-        {
-            if (Rooms[xi, yi].CanGoThere[Direction.South])
-            {
-                Debug.Assert(yi == Height - 1 || Rooms[xi, yi + 1].CanGoThere[Direction.North]);
-                Console.Write("|");
-            }
-            else if (xi < Width - 1)
-            {
-                Console.Write(" ");
-            }
-            Console.Write(" ");
-        }
-
-        private void PrintHorizontal(int xi, int yi, Point playerLocation)
-        {
-            if (playerLocation.X == xi && playerLocation.Y == yi)
-            {
-                Console.Write("P");
-            }
-            else
-            {
-                Console.Write("0");
-            }
-            if (Rooms[xi, yi].CanGoThere[Direction.East])
-            {
-                Debug.Assert(xi == Width - 1 || Rooms[xi + 1, yi].CanGoThere[Direction.West]);
-                Console.Write("-");
-            }
-            else if (xi < Width - 1)
-            {
-                Console.Write(" ");
-            }
-        }
-
         private void AddExtraConnections(int extras)
         {
             if(Width < 3 || Height < 3)
@@ -181,6 +116,11 @@ namespace Zork
             {
                 ConnectHorizontal(a, b);
             }
+        }
+
+        public void Print(Point playerLocation)
+        {
+            new MapPrinter(this).Print(playerLocation);
         }
 
         private void ConnectHorizontal(Point a, Point b)
@@ -251,7 +191,7 @@ namespace Zork
             int index = rng.Next(0, streetNames.Count);
             var result = streetNames[index];
             streetNames.RemoveAt(index);
-            return result;
+            return result.Substring(0, result.Length-1);
         }
 
         /// <summary>
