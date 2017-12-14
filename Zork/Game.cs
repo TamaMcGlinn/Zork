@@ -49,7 +49,7 @@ namespace Zork
             { 'i', (Game g) => { g.player.PrintInventory(); } },
             { 'c', (Game g) => { g.player.PrintStats(); } },
             { 'b', (Game g) => { g.player.Battle(g.maze); } },
-            { 'h', (Game g) => { g.player.printHealthPickupList(); }}
+            { 'u', (Game g) => { g.player.UseObject(); }}
         };
 
         public Game()

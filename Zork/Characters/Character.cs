@@ -9,7 +9,7 @@ namespace Zork
     {
         #region properties
         
-        protected int MaxHealth = 100;
+        public int MaxHealth = 100;
 
         private string _name;
 
@@ -32,7 +32,7 @@ namespace Zork
         public int Health
         {
             get { return _health; }
-            protected set { _health = value; }
+            set { _health = value; }
         }
 
         private Weapon _weapon;

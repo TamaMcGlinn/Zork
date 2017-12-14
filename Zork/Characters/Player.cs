@@ -34,38 +34,9 @@ namespace Zork.Characters
             Console.WriteLine(CurrentRoom.DescribeRoom());
         }
 
-        public void printHealthPickupList()
-        {
-            int healthPickups = 0;
-            List<BaseObject> healthPickupsInInventory = Inventory.Where(x => x is HealthPickup).ToList();
-            foreach (HealthPickup healthPickup in healthPickupsInInventory)
-            {
-                healthPickups++;
-                Console.WriteLine($"[{healthPickups}] : {healthPickup.Name}, {healthPickup.Description}, Heals for: {healthPickup.Potency}");
-
-            }
-            string userInput = Console.ReadLine();
-
-            if (userInput.Length <= 0)
-            {
-                return;
-            }
-            int userInputNumber;
-            int.TryParse(userInput, out userInputNumber);
-            userInputNumber--;
-            if (userInputNumber >= 0 && userInputNumber < healthPickups)
-            {
-                UseHealthPickup(healthPickupsInInventory[userInputNumber] as HealthPickup);
-                Console.WriteLine("Ahhh that's refreshing! Health:" + Health);
-            }
-
-        }
-
         public void UseHealthPickup(HealthPickup h)
         {
-         
-            Health = Math.Min(MaxHealth, Health + h.Potency);
-            Inventory.Remove(h);
+            h.UseObject(this);
         }
 
         private string PrintHittingWithWeapon()
@@ -98,6 +69,58 @@ namespace Zork.Characters
             Console.Write("You hit for: " + myDamage + PrintHittingWithWeapon());
             Console.Write($"\n{enemy.Name} hits you for:" + enemyDamage + PrintGetHittedWithWeapon(enemy));
             Console.WriteLine($"\nYou have {Health} hp left, he has {enemy.Health} hp left.");
+        }
+
+        internal void UseObject()
+        {
+            //check for useable items and display a list of which to use, otherwise show a non item available message
+            List<BaseObject> useables = Inventory.Where(x => x is IUseableObject).ToList();
+            if (useables.Count > 0)
+            {
+                Console.WriteLine("Choose which item you would like to use:");
+                PrintUseableItems(useables);
+            }
+            else
+            {
+
+                Console.WriteLine("You have no useable items in your inventory.");
+            }
+        }
+
+        private void PrintUseableItems(List<BaseObject> useableItems)
+        {
+
+            int counter = 0;
+            foreach (BaseObject useable in useableItems)
+            {
+                counter++;
+                if (useable is HealthPickup)
+                {
+                    Console.WriteLine($"[{counter}] : {useable.Name}, {useable.Description}, Heals for: {(useable as HealthPickup).Potency}");
+                }
+                else
+                {
+                    Console.WriteLine($"[{counter}] : {useable.Name}, {useable.Description}");
+                }
+            }
+            ChooseObjectToUse(useableItems);
+        }
+
+        private void ChooseObjectToUse(List<BaseObject> useableItems)
+        {
+            string userInput = Console.ReadLine();
+
+            if (userInput.Length <= 0)
+            {
+                return;
+            }
+            int userInputNumber;
+            int.TryParse(userInput, out userInputNumber);
+            userInputNumber--;
+            if (userInputNumber >= 0 && userInputNumber < useableItems.Count)
+            {
+                (useableItems[userInputNumber] as IUseableObject).UseObject(this);
+            }
         }
 
         public void Battle(Maze maze)

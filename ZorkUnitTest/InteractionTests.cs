@@ -34,7 +34,6 @@ namespace ZorkUnitTest
             NPC barney = createNPCBarney();
             player.Fight(barney, maze);
             Assert.IsTrue(player.Health <= 0);
-
         }
 
         [TestMethod]
