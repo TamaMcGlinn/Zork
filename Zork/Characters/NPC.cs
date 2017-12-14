@@ -9,6 +9,8 @@ namespace Zork.Characters
 {
     public class NPC : Character
     {
+        private const int PickUpChance = 10;
+
         public int LetsPlayerFleePerXRounds { get; set; }
         public const int MinTurnsBetweenMoves = 2;
         public const int MaxTurnsBetweenMoves = 5;
@@ -100,8 +102,11 @@ namespace Zork.Characters
             Random rng = new Random();
             if (CurrentRoom.ObjectsInRoom.Count > 0)
             {
-                int pickupIndex = rng.Next(0, CurrentRoom.ObjectsInRoom.Count);
-                PickUpObject(CurrentRoom.ObjectsInRoom[pickupIndex]);
+                if (ObjectDefinitions.DropChanceByPercentage(PickUpChance))
+                {
+                    int pickupIndex = rng.Next(0, CurrentRoom.ObjectsInRoom.Count);
+                    PickUpObject(CurrentRoom.ObjectsInRoom[pickupIndex]);
+                }
             }
             if( Inventory.Count >= 3)
             {
