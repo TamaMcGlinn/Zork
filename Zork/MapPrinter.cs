@@ -110,13 +110,13 @@ namespace Zork
             {
                 if (playerLocation.X == xi && playerLocation.Y == yi)
                 {
-                    Console.Write("X");
+                    Console.Write("\x002");
                 }
                 else if (npcLocations.Any((Point p) => { return p.X == xi && p.Y == yi; }))
                 {
                     using (new ColorContext(ColorContext.MapNPCLocation, ColorContext.MapAvailableSquare))
                     {
-                        Console.Write("+");
+                        Console.Write("\x00F");
                     }
                 }
                 else

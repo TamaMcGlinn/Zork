@@ -143,28 +143,28 @@ namespace Zork
         {
             if (Health < 0)
             {
-                enemy.Inventory.Clear();
-                enemy.ResetHealth();
                 using (new ColorContext(ColorContext.BattleLose))
                 {
-                    Console.WriteLine("You died! But luckily you've returned without items.");
+                    Console.WriteLine("You died!");
                 }
+                Environment.Exit(0);
             }
             else
             {
                 enemy.Inventory.AddRange(enemy.Inventory);
                 enemy.KillThisNPC(game);
                 bool gameWon = enemy is MurdererNPC;
-                using (new ColorContext(ColorContext.BattleWin))
+                if (gameWon)
                 {
-                    if (gameWon)
+                    using (new ColorContext(ColorContext.BattleWin))
                     {
                         Console.WriteLine($"You win! {enemy.Name} was served justice by death!");
-                        Console.WriteLine($"Press a button to exit the game.");
-                        Console.ReadLine();
-                        Environment.Exit(0);
                     }
-                    else
+                    Environment.Exit(0);
+                }
+                else
+                {
+                    using (new ColorContext(ColorContext.FailureColor))
                     {
                         Console.WriteLine($"Oh my god, you killed poor innocent {enemy.Name}! You've picked up all {enemy.Name}'s items, check your inventory!");
                     }

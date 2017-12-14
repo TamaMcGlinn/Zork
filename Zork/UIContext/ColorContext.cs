@@ -20,7 +20,7 @@ namespace Zork.UIContext
         public static ConsoleColor BattleDamage = ConsoleColor.DarkRed;
         public static ConsoleColor BattleWin = ConsoleColor.Green;
         public static ConsoleColor BattleLose = ConsoleColor.Red;
-        public static ConsoleColor MapNPCLocation = ConsoleColor.DarkCyan;
+        public static ConsoleColor MapNPCLocation = ConsoleColor.Red;
 
         private ConsoleColor _originalForegroundColor;
         private ConsoleColor _originalBackgroundColor;
