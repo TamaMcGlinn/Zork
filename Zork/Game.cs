@@ -79,14 +79,11 @@ namespace Zork
 
         private void AddCharacters()
         {
-            for (int i = 0; i < 2; ++i)
-            {
-                AddHostileNPC(new NPC("bear", "A black bear!", 9, 110, 4, null));
-            }
-            for (int i = 0; i < 8; ++i)
-            {
-                AddHostileNPC(new NPC("rabid dog", "He's frothing at the mouth!", 8, 40, 4, null));
-            }
+            AddHostileNPC(new NPC("bear", "A black bear!", 9, 110, 4, null));
+            AddHostileNPC(new NPC("bobcat", "A wild bobcat!", 6, 70, 1, null));
+            AddHostileNPC(new NPC("hyena", "A hyena!", 9, 44, 1, null));
+            AddHostileNPC(new NPC("rabid dog", "He's frothing at the mouth!", 3, 50, 4, null));
+            
             foreach (NPC npc in NPCS)
             {
                 Point location = maze.GetRandomRoom();
