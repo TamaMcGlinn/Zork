@@ -17,7 +17,7 @@ namespace ZorkUnitTest
         /// Tests if a character is being constructed with all the right parameters.
         /// </summary>
         [TestMethod]
-        public void characterConstructorTest()
+        public void CharacterConstructorTest()
         {
             Weapon longSword = CreateWeapon();
             Character character1 = CreateNPC();
@@ -74,33 +74,38 @@ namespace ZorkUnitTest
             NPC npc = CreateNPC();
             room.NPCsInRoom.Add(npc);
             room.ObjectsInRoom = CreateListOfThreeWeaponObjects();
-            StringWriter consoleOutput = new StringWriter();
-            Console.SetOut(consoleOutput);
-            room.PrintRoomContents();
-            string lookAroundTextString = consoleOutput.ToString();
-            string[] lookAroundTextList = lookAroundTextString.Split('\n');
-            //check whether the second line of text contains the name of the character added to the room
-            if (!lookAroundTextList[0].Contains(npc.Name.Replace('_', ' ')))
+            using (StringWriter consoleOutput = new StringWriter())
             {
-                Assert.Fail("The character's name is not printed in the second line of the look around method");
-            }
-            //checks for the descriptions of the three weapons (the objects in the room)
-            for (int i = 3; i < 6; i++)
-            {
-                Assert.IsTrue(lookAroundTextList[i].Contains(CreateWeapon().Description), "The objects do not match the right description");
+                Console.SetOut(consoleOutput);
+                room.PrintRoomContents();
+                string lookAroundTextString = consoleOutput.ToString();
+                string[] lookAroundTextList = lookAroundTextString.Split('\n');
+                //check whether the second line of text contains the name of the character added to the room
+                if (!lookAroundTextList[0].Contains(npc.Name.Replace('_', ' ')))
+                {
+                    Assert.Fail("The character's name is not printed in the second line of the look around method");
+                }
+                //checks for the descriptions of the three weapons (the objects in the room)
+                for (int i = 3; i < 6; i++)
+                {
+                    Assert.IsTrue(lookAroundTextList[i].Contains(CreateWeapon().Description), "The objects do not match the right description");
+                }
             }
         }
         [TestMethod]
         public void PrintInventoryTest()
         {
             Player player = CreatePlayerCharacter();
-            StringWriter consoleOutput = new StringWriter();
-            Console.SetOut(consoleOutput);
-            player.Inventory = new List<BaseObject>();
-            Clue clue = new Clue("Red pants", "very nice pants");
-            player.Inventory.Add(clue);
-            player.PrintInventory();
-            Assert.IsTrue(consoleOutput.ToString().Contains($"{clue.Name} {clue.Description}"));
+            using (StringWriter consoleOutput = new StringWriter())
+            {
+
+                Console.SetOut(consoleOutput);
+                player.Inventory = new List<BaseObject>();
+                Clue clue = new Clue("Red pants", "very nice pants");
+                player.Inventory.Add(clue);
+                player.PrintInventory();
+                Assert.IsTrue(consoleOutput.ToString().Contains($"{clue.Name} {clue.Description}"));
+            }
         }
 
         [TestMethod]
@@ -146,10 +151,12 @@ namespace ZorkUnitTest
 
         private List<BaseObject> CreateListOfThreeWeaponObjects()
         {
-            List<BaseObject> objectsInRoom = new List<BaseObject>();
-            objectsInRoom.Add(CreateWeapon());
-            objectsInRoom.Add(CreateWeapon());
-            objectsInRoom.Add(CreateWeapon());
+            List<BaseObject> objectsInRoom = new List<BaseObject>
+            {
+                CreateWeapon(),
+                CreateWeapon(),
+                CreateWeapon()
+            };
             return objectsInRoom;
         }
 
@@ -193,8 +200,10 @@ namespace ZorkUnitTest
 
         public static Player CreatePlayerCharacter()
         {
-            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)));
-            p.EquippedWeapon = new Weapon("gun", 1, "description");
+            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)))
+            {
+                EquippedWeapon = new Weapon("gun", 1, "description")
+            };
             return p;
         }
 

@@ -18,12 +18,14 @@ namespace ZorkUnitTest
             Point currentRoom = new Point(0, 0);
             Maze maze = new Maze(1, 1, currentRoom.X, currentRoom.Y);
             Player p = new Player(maze.Rooms[currentRoom.X,currentRoom.Y]);
-            NPC npc = createNPCBarney();
+            NPC npc = CreateNPCBarney();
             maze[currentRoom.X, currentRoom.Y].NPCsInRoom.Add(npc);
-            StringWriter consoleOutput = new StringWriter();
-            Console.SetOut(consoleOutput);
-            p.CurrentRoom.PrintNPCs();
-            Assert.IsTrue(consoleOutput.ToString().Contains($"[1] {maze[currentRoom].NPCsInRoom[0].Name.Replace('_',' ')}"));
+            using (StringWriter consoleOutput = new StringWriter())
+            {
+                Console.SetOut(consoleOutput);
+                p.CurrentRoom.PrintNPCs();
+                Assert.IsTrue(consoleOutput.ToString().Contains($"[1] {maze[currentRoom].NPCsInRoom[0].Name.Replace('_', ' ')}"));
+            }
         }
 
         [TestMethod]
@@ -33,7 +35,7 @@ namespace ZorkUnitTest
             Maze maze = CreateMaze();
             Room room = maze.Rooms[0, 0];
             Player player = new Player(room);
-            NPC barney = createNPCBarney();
+            NPC barney = CreateNPCBarney();
             player.Fight(barney, game);
             Assert.IsTrue(player.Health <= 0);
         }
@@ -56,7 +58,7 @@ namespace ZorkUnitTest
             return new Maze(10, 10, 0, 0);
         }
 
-        public NPC createNPCBarney()
+        public NPC CreateNPCBarney()
         {
             Room r = new Room("", new Point(0, 0));
             NPC barney = new NPC("constable_barney", "", 30, 100, 5, new Weapon("Strong weapon", 10, "desc"));

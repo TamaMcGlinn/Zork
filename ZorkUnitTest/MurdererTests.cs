@@ -99,13 +99,15 @@ namespace ZorkUnitTest
 
         public MurdererNPC CreateMurderer()
         {
-            MurdererNPC murderer = new Zork.Characters.MurdererNPC("Murderer", "desc", 10, 100, 99, null);
-            murderer.CurrentRoom = new Room("", new System.Drawing.Point(0,0));
+            MurdererNPC murderer = new Zork.Characters.MurdererNPC("Murderer", "desc", 10, 100, 99, null)
+            {
+                CurrentRoom = new Room("", new System.Drawing.Point(0, 0))
+            };
             return murderer;
             
         }
 
-        public Maze createMaze()
+        public Maze CreateMaze()
         {
             return new Maze(5, 5, 0, 0);
         }

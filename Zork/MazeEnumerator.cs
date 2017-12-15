@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Zork
 {
-    public class MazeEnumerator : IEnumerator<Room>
+    public sealed class MazeEnumerator : IEnumerator<Room>
     {
         #region Fields
         private int xi = -1;
@@ -34,6 +34,7 @@ namespace Zork
 
         public void Dispose()
         {
+           
         }
 
         public bool MoveNext()

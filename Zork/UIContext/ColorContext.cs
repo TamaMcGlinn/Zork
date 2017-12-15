@@ -5,7 +5,7 @@ namespace Zork.UIContext
     /// <summary>
     /// Sets the ConsoleColor as specified, and resets the colors upon disposal.
     /// </summary>
-    public class ColorContext : IDisposable
+    public sealed class ColorContext : IDisposable
     {
         public static ConsoleColor HeaderColor = ConsoleColor.DarkMagenta;
         public static ConsoleColor FailureColor = ConsoleColor.Red;

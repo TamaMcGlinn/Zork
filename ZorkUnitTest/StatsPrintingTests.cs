@@ -20,12 +20,14 @@ namespace ZorkUnitTest
             string gunName = "gun";
             string gunDescription = "description";
             p.EquippedWeapon = new Weapon(gunName, 1, gunDescription);
-            StringWriter consoleOutput = new StringWriter();
-            Console.SetOut(consoleOutput);
-            p.EquippedWeapon.PrintStats();
-            Assert.AreEqual(gunName + ": " + gunDescription + 
-                "\r\nStrength: " + p.EquippedWeapon.Strength + 
-                "\r\n", consoleOutput.ToString());
+            using (StringWriter consoleOutput = new StringWriter())
+            {
+                Console.SetOut(consoleOutput);
+                p.EquippedWeapon.PrintStats();
+                Assert.AreEqual(gunName + ": " + gunDescription +
+                    "\r\nStrength: " + p.EquippedWeapon.Strength +
+                    "\r\n", consoleOutput.ToString());
+            }
         }
 
         [TestMethod]
@@ -33,14 +35,16 @@ namespace ZorkUnitTest
         {
             Player p = CharacterTests.CreatePlayerCharacter();
             p.EquippedWeapon = null;
-            StringWriter consoleOutput = new StringWriter();
-            Console.SetOut(consoleOutput);
-            p.PrintStats();
-            Assert.AreEqual(p.Name + ": " 
-                + p.Description +
-                "\r\nHealth: 100" +
-                "\r\nStrength: " + p.Strength + 
-                "\r\nUnarmed.\r\n\r\n", consoleOutput.ToString());
+            using (StringWriter consoleOutput = new StringWriter())
+            {
+                Console.SetOut(consoleOutput);
+                p.PrintStats();
+                Assert.AreEqual(p.Name + ": "
+                    + p.Description +
+                    "\r\nHealth: 100" +
+                    "\r\nStrength: " + p.Strength +
+                    "\r\nUnarmed.\r\n\r\n", consoleOutput.ToString());
+            }
         }
 
         [TestMethod]
