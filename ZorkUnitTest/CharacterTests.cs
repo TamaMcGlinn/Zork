@@ -51,7 +51,7 @@ namespace ZorkUnitTest
         [TestMethod]
         public void LookAroundTest()
         {
-            Room room = new Room("A place", new System.Drawing.Point(0,0));
+            Room room = new Room("A place", new Point(0,0));
             NPC npc = CreateNPC();
             room.NPCsInRoom.Add(npc);
             room.ObjectsInRoom = CreateListOfThreeWeaponObjects();
