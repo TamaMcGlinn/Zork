@@ -13,7 +13,7 @@ namespace ZorkUnitTest
     [TestClass]
     public class PickupTests
     {
-        private HealthPickup makeVial()
+        private HealthPickup MakeVial()
         {
             return new HealthPickup("Vial", 30, "A bright green liquid in a thick glass vial.");
         }
@@ -21,15 +21,15 @@ namespace ZorkUnitTest
         [TestMethod]
         public void MakeHealthPickup()
         {
-            var health = makeVial();
+            var health = MakeVial();
             Assert.IsNotNull(health);
         }
 
         [TestMethod]
         public void HealthLimited()
         {
-            var health = makeVial();
-            Player p = createPlayer();
+            var health = MakeVial();
+            Player p = CreatePlayer();
             p.UseHealthPickup(health);
             Assert.AreEqual(p.Health, 100);
         }
@@ -37,8 +37,8 @@ namespace ZorkUnitTest
         [TestMethod]
         public void CanHeal()
         {
-            var health = makeVial();
-            Player p = createPlayer();
+            var health = MakeVial();
+            Player p = CreatePlayer();
             p.TakeDamage(50);
             p.UseHealthPickup(health);
             Assert.AreEqual(p.Health, 80);
@@ -47,8 +47,8 @@ namespace ZorkUnitTest
         [TestMethod]
         public void HealObjectGetsRemovedAfterUsingTest()
         {
-            var health = makeVial();
-            Player p = createPlayer();
+            var health = MakeVial();
+            Player p = CreatePlayer();
             p.TakeDamage(50);
             p.Inventory.Add(health);
             p.UseHealthPickup(health);
@@ -65,7 +65,7 @@ namespace ZorkUnitTest
         [TestMethod]
         public void PickUpWeaponTest()
         {
-            Player p = createPlayer();
+            Player p = CreatePlayer();
             Weapon w = new Weapon("Longsword", 5, "a big sword");
             w.PickupObject(p);
             Assert.IsTrue(p.EquippedWeapon == w);
@@ -74,7 +74,7 @@ namespace ZorkUnitTest
         [TestMethod]
         public void PickupObjectTest()
         {
-            Player p = createPlayer();
+            Player p = CreatePlayer();
             Clue bo = new Clue("pants", "description");
             bo.PickupObject(p);
             Assert.IsTrue(p.Inventory.Contains(bo));
@@ -84,12 +84,12 @@ namespace ZorkUnitTest
         public void TestClues()
         {
             string clue = "c";
-            Player p = createPlayer();
+            Player p = CreatePlayer();
             p.Clues.Add(clue);
             Assert.IsTrue(p.Clues.Contains(clue));
         }
 
-        public Player createPlayer()
+        public Player CreatePlayer()
         {
             return new Player(new Zork.Room("", new System.Drawing.Point(0, 0))); ;
         }

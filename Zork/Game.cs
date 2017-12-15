@@ -75,7 +75,7 @@ namespace Zork
             {
                 Point location = maze.GetRandomRoom();
                 Room room = maze[location];
-                npc.maze = maze;
+                npc.Maze = maze;
                 room.NPCsInRoom.Add(npc);
                 npc.CurrentRoom = room;
             }

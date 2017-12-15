@@ -25,14 +25,14 @@ namespace Zork.Texts
             }
         }
 
-        private static int countInitialTabs(string line)
+        private static int CountInitialTabs(string line)
         {
             int i = 0;
             while (line[i++] == '\t') ;
             return i-1;
         }
 
-        private static List<string> getRequiredConditions(ref string inputLine)
+        private static List<string> GetRequiredConditions(ref string inputLine)
         {
             int start = inputLine.IndexOf('[');
             if(start == 0)
@@ -45,7 +45,7 @@ namespace Zork.Texts
             return new List<string>();
         }
 
-        private static List<string> getUnlockedClues(ref string inputLine)
+        private static List<string> GetUnlockedClues(ref string inputLine)
         {
             int start = inputLine.IndexOf('[');
             if (start >= 0)
@@ -80,16 +80,16 @@ namespace Zork.Texts
                 return null;
             }
             List<Node> results = new List<Node>();
-            int tabs = countInitialTabs(lines[line]);
+            int tabs = CountInitialTabs(lines[line]);
             List<int> beginLines = GetChildren(lines, line, tabs);
             foreach(int beginLine in beginLines)
             {
                 string contents = lines[beginLine].Substring(tabs + 1);
-                var requiredConditions = getRequiredConditions(ref contents);
-                var unlockedClues = getUnlockedClues(ref contents);
+                var requiredConditions = GetRequiredConditions(ref contents);
+                var unlockedClues = GetUnlockedClues(ref contents);
                 Node currentNode = new Node(contents, requiredConditions, unlockedClues);
                 int nextLine = beginLine + 1;
-                if (nextLine < lines.Count() && countInitialTabs(lines[nextLine]) == tabs+1)
+                if (nextLine < lines.Count() && CountInitialTabs(lines[nextLine]) == tabs+1)
                 {
                     currentNode.Children.AddRange(ReadNodes(lines, nextLine));
                 }
@@ -111,7 +111,7 @@ namespace Zork.Texts
             List<int> childBeginLines = new List<int>();
             for (; line != lines.Count(); ++line)
             {
-                int childTabs = countInitialTabs(lines[line]);
+                int childTabs = CountInitialTabs(lines[line]);
                 if (childTabs == tabs)
                 {
                     childBeginLines.Add(line);

@@ -71,7 +71,7 @@ namespace ZorkUnitTest
             Game game = new Game();
             Maze m = new Maze(1, 1, 0, 0);
             MurdererNPC murderer = CreateMurderer();
-            murderer.maze = m;
+            murderer.Maze = m;
             murderer.CurrentRoom = m.Rooms[0, 0];
             NPC victim = CharacterTests.CreateNPC();
             victim.CurrentRoom = murderer.CurrentRoom;

@@ -15,10 +15,9 @@ namespace Zork.Objects
         public override void PickupObject(Character character)
         {
             base.PickupObject(character);
-            Player p = character as Player;
-            if (p != null)
+            if (character is Player player)
             {
-                p.Clues.Add(Name);
+                player.Clues.Add(Name);
             }
         }
     }

@@ -26,7 +26,7 @@ namespace Zork.Characters
         {
 
         }
-        public Maze maze { get; set; }
+        public Maze Maze { get; set; }
 
         public NPC(string name, string description, int strength, int startHealth, int maxHealth,  int letsPlayerFleePerXRounds, Weapon weapon = null) : base(name, description, strength, startHealth, maxHealth, weapon)
         {
@@ -84,13 +84,13 @@ namespace Zork.Characters
         {
             var rng = new Random();
             var currentLocation = CurrentRoom.LocationOfRoom;
-            var options = maze.AccessibleNeighbours(currentLocation).ToList();
+            var options = Maze.AccessibleNeighbours(currentLocation).ToList();
             if (options.Count > 0)
             {
                 var newRoom = options[rng.Next(0, options.Count)];
-                maze[currentLocation].NPCsInRoom.Remove(this);
-                maze[newRoom].NPCsInRoom.Add(this);
-                CurrentRoom = maze[newRoom];
+                Maze[currentLocation].NPCsInRoom.Remove(this);
+                Maze[newRoom].NPCsInRoom.Add(this);
+                CurrentRoom = Maze[newRoom];
             }
         }
 
