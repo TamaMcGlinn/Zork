@@ -89,22 +89,22 @@
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <Content Include="Texts\story\alfred.txt" />
-    <Content Include="Texts\story\audrey.txt" />
-    <Content Include="Texts\story\barden.txt" />
-    <Content Include="Texts\story\bevis.txt" />
-    <Content Include="Texts\story\burton.txt" />
-    <Content Include="Texts\story\constable_barney.txt" />
-    <Content Include="Texts\story\emerson.txt" />
-    <Content Include="Texts\story\geoffrey.txt" />
-    <Content Include="Texts\story\henry.txt" />
-    <Content Include="Texts\story\ignatius.txt" />
-    <Content Include="Texts\story\kelsey.txt" />
-    <Content Include="Texts\story\lady_barclay.txt" />
-    <Content Include="Texts\story\maxwell.txt" />
-    <Content Include="Texts\story\outline.txt" />
-    <Content Include="Texts\story\reginald.txt" />
-    <Content Include="Texts\story\sir_barclay.txt" />
+    <Content Include="Resources\story\alfred.txt" />
+    <Content Include="Resources\story\audrey.txt" />
+    <Content Include="Resources\story\barden.txt" />
+    <Content Include="Resources\story\bevis.txt" />
+    <Content Include="Resources\story\burton.txt" />
+    <Content Include="Resources\story\constable_barney.txt" />
+    <Content Include="Resources\story\emerson.txt" />
+    <Content Include="Resources\story\geoffrey.txt" />
+    <Content Include="Resources\story\henry.txt" />
+    <Content Include="Resources\story\ignatius.txt" />
+    <Content Include="Resources\story\kelsey.txt" />
+    <Content Include="Resources\story\lady_barclay.txt" />
+    <Content Include="Resources\story\maxwell.txt" />
+    <Content Include="Resources\story\outline.txt" />
+    <Content Include="Resources\story\reginald.txt" />
+    <Content Include="Resources\story\sir_barclay.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
