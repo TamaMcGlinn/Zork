@@ -17,6 +17,8 @@ namespace Zork.Characters
             private set { _isHostile = value; }
         }
 
+        private const int PickUpChance = 10;
+
         public int LetsPlayerFleePerXRounds { get; set; }
         public const int MinTurnsBetweenMoves = 2;
         public const int MaxTurnsBetweenMoves = 5;
@@ -45,8 +47,7 @@ namespace Zork.Characters
 
         private void PickNextTimeToMove()
         {
-            var rng = new Random();
-            _turnsUntilNextMove = rng.Next(MinTurnsBetweenMoves, MaxTurnsBetweenMoves + 1);
+            _turnsUntilNextMove = Chance.Between(MinTurnsBetweenMoves, MaxTurnsBetweenMoves + 1);
         }
 
         /// <summary>
@@ -90,15 +91,33 @@ namespace Zork.Characters
 
         private void Move()
         {
-            var rng = new Random();
             var currentLocation = CurrentRoom.LocationOfRoom;
             var options = Maze.AccessibleNeighbours(currentLocation).ToList();
             if (options.Count > 0)
             {
-                var newRoom = options[rng.Next(0, options.Count)];
+                var newRoom = Chance.RandomElement(options);
                 Maze[currentLocation].NPCsInRoom.Remove(this);
                 Maze[newRoom].NPCsInRoom.Add(this);
                 CurrentRoom = Maze[newRoom];
+            }
+            PossiblyPickSomethingUp();
+        }
+
+        private void PossiblyPickSomethingUp()
+        {
+            List<BaseObject> NonClueItems = CurrentRoom.ObjectsInRoom.Where(obj => !(obj is Clue)).ToList();
+            if (NonClueItems.Count > 0)
+            {
+                if (Chance.Percentage(PickUpChance))
+                {
+                    PickUpObject(Chance.RandomElement(NonClueItems));
+                }
+            }
+            if( Inventory.Count >= 3)
+            {
+                var item = Chance.RandomElement(Inventory);
+                CurrentRoom.ObjectsInRoom.Add(item);
+                Inventory.Remove(item);
             }
         }
 

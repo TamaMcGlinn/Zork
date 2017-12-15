@@ -42,9 +42,7 @@ namespace Zork.Characters
             List<NPC> otherNPCs = CurrentRoom.NPCsInRoom.Where(x => x != this).ToList();
             if (otherNPCs.Count > 0)
             {
-                Random rng = new Random();
-                int killNpc = rng.Next(0, otherNPCs.Count);
-                var victim = otherNPCs[killNpc];
+                NPC victim = Chance.RandomElement(otherNPCs);
                 victim.KillThisNPC(game);
             }
         }

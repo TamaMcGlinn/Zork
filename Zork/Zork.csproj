@@ -69,6 +69,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Chance.cs" />
     <Compile Include="Room.cs" />
     <Compile Include="Texts\Node.cs" />
     <Compile Include="Texts\TextTree.cs" />

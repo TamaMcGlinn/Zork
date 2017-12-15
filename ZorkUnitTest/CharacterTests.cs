@@ -112,7 +112,7 @@ namespace ZorkUnitTest
         /// Creates a weapon objects for testing purposes
         /// </summary>
         /// <returns></returns>
-        private static Weapon CreateWeapon()
+        public static Weapon CreateWeapon()
         {
             return new Weapon("Longsword", 16, "a heavy longsword");
            

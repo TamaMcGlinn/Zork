@@ -44,20 +44,10 @@ namespace Zork.Objects
             maze.AddItemToRandomRoom(new Weapon("Broom", 8, "A long wooden handle with straw bound in rope."));
             maze.AddItemToRandomRoom(new Weapon("Hammer", 25, "The heavy sort; could probably kill a human fairly quickly."));
             int revolverDropChance = 33;
-            if (DropChanceByPercentage(revolverDropChance))
+            if (Chance.Percentage(revolverDropChance))
             {
                 maze.AddItemToRandomRoom(new Weapon(".32 Rimfire Revolver", 50, "Holy smokes! a bloody revolver!"));
             }
-        }
-
-        public static bool DropChanceByPercentage(int chancePercentage)
-        {
-            Random r = new Random();
-            if(r.Next(0, 100) < chancePercentage)
-            {
-                return true;
-            }
-            return false;
         }
     }
 }
