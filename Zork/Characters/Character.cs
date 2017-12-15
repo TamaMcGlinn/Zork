@@ -151,7 +151,7 @@ namespace Zork
                     {
                         Console.WriteLine($"You win! {enemy.Name} was served justice by death!");
                     }
-                    game.ExitGame = true;
+                    IsDead = true;
                 }
                 else
                 {
