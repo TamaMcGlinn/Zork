@@ -44,7 +44,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Characters\Character.cs" />
-    <Compile Include="ColourDefinitions.cs" />
     <Compile Include="MapPrinter.cs" />
     <Compile Include="Objects\CorpseNPCObject.cs" />
     <Compile Include="Characters\MurdererNPC.cs" />
