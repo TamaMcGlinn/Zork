@@ -1,4 +1,5 @@
 ﻿using System;
+using Zork.Characters;
 
 namespace Zork.Objects
 {
@@ -24,6 +25,12 @@ namespace Zork.Objects
         public override void UseObject(Character c)
         {
             c.Health = Math.Min(c.MaxHealth, c.Health + Potency);
+            if(c is Player && c.Health <= 0)
+            {
+                Player player = (c as Player);
+                player.Die();
+                return;
+            }
             Console.WriteLine("Ahhh that's refreshing! Health:" + c.Health);
             c.Inventory.Remove(this);
         }

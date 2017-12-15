@@ -91,7 +91,7 @@ namespace Zork
         {
             PrintPreamble();
             PrintInstructions();
-            while (!ExitGame)
+            while (!player.IsDead)
             {
                 player.CurrentRoom.PrintRoom();
                 NPC hostileNPC = player.CurrentRoom.GetHostileNPC();

@@ -68,7 +68,7 @@ namespace Zork
             set { _currentRoom = value; }
         }
 
-
+        public bool IsDead { get; protected set; } = false;
         #endregion properties
         public Character()
         {
@@ -110,6 +110,10 @@ namespace Zork
         public bool TakeDamage(int damage)
         {
             Health -= damage;
+            if(Health < 0)
+            {
+                IsDead = true;
+            }
             return Health > 0;
         }
         
@@ -134,11 +138,7 @@ namespace Zork
         {
             if (Health < 0)
             {
-                using (new ColorContext(ColorContext.BattleLose))
-                {
-                    Console.WriteLine("You died!");
-                }
-                game.ExitGame = true;
+                Die();
             }
             else
             {
@@ -161,6 +161,15 @@ namespace Zork
                     }
                 }
             }
+        }
+
+        public void Die()
+        {
+            using (new ColorContext(ColorContext.BattleLose))
+            {
+                Console.WriteLine("You died!");
+            }
+            IsDead = true;
         }
 
         protected virtual void FightOneRound(NPC enemy)
