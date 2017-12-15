@@ -210,8 +210,7 @@ namespace Zork
 
         protected void PickUpObject(BaseObject obj)
         {
-            CurrentRoom.ObjectsInRoom.Remove(obj);
-            obj.PickupObject(this);
+            obj.PickupObject(CurrentRoom, this);
         }
     }
 }

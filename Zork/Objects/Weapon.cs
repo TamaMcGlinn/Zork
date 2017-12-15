@@ -21,8 +21,9 @@ namespace Zork.Objects
             Strength = strength;
         }
 
-        public override void PickupObject(Character character)
+        public override void PickupObject(Room room, Character character)
         {
+            room.ObjectsInRoom.Remove(this);
             if (character.EquippedWeapon == null)
             {
                 character.EquippedWeapon = this;

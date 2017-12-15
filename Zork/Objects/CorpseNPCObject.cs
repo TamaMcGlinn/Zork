@@ -15,7 +15,7 @@ namespace Zork.Objects
 
         public override ConsoleColor Color => ConsoleColor.DarkRed;
 
-        public override void PickupObject(Character character)
+        public override void PickupObject(Room room, Character character)
         {
             Console.WriteLine("Can't pickup a dead body");
         }

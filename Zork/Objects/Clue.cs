@@ -12,9 +12,9 @@ namespace Zork.Objects
 
         public override ConsoleColor Color => ConsoleColor.Cyan;
 
-        public override void PickupObject(Character character)
+        public override void PickupObject(Room room, Character character)
         {
-            base.PickupObject(character);
+            base.PickupObject(room, character);
             if (character is Player player)
             {
                 player.Clues.Add(Name);

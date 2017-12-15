@@ -33,8 +33,9 @@ namespace Zork.Objects
         /// Default puts the object in the specified character inventory.
         /// </summary>
         /// <param name="character"></param>
-        public virtual void PickupObject(Character character)
+        public virtual void PickupObject(Room room, Character character)
         {
+            room.ObjectsInRoom.Remove(this);
             character.Inventory.Add(this);
         }
 
