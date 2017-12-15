@@ -10,6 +10,7 @@ namespace Zork
             Console.SetWindowSize(Console.LargestWindowWidth - 18, Console.LargestWindowHeight - 8);
             Game gameObject = new Game();
             gameObject.Run();
+            Console.Read();
         }
     }
 }
