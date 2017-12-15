@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using Zork.Characters;
 
 namespace Zork.Texts
 {
@@ -19,6 +20,8 @@ namespace Zork.Texts
 
         private List<string> _conditions;
 
+        public List<string> UnlockedClues;
+
         private List<Node> _children;
 
         public List<Node> Children
@@ -26,18 +29,19 @@ namespace Zork.Texts
             get { return _children; }
         }
 
-        public Node(string text, List<string> conditions)
+        public Node(string text, List<string> conditions, List<string> unlockedClues)
         {
             Text = text;
             _children = new List<Node>();
             _conditions = conditions;
+            UnlockedClues = unlockedClues;
         }
 
-        private bool IsAvailable()
+        private bool IsAvailable(Player player)
         {
             foreach(string condition in _conditions)
             {
-                if (!Characters.CharacterDefinitions.PlayerCharacter.Clues.Contains(condition))
+                if (!player.Clues.Contains(condition))
                 {
                     return false;
                 }
@@ -45,9 +49,19 @@ namespace Zork.Texts
             return true;
         }
 
-        public List<Node> AvailableChildren()
+        public List<Node> AvailableChildren(Player player)
         {
-            return Children.Where((Node n) => { return n.IsAvailable(); }).ToList();
+            return Children.Where((Node n) => { return n.IsAvailable(player); }).ToList();
+        }
+
+        public Node FirstAvailableChild(Player player)
+        {
+            return FirstAvailable(Children, player);
+        }
+
+        public static Node FirstAvailable(List<Node> nodesList, Player player)
+        {
+            return nodesList.FirstOrDefault(n => n.IsAvailable(player));
         }
     }
 }

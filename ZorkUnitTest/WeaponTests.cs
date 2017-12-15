@@ -18,19 +18,9 @@ namespace ZorkUnitTest
             int strength = 16;
 
             Weapon weapon = new Weapon(name, strength, desc);
-            if(weapon.Name!=name)
-            {
-                Assert.Fail("Weapon name is not correct");
-            }
-            if(weapon.Strength != strength)
-            {
-                Assert.Fail("Weapon strength is not correct");
-            }
-
-            if(weapon.Description != desc)
-            {
-                Assert.Fail("The description is not correct");
-            }
+            Assert.AreEqual(name, weapon.Name);
+            Assert.AreEqual(strength, weapon.Strength);
+            Assert.AreEqual(desc, weapon.Description);
         }
     }
 }

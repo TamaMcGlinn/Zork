@@ -1,0 +1,9 @@
+<Hello, sir. I hope you are more fortunate this day than I.
+	>Why the long face, ostler?
+		<On my watch, two nights ago a royal horse was stolen, clad in royal purple, accompanied by no royal curple.
+			>Good luck with that!
+	>I don't really care. I'm looking for information about Cecil. She was found dead thismorning.
+		<Perhaps you should ask the inn keeper, Emerson. He usually knows where the whores are to be found.[ask_emerson]
+			>Thank you for the advice.
+			>Not so fast, brigand. You murdered Cecil, did you not?
+				<Prove it or die!

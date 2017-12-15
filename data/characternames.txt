@@ -10,15 +10,12 @@ Aldan
 Alden
 Alder
 Aldis
-Aldrich
-Alfred
 Allard
 Alton
 Alvin
 Amherst
 Amsden
 Andren
-Ansley
 Ash
 Ashling
 Atherol
@@ -32,9 +29,7 @@ Ballard
 Bancroft
 Banyan
 Barclay
-Barden
 Barnett
-Barney
 Baron
 Barr
 Barrington
@@ -49,7 +44,6 @@ Bentley
 Berke
 Bersh
 Beverly
-Bevis
 Bill
 Bin
 Bing
@@ -99,7 +93,6 @@ Buckley
 Bud
 Burne
 Burt
-Burton
 Byrd
 Calder
 Caldwell
@@ -111,14 +104,12 @@ Carlton
 Carlyle
 Carter
 Carver
-Cecil
 Chad
 Chal
 Chance
 Channer
 Channing
 Chapman
-Charles
 Chaz
 Chelsey
 Clark
@@ -167,7 +158,6 @@ Elliot
 Ellison
 Elmer
 Elton
-Emerson
 Emmett
 Erwin
 Everett
@@ -181,7 +171,6 @@ Garry
 Garth
 Gary
 Gene
-Geoffrey
 Gibson
 Gilbert
 Gordon
@@ -201,7 +190,6 @@ Houston
 Howard
 Hugh
 Hunter
-Ignatius
 Jack
 Jagger
 Jamison
@@ -212,7 +200,6 @@ Jeffery
 Jerrell
 Jersey
 Jett
-Kelsey
 Kenley
 Kenneth
 Kent
@@ -223,7 +210,6 @@ Kimberley
 Kimberly
 Kinsey
 Kolton
-Kordell
 Landen
 Landon
 Lane
@@ -243,7 +229,6 @@ Macy
 Madison
 Marshall
 Maurice
-Maxwell
 Merrill
 Milton
 Nash
@@ -272,7 +257,6 @@ Raven
 Raymond
 Reed
 Reeve
-Reginald
 Reid
 Remington
 Richard

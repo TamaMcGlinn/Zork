@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Zork.Characters;
 
 namespace Zork.Objects
@@ -12,14 +8,16 @@ namespace Zork.Objects
         public Clue(string name, string description) : base(name, description)
         {
         }
+        
 
-        public override void PickupObject(Character character)
+        public override ConsoleColor Color => ConsoleColor.Cyan;
+
+        public override void PickupObject(Room room, Character character)
         {
-            base.PickupObject(character);
-            Player p = character as Player;
-            if (p != null)
+            base.PickupObject(room, character);
+            if (character is Player player)
             {
-                p.Clues.Add(Name);
+                player.Clues.Add(Name);
             }
         }
     }

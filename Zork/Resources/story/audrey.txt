@@ -1,0 +1,14 @@
+<A penny for one less fortunate, sir?
+	>Away, thou elvish-mark’d, abortive, rooting hog!
+	>Here, have a hundred pennies, that much I can spare.
+		<Thank you!
+	>[money]Lend me your thoughts, madam, and I will give you half a pound.
+		<Gracious generous sir, I must confess then, what your son did tell me.
+			>His secrets are his own, I'm sure.
+			>Pray tell.
+				<Ignatius and his friends, Kelsey, Bevis and Barden, found drunk Reginald on the road and took from him a good deal of money.[brigands_stole_from_reginald]
+	>[audrey_rich]Perhaps I can help you if you tell me how you came by so much coin to spend at the inn last night?
+		<Gracious generous sir, I must confess then, what your son did tell me.
+			>His secrets are his own, I'm sure.
+			>Pray tell.
+				<Ignatius and his friends, Kelsey, Bevis and Barden, found drunk Reginald on the road and took from him a good deal of money.[brigands_stole_from_reginald]

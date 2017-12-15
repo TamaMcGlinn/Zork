@@ -1,0 +1,8 @@
+<Good day, sir!
+	>[skillet_missing]I was speaking with the cook, Maxwell. He said you might know something about this skillet.
+		<I know naught, I assure thee.
+			>[suspicious_bag_seen]The sweat upon your brow does betray thee, Burton. You were seen leaving this place with a package rather too large to be kitchen scraps!
+				<What of it? Make these claims solid or leave them be.
+					>I will prove naught but that my blade is sharp, brigand!
+	>How goes thee?
+		<Fine, fine.

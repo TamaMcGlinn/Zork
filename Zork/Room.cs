@@ -1,7 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
+using System.Linq;
 using System.Text;
+using Zork.Characters;
 using Zork.Objects;
+using Zork.UIContext;
 
 namespace Zork
 {
@@ -15,19 +19,20 @@ namespace Zork
             get { return _canGoThere; }
         }
 
-        private string _name;
-
-        public string Name
-        {
-            get { return _name; }
-            set { _name = value; }
-        }
         private string _description;
 
         public string Description
         {
             get { return _description; }
             set { _description = value; }
+        }
+
+        private Point _locationOfRoom;
+
+        public Point LocationOfRoom
+        {
+            get { return _locationOfRoom; }
+            set { _locationOfRoom = value; }
         }
 
         private List<BaseObject> _objectsInRoom = new List<BaseObject>();
@@ -38,15 +43,15 @@ namespace Zork
             set { _objectsInRoom = value; }
         }
 
-        private List<Character> _charactersInRoom = new List<Character>();
+        private List<NPC> _charactersInRoom = new List<NPC>();
 
-        public List<Character> CharactersInRoom
+        public List<NPC> NPCsInRoom
         {
             get { return _charactersInRoom; }
         }
         #endregion properties
 
-        public Room(string desc)
+        public Room(string desc, Point locationOfRoom)
         {
             Description = desc;
             _canGoThere = new Dictionary<Direction, bool> {
@@ -55,80 +60,88 @@ namespace Zork
                 { Direction.South, false },
                 { Direction.West, false }
             };
+            LocationOfRoom = locationOfRoom;
         }
 
-        public void Print() {
-            Console.WriteLine("\n"+Description + "\n");
-            Console.WriteLine("You can go:");
-            foreach (var kvp in CanGoThere)
+        public void PrintRoom() {
+            using (new ColorContext(ColorContext.HeaderColor))
             {
-                if (kvp.Value)
+                Console.WriteLine(Description + ". You can go:");
+            }
+            using (new ColorContext(ColorContext.DirectionsColor))
+            {
+                foreach (var kvp in CanGoThere)
                 {
-                    Console.WriteLine(kvp.Key);
+                    if (kvp.Value)
+                    {
+                        Console.WriteLine($"{kvp.Key}");
+                    }
                 }
             }
+            Console.WriteLine();
         }
 
         /// <summary>
-        /// Prints a string containing all the objects in the room
+        /// Returns a string containing all the objects in the room
         /// </summary>
-        /// <returns>The string which is printed</returns>
-        public string PrintObjectsInRoom()
+        /// <returns>A description of the objects in the room</returns>
+        private void DescribeObjectsInRoom()
         {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < ObjectsInRoom.Count; i++)
+            using (new ColorContext(ColorContext.HeaderColor))
             {
-                sb.Append(ObjectsInRoom[i].Name);
-                sb.Append(" ");
-                sb.AppendLine(ObjectsInRoom[i].Description);
+                Console.WriteLine("You see the following objects laying around:");
             }
-            return sb.ToString();
+            PrintItems(ObjectsInRoom);
+        }
+
+        public void PrintItems<T>(List<T> items) where T : BaseObject
+        {
+            for (int i = 0; i < items.Count; i++)
+            {
+                var item = items[i];
+                using (new ColorContext(item.Color))
+                {
+                    ColorContext.PrintWithKeyCodes($"[{i + 1}] {item.Name} {item.Description}\n");
+                }
+            }
+            Console.WriteLine();
         }
 
         /// <summary>
-        /// Prints a string containing all the characters in the room
+        /// Returns a string containing all the characters in the room
         /// </summary>
-        /// <returns>The string which is printed</returns>
-        public string PrintCharactersInRoom()
+        /// <returns>A description of the characters in the room</returns>
+        public void PrintNPCs()
         {
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < CharactersInRoom.Count; i++)
+            if(NPCsInRoom.Count == 0)
             {
-                string formattedName = CharactersInRoom[i].Name.Replace('_', ' ');
-                sb.Append(formattedName);
-                sb.Append(" : ");
-                sb.Append(CharactersInRoom[i].Description);
-                sb.AppendLine();
+                using (new ColorContext(ColorContext.FailureColor))
+                {
+                    Console.WriteLine("There's no one here.");
+                }
             }
-
-            return sb.ToString();
+            for (int i = 0; i < NPCsInRoom.Count; i++)
+            {
+                string formattedName = NPCsInRoom[i].Name.Replace('_', ' ');
+                ColorContext.PrintWithKeyCodes($"[{i+1}] {formattedName} : {NPCsInRoom[i].Description}\n");
+            }
+            Console.WriteLine();
         }
 
-        public string LookAround()
+        public List<BaseObject> GetNonClueNonCorpseItems()
         {
-            StringBuilder sb = new StringBuilder();
-
-            //prints the description of the room
-            sb.AppendLine(Description);
-
-            //prints all characters
-            if (CharactersInRoom.Count > 0)
-            {
-                sb.AppendLine("\nThe following people are in this room:");
-                sb.Append(PrintCharactersInRoom());
-                sb.Append("\n");
-            }
-            else
-            {
-                sb.AppendLine("\nThere are no other people here.\n");
-            }
-
-            //prints all objects
-            sb.AppendLine("You see the following objects laying around:");
-            sb.Append(PrintObjectsInRoom());
-            Console.WriteLine(sb.ToString());
-            return sb.ToString();
+            return ObjectsInRoom.Where(obj => !(obj is Clue) && !(obj is CorpseNPCObject)).ToList();
         }
 
+        public void PrintRoomContents()
+        {
+            PrintNPCs();
+            DescribeObjectsInRoom();
+        }
+
+        public NPC GetHostileNPC()
+        {
+            return NPCsInRoom.Find((NPC enemy) => enemy.IsHostile);
+        }
     }
 }

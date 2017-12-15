@@ -1,11 +1,12 @@
-﻿using System;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Zork;
-using Zork.Objects;
-using System.Drawing;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
-using Zork.Characters;
+using System.Drawing;
 using System.IO;
+using System.Linq;
+using Zork;
+using Zork.Characters;
+using Zork.Objects;
 
 namespace ZorkUnitTest
 {
@@ -16,50 +17,31 @@ namespace ZorkUnitTest
         /// Tests if a character is being constructed with all the right parameters.
         /// </summary>
         [TestMethod]
-        public void characterConstructorTest()
+        public void CharacterConstructorTest()
         {
             Weapon longSword = CreateWeapon();
-            Character character1 = new NPC("sherrif_barney", 4, 100, longSword, "This man has a long beard.");
-            if (character1.Name != "sherrif_barney")
-            {
-                Assert.Fail("The name of the character is not correct");
-            }
-
-            if(character1.Strength != 4)
-            {
-                Assert.Fail("The strength is not correct");
-            }
-
-            if (character1.Health != 100)
-            {
-                Assert.Fail("The health of the character is not correct");
-            }
-
-            if (character1.EquippedWeapon == null)
-            {
-                Assert.Fail("The weapon of the character is not correct");
-            }
+            Character character1 = CreateNPC();
+            Assert.AreEqual("constable_barney", character1.Name);
+            Assert.AreEqual(4, character1.Strength);
+            Assert.AreEqual(100, character1.Health);
+            Assert.IsNotNull(character1.EquippedWeapon);
         }
-
 
         [TestMethod]
         public void NonExistingCharacterTest()
         {
-            NPC npc = new NPC("sdqoiwqjd", "Highly valuable person");
-            Assert.IsTrue(npc.Text.RootNode == null);
+            NPC npc = new NPC("sdqoiwqjd", "Highly valuable person", 0, 10, 5, null);
+            Assert.IsTrue(npc.Text.RootNodes == null);
         }
 
         /// <summary>
         /// Tests if it is possible to have a character without location
         /// </summary>
         [TestMethod]
-        public void characterWithoutWeaponTest()
+        public void CharacterWithoutWeaponTest()
         {
             Character character1 = CreateCharacterWithoutWeapon();
-            if (character1.EquippedWeapon != null)
-            {
-                Assert.Fail("Somehow the character has a weapon");
-            }
+            Assert.IsNull(character1.EquippedWeapon);
         }
 
         /// <summary>
@@ -69,54 +51,68 @@ namespace ZorkUnitTest
         [TestMethod]
         public void LookAroundTest()
         {
-            Room room = new Room("A place");
-            Character character = CharacterDefinitions.NPCS[0];
-            room.CharactersInRoom.Add(character);
+            Room room = new Room("A place", new Point(0,0));
+            NPC npc = CreateNPC();
+            room.NPCsInRoom.Add(npc);
             room.ObjectsInRoom = CreateListOfThreeWeaponObjects();
-            string lookAroundTextString = room.LookAround();
-            string[] lookAroundTextList = lookAroundTextString.Split('\n');
-
-            //Na feedback dit:
-            //checks if the current room's description is being printed first.
-            Assert.IsTrue(lookAroundTextString.Contains(room.Description));
-            //in plaats van:
-            //checks if the current room's description is being printed first.
-            //if (!lookAroundTextList[0].Contains(character.Location.Description))
-            //{
-            //    Assert.Fail("The first object seen is not the room description, should start with room description");
-            //}
-            //en voor de volgtijdelijkheid dan: assert.istrue(indexof(1) < indexof(2));
-
-
-            //checks whether the second line of text contains the name of the character (the character which is added to the room
-            if (!lookAroundTextList[3].Contains(character.Name.Replace('_', ' ')))
+            using (StringWriter consoleOutput = new StringWriter())
             {
-                Assert.Fail("The character's name is not printed in the second line of the look around method");
-            }
-
-            //checks if lines 4, 5, 6 are the description of the three weapons (the objects in the room)
-            for (int i = 6; i < 9; i++)
-            {
-                Assert.IsTrue(lookAroundTextList[i].Contains(CreateWeapon().Description), "The objects do not match the right description");
+                Console.SetOut(consoleOutput);
+                room.PrintRoomContents();
+                string lookAroundTextString = consoleOutput.ToString();
+                string[] lookAroundTextList = lookAroundTextString.Split('\n');
+                //check whether the second line of text contains the name of the character added to the room
+                Assert.IsTrue(lookAroundTextList[0].Contains(npc.Name.Replace('_', ' ')));
+                //checks for the descriptions of the three weapons (the objects in the room)
+                for (int i = 3; i < 6; i++)
+                {
+                    Assert.IsTrue(lookAroundTextList[i].Contains(CreateWeapon().Description), "The objects do not match the right description");
+                }
             }
         }
         [TestMethod]
         public void PrintInventoryTest()
         {
-            StringWriter consoleOutput = new StringWriter();
-            Console.SetOut(consoleOutput);
-            CharacterDefinitions.PlayerCharacter.Inventory = new List<BaseObject>();
-            Clue clue = new Clue("Red pants", "very nice pants");
-            CharacterDefinitions.PlayerCharacter.Inventory.Add(clue);
-            CharacterDefinitions.PlayerCharacter.PrintInventory();
-            Assert.IsTrue(consoleOutput.ToString().Contains($"{clue.Name} : {clue.Description}"));
+            Player player = CreatePlayerCharacter();
+            using (StringWriter consoleOutput = new StringWriter())
+            {
+
+                Console.SetOut(consoleOutput);
+                player.Inventory = new List<BaseObject>();
+                Clue clue = new Clue("Red pants", "very nice pants");
+                player.Inventory.Add(clue);
+                player.PrintInventory();
+                Assert.IsTrue(consoleOutput.ToString().Contains($"{clue.Name} {clue.Description}"));
+            }
+        }
+
+        [TestMethod]
+        public void KillNPCTest()
+        {
+            Game game = new Game();
+            NPC npc = CreateNPC();
+            npc.CurrentRoom = new Room("", new Point(0, 0));
+            Room npcRoom = npc.CurrentRoom;
+            npc.KillThisNPC(game);
+            Assert.IsFalse(npcRoom.NPCsInRoom.Count > 0);
+        }
+
+        [TestMethod]
+        public void TestIfNPCBecomesCorpseObject()
+        {
+            Game game = new Game();
+            NPC npc = CreateNPC();
+            npc.CurrentRoom = new Room("", new Point(0, 0));
+            Room npcRoom = npc.CurrentRoom;
+            npc.KillThisNPC(game);
+            Assert.IsFalse(npcRoom.ObjectsInRoom[0] is CorpseNPCObject);
         }
 
         /// <summary>
         /// Creates a weapon objects for testing purposes
         /// </summary>
         /// <returns></returns>
-        private Weapon CreateWeapon()
+        public static Weapon CreateWeapon()
         {
             return new Weapon("Longsword", 16, "a heavy longsword");
            
@@ -126,24 +122,69 @@ namespace ZorkUnitTest
         /// Creates a character holding a weapon for testing purposes
         /// </summary>
         /// <returns>A character equipped with a longsword</returns>
-        private Character CreateCharacter()
+        public static NPC CreateNPC()
         {
-            return new NPC("sherrif_barney", 4, 100, CreateWeapon(), "This man has a long beard.");
+            return new NPC("constable_barney", "This man has a long beard.", 4, 100, 5, CreateWeapon());
         }
 
         private List<BaseObject> CreateListOfThreeWeaponObjects()
         {
-            List<BaseObject> objectsInRoom = new List<BaseObject>();
-            objectsInRoom.Add(CreateWeapon());
-            objectsInRoom.Add(CreateWeapon());
-            objectsInRoom.Add(CreateWeapon());
+            List<BaseObject> objectsInRoom = new List<BaseObject>
+            {
+                CreateWeapon(),
+                CreateWeapon(),
+                CreateWeapon()
+            };
             return objectsInRoom;
         }
 
         private Character CreateCharacterWithoutWeapon()
         {
-            return new NPC("sherrif_barney", 4, 100, null, "This man has a long beard.");
+            return new NPC("constable_barney", "This man has a long beard.", 4, 100, 5, null);
+        }
+        
+        [TestMethod]
+        public void CharactersMoveAround()
+        {
+            Game game = new Game();
+            Dictionary<string, bool> characterHasMoved = InitialiseCharacterHasMoved(game.NPCS);
+            Dictionary<string, Point> startLocations = GetCharacterLocations(game);
+            for (int i = 0; i < NPC.MaxTurnsBetweenMoves; i++)
+            {
+                foreach(NPC npc in game.NPCS)
+                {
+                    npc.OnPlayerMoved(game);
+                    if(npc.CurrentRoom.LocationOfRoom != startLocations[npc.Name])
+                    {
+                        characterHasMoved[npc.Name] = true;
+                    }
+                }
+            }
+            foreach (bool charMoved in characterHasMoved.Values)
+            {
+                Assert.IsTrue(charMoved);
+            }
+        }
+        
+        private static Dictionary<string, Point> GetCharacterLocations(Game game)
+        {
+            return game.NPCS.ToDictionary(x => x.Name, x => x.CurrentRoom.LocationOfRoom);
         }
 
+        private static Dictionary<string, bool> InitialiseCharacterHasMoved(List<NPC> npcs)
+        {
+            return npcs.ToDictionary(x => x.Name, x => false);
+        }
+
+        public static Player CreatePlayerCharacter()
+        {
+            Player p = new Player(new Zork.Room("", new System.Drawing.Point(0, 0)))
+            {
+                EquippedWeapon = new Weapon("gun", 1, "description")
+            };
+            return p;
+        }
+
+        
     }
 }

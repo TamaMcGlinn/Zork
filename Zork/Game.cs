@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
 using Zork.Characters;
-using Zork.Extensions;
 using Zork.Objects;
+using Zork.UIContext;
 
 namespace Zork
 {
@@ -13,34 +13,85 @@ namespace Zork
     /// </summary>
     public class Game
     {
-        Maze maze;
-        Point currentRoom;
-        const int Width = 2;
-        const int Height = 2;
+        public Maze maze;
+        public const int Width = 14;
+        public const int Height = 10;
         const int StartX = 1;
         const int StartY = 1;
+        public Player player;
 
-        Dictionary<char, Action<Game, string>> Commands = new Dictionary<char, Action<Game, string>>()
-        {
-            { 'n', (Game g, string s) => { g.TryGo(Direction.North); } },
-            { 'e', (Game g, string s) => { g.TryGo(Direction.East); } },
-            { 's', (Game g, string s) => { g.TryGo(Direction.South); } },
-            { 'w', (Game g, string s) => { g.TryGo(Direction.West); } },
-            { 'l', (Game g, string s) => { Console.Write(g.maze[g.currentRoom].LookAround()); } },
-            { 't', (Game g, string s) => { g.tryTalk(s); } },
-            { 'p', (Game g, string s) => { Interactions.PickupItem(g.maze, g.currentRoom); } },
-            { 'i', (Game g, string s) => { CharacterDefinitions.PlayerCharacter.PrintWeapon(); CharacterDefinitions.PlayerCharacter.PrintInventory(); } },
-            { 'c', (Game g, string s) => { CharacterDefinitions.PlayerCharacter.PrintStats(); } },
-            { 'b', (Game g, string s) => { Interactions.Battle(g.maze,g.currentRoom); } }
+        public List<NPC> NPCS = new List<NPC>() {
+            new NPC("alfred", "A man on horseback. He looks like he's in a hurry!", 4, 100, 2, null ),
+            new NPC("audrey", "A vile woman, penniless but with a golden smile.", 3, 60, 1, null ),
+            new NPC("constable_barney", "A fat man in a prim black sherrif's uniform. He has a mustache and short brown hair.",3 , 100, 5, null ),
+            new NPC("henry", "A tall man with a round face, and a kingly red robe draped around his shoulders.", 12, 100, 5, new Objects.Weapon("Sword", 22, "Blackened steel sword. Looks pointy.") ),
+            new NPC("lady_barclay", "Lady to Sir Barclay, of Barclay manor. She wears a black bonnet and coat.", 4, 40, 1, null ),
+            new NPC("barden", "A lad, not sixteen years of age.", 4, 40, 1, null ),
+            new NPC("kelsey", "Barclay's son, probably already betrothed to some French lady.", 8, 40, 1, null ),
+            new NPC("ignatius", "Your son. Not a blemish in his youth nor character.", 4, 40, 1, null ),
+            new NPC("bevis", "A lad, not sixteen years of age.", 4, 40, 1, null ),
+            new MurdererNPC("burton", "A lowly servant, not worth your time.", 4, 40, 1, null),
+            new NPC("sir_barclay", "Sir Barclay; his son and yours are friends.", 14, 100, 1, null ),
+            new NPC("maxwell", "Sir Barclay's cook. He has a woman's hands, that have clearly never had to plug a leak below deck.", 8, 80, 1, null ),
+            new NPC("emerson", "Looks like an unsavory sort of fellow.", 8, 80, 1, null ),
+            new NPC("geoffrey", "By the looks of him, his brain is as dry as the remainder biscuit after voyage.", 8, 80, 1, null ),
+            new NPC("reginald", "He's no starveling. This great stinking hill of flesh has ne'er seen the inside of a shower nor the bottom of a salad bowl.", 2, 80, 1, null ),
         };
+
+        private Dictionary<char, Action<Game>> commands = new Dictionary<char, Action<Game>>()
+        {
+            { 'n', (Game g) => { g.player.TryGo(Direction.North, g); } },
+            { 'e', (Game g) => { g.player.TryGo(Direction.East,g); } },
+            { 's', (Game g) => { g.player.TryGo(Direction.South, g); } },
+            { 'w', (Game g) => { g.player.TryGo(Direction.West, g); } },
+            { 'l', (Game g) => { g.player.LookAround(); } },
+            { 't', (Game g) => { g.player.TryTalk(); } },
+            { 'p', (Game g) => { g.player.PickupItem(); } },
+            { 'i', (Game g) => { g.player.PrintInventory(); } },
+            { 'c', (Game g) => { g.player.PrintStats(); } },
+            { 'b', (Game g) => { g.player.Battle(g); } },
+            { 'm', (Game g) => { g.maze.Print(g.player.CurrentRoom.LocationOfRoom, g.GetNPCLocations()); } },
+            { 'u', (Game g) => { g.player.UseObject(); }},
+            { 'q', (Game g) => { g.player.Die(); }}
+        };
+
+        public MurdererNPC Murderer;
+
+        private List<Point> GetNPCLocations()
+        {
+            return NPCS.ConvertAll((NPC npc) => { return npc.CurrentRoom.LocationOfRoom; }).ToList();
+        }
 
         public Game()
         {
-            currentRoom = new Point(StartX, StartY);
             maze = new Maze(Width, Height, StartX, StartY);
-            maze.Print();
-            CharacterDefinitions.AddCharacters(maze);
+            player = new Player(maze[new Point(StartX, StartY)]);
+            AddCharacters();
+            Murderer = NPCS.Find(npc => npc is MurdererNPC) as MurdererNPC;
             ObjectDefinitions.AddItems(maze);
+        }
+
+        private void AddHostileNPC(NPC npc)
+        {
+            npc.MarkHostile();
+            NPCS.Add(npc);
+        }
+
+        private void AddCharacters()
+        {
+            AddHostileNPC(new NPC("bear", "A black bear!", 9, 110, 4, null));
+            AddHostileNPC(new NPC("bobcat", "A wild bobcat!", 6, 70, 1, null));
+            AddHostileNPC(new NPC("hyena", "A hyena!", 9, 44, 1, null));
+            AddHostileNPC(new NPC("rabid dog", "He's frothing at the mouth!", 3, 50, 4, null));
+            
+            foreach (NPC npc in NPCS)
+            {
+                Point location = maze.GetRandomRoom();
+                Room room = maze[location];
+                npc.Maze = maze;
+                room.NPCsInRoom.Add(npc);
+                npc.CurrentRoom = room;
+            }
         }
 
         /// <summary>
@@ -48,59 +99,31 @@ namespace Zork
         /// </summary>
         public void Run()
         {
+            PrintPreamble();
             PrintInstructions();
-            while (true)
+            while (!player.IsDead)
             {
-                maze[currentRoom].Print();
-                ProcessInput(Console.ReadLine());
+                player.CurrentRoom.PrintRoom();
+                NPC hostileNPC = player.CurrentRoom.GetHostileNPC();
+                if (hostileNPC != null)
+                {
+                    Console.WriteLine(hostileNPC.Name + " attacks you on sight!");
+                    player.Fight(hostileNPC, this);
+                }
+                else
+                {
+                    ProcessInput(Console.ReadLine());
+                    Console.WriteLine();
+                }
             }
         }
 
-        private void tryTalk(string userInput)
+        private void PrintPreamble()
         {
-            var talkCommand = userInput.Split(' ');
-            if (talkCommand.Length >= 3 && talkCommand[1] == "to")
+            using (new ColorContext(ColorContext.PreambleColor))
             {
-                TalkTo(String.Join("_", talkCommand.Skip(2)).ToLower());
-            }
-            else
-            {
-                Console.WriteLine("Did you mean; \"Talk to [character name]\"?");
-            }
-        }
-
-        private void TalkTo(string charactername)
-        {
-            Character talkTarget = maze[currentRoom].CharactersInRoom.Find((Character c) => {
-                return c.Name == charactername;
-            });
-            if (talkTarget == null)
-            {
-                Console.WriteLine("There is nobody called " + charactername + " here.");
-                return;
-            }
-            talkTarget.Talk();
-        }
-
-        /// <summary>
-        /// <summary>me="direction">Direction to go in</param>
-        /// </summary>
-        /// <param name="currentRoom">The room you're in</param>
-        /// <param name="direction">The direction to go in</param>
-        private void TryGo(Direction direction)
-        {
-            Point towards = currentRoom.Add(direction);
-            if (towards.X < 0 || towards.X == Width || towards.Y < 0 || towards.Y == Height)
-            {
-                Console.WriteLine("You attempt to go " + direction.ToString().ToLower() + " but face the end of the world.");
-            }
-            else if (maze[currentRoom].CanGoThere[direction])
-            {
-                currentRoom = towards;
-            }
-            else
-            {
-                Console.WriteLine("You cannot go " + direction.ToString().ToLower());
+                Console.WriteLine("You are Sherlock, a reknowned detective. In ye olde London, a most vile place to be,");
+                Console.WriteLine("thismorning dead was found dear Cecil, dear to many men. Serve justice to the murderer!\n");
             }
         }
 
@@ -109,23 +132,24 @@ namespace Zork
             userInput = userInput.ToLower();
             if (userInput.Length > 0)
             {
-                Action<Game,string> action = Commands[userInput[0]];
-                if (action != null)
+                if (commands.ContainsKey(userInput[0]))
                 {
-                    action(this, userInput);
+                    commands[userInput[0]](this);
                     return;
                 }
             }
             PrintInstructions();
         }
 
-       
-
         private void PrintInstructions()
         {
-            Console.WriteLine("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around.");
-            Console.WriteLine("[L] to look around, [P] to pick up an item, [I] Inventory, [B] Battle");
-            Console.WriteLine("[C] to view stats");
+            using (new ColorContext(ColorContext.InstructionsColor))
+            {
+                ColorContext.PrintWithKeyCodes("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around,\n");
+                ColorContext.PrintWithKeyCodes("[L] to look around, [P] to pick up an item, [I] for Inventory, [B] for Battle,\n");
+                ColorContext.PrintWithKeyCodes("[C] to view stats, or [M] to print the map. [U] is to use items,\n");
+                ColorContext.PrintWithKeyCodes("[T] to talk to someone, or [Q] qommit suicide to exit the game.\n\n");
+            }
         }
     }
 }

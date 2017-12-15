@@ -1,21 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Zork.Characters;
 using Zork.Objects;
-using Zork.Texts;
-using System.Drawing;
-using System.Diagnostics;
+using Zork.UIContext;
 
 namespace Zork
 {
     public abstract class Character
     {
-
         #region properties
-
-        protected static readonly int MaxHealth = 100;
+        
+        public int MaxHealth = 100;
 
         private string _name;
 
@@ -38,9 +33,8 @@ namespace Zork
         public int Health
         {
             get { return _health; }
-            protected set { _health = value; }
+            set { _health = value; }
         }
-
 
         private Weapon _weapon;
 
@@ -58,16 +52,7 @@ namespace Zork
             protected set { _description = value; }
         }
         
-        private TextTree _text;
-
-        public TextTree Text
-        {
-            get { return _text; }
-            protected set { _text = value; }
-        }
-        
         private List<Objects.BaseObject> _inventory = new List<BaseObject>();
-
 
         public List<BaseObject> Inventory
         {
@@ -75,21 +60,22 @@ namespace Zork
             set { _inventory = value; }
         }
 
+        private Room _currentRoom;
+
+        public Room CurrentRoom
+        {
+            get { return _currentRoom; }
+            set { _currentRoom = value; }
+        }
+
+        public bool IsDead { get; protected set; } = false;
         #endregion properties
-
-
-
         public Character()
         {
 
         }
 
-        /// <summary>
-        /// Ctor with all default values except name and description
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
-        public Character(string name, string description) : this (name, 5, 100, null, description)
+        public Character(string name, string description, int strength, int startHealth, Weapon weapon = null) : this(name, description, strength, startHealth, startHealth, weapon)
         {
         }
 
@@ -102,45 +88,14 @@ namespace Zork
         /// <param name="weapon">The weapon the character has equipped</param>
         /// <param name="location">Current location of the character</param>
         /// <param name="description">a description of what the character looks like</param>
-        public Character(string name, int strength, int health, Weapon weapon, string description)
+        public Character(string name, string description, int strength, int startHealth, int maxHealth, Weapon weapon = null)
         {
             this.Name = name;
             this.Description = description;
             this.Strength = strength;
-            this.Health = health;
+            this.MaxHealth = maxHealth;
+            this.Health = Math.Min(maxHealth, startHealth);
             this.EquippedWeapon = weapon;
-            SetTextTree();
-        }
-
-
-        public void PrintWeapon()
-        {
-            if (EquippedWeapon != null)
-            {
-                Console.WriteLine($"Youre holding a {EquippedWeapon.Name} :  {EquippedWeapon.Description}");
-            }
-            else
-            {
-                Console.WriteLine("You're not holding a weapon");
-            }
-        }
-
-        /// <summary>
-        /// Lists all items in the character's inventory
-        /// </summary>
-        public void PrintInventory()
-        {
-            if (Inventory.Count == 0)
-            {
-                Console.WriteLine("\nYou have no items in your inventory.\n");
-                return;
-            }
-
-            Console.WriteLine("You currently have the following items:");
-            for (int i = 0; i < Inventory.Count; i++)
-            {
-                Console.WriteLine($"{Inventory[i].Name} : {Inventory[i].Description}");
-            };
         }
 
         public void ResetHealth()
@@ -155,63 +110,13 @@ namespace Zork
         public bool TakeDamage(int damage)
         {
             Health -= damage;
+            if(Health < 0)
+            {
+                IsDead = true;
+            }
             return Health > 0;
         }
-
-        private void SetTextTree()
-        {
-            this.Text = new TextTree(Name + ".txt");
-        }
-
-        /// <summary>
-        /// Output text and accept player choices until the tree reaches a leaf node
-        /// </summary>
-        public void Talk()
-        {
-            Node currentNode = Text.RootNode;
-            while (currentNode != null)
-            {
-                currentNode = ProcessNode(currentNode);
-            }
-        }
-
-        private Node ProcessNode(Node currentNode)
-        {
-            Console.WriteLine(currentNode.Text);
-            List<Node> options = currentNode.AvailableChildren();
-            if (options.Count == 0)
-            {
-                return null;
-            }
-            Node playerResponse = GetPlayerResponse(currentNode, options);
-            Console.WriteLine("> " + playerResponse.Text);
-            List<Node> npcResponses = playerResponse.AvailableChildren();
-            if (npcResponses.Count == 0)
-            {
-                return null;
-            }
-            return npcResponses.First();
-        }
-
-        private static Node GetPlayerResponse(Node currentNode, List<Node> options)
-        {
-            int responseNumber = 1;
-            foreach (Node child in options)
-            {
-                Console.WriteLine(responseNumber + "> " + child.Text);
-                ++responseNumber;
-            }
-            Console.Write("> ");
-            int chosenResponse = -1;
-            while (Int32.TryParse(Console.ReadLine(), out chosenResponse) == false || chosenResponse < 0 || chosenResponse > currentNode.Children.Count)
-            {
-                Console.WriteLine("Write a number for one of the responses");
-                Console.Write("> ");
-            }
-            Node playerResponse = options[chosenResponse - 1];
-            return playerResponse;
-        }
-
+        
         public void PrintStats()
         {
             Console.WriteLine(Name + ": " + Description);
@@ -226,6 +131,86 @@ namespace Zork
                 Console.WriteLine("Current weapon:");
                 EquippedWeapon.PrintStats();
             }
+            Console.WriteLine();
+        }
+
+        protected void CheckWhoWon(NPC enemy, Game game)
+        {
+            if (Health < 0)
+            {
+                Die();
+            }
+            else
+            {
+                enemy.DropAllItems();
+                enemy.KillThisNPC(game);
+                bool gameWon = enemy is MurdererNPC;
+                if (gameWon)
+                {
+                    using (new ColorContext(ColorContext.BattleWin))
+                    {
+                        Console.WriteLine($"You win! {enemy.Name} was served justice by death!");
+                    }
+                    IsDead = true;
+                }
+                else
+                {
+                    using (new ColorContext(ColorContext.FailureColor))
+                    {
+                        Console.WriteLine($"Oh my god, you killed poor innocent {enemy.Name}! All of {enemy.Name}'s items are on the floor!");
+                    }
+                }
+            }
+        }
+
+        public void Die()
+        {
+            using (new ColorContext(ColorContext.BattleLose))
+            {
+                Console.WriteLine("You died!");
+            }
+            IsDead = true;
+        }
+
+        protected virtual void FightOneRound(NPC enemy)
+        {
+            int enemyDamage = enemy.GenerateDamage();
+            int myDamage = GenerateDamage();
+            enemy.TakeDamage(myDamage);
+            TakeDamage(enemyDamage);
+        }
+        
+        public int GenerateDamage()
+        {
+            const int maxBonusDamage = 10;
+            int bonusDamage = Chance.Between(0, maxBonusDamage);
+
+            int damage = Strength + bonusDamage;
+            if (EquippedWeapon != null)
+            {
+                damage += EquippedWeapon.Strength;
+            }
+            return damage;
+        }
+        
+        public void DropWeapon()
+        {
+            if (EquippedWeapon != null)
+            {
+                CurrentRoom.ObjectsInRoom.Add(EquippedWeapon);
+                EquippedWeapon = null;
+            }
+        }
+
+        public void DropAllItems()
+        {
+            CurrentRoom.ObjectsInRoom.AddRange(Inventory);
+            Inventory.Clear();
+        }
+
+        protected void PickUpObject(BaseObject obj)
+        {
+            obj.PickupObject(CurrentRoom, this);
         }
     }
 }

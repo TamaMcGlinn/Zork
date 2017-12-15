@@ -1,12 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Zork.Characters;
 
 namespace Zork.Objects
 {
-    public class HealthPickup : BaseObject
+    public class HealthPickup : UseableObject
     {
         private int _potency;
 
@@ -18,9 +15,24 @@ namespace Zork.Objects
             get { return _potency; }
         }
 
+        public override ConsoleColor Color => ConsoleColor.Red;
+
         public HealthPickup(string name, int potency, string description) : base(name, description)
         {
             _potency = potency;
+        }
+
+        public override void UseObject(Character c)
+        {
+            c.Health = Math.Min(c.MaxHealth, c.Health + Potency);
+            if(c is Player && c.Health <= 0)
+            {
+                Player player = (c as Player);
+                player.Die();
+                return;
+            }
+            Console.WriteLine("Ahhh that's refreshing! Health:" + c.Health);
+            c.Inventory.Remove(this);
         }
     }
 }

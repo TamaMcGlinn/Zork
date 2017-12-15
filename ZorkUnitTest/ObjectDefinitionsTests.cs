@@ -4,6 +4,8 @@ using Zork;
 using Zork.Objects;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
+using System.IO;
 
 namespace ZorkUnitTest
 {
@@ -26,18 +28,10 @@ namespace ZorkUnitTest
                     objects.AddRange(m[new Point(x, y)].ObjectsInRoom);
                 }
             }
-            HealthPickup hp=null;
-            foreach (var item in objects)
-            {
-                if(item is HealthPickup)
-                {
-                    hp = item as HealthPickup;
-                    break;
-                }
-            }
-            Assert.IsTrue(hp != null);
+            Assert.IsTrue(objects.Any(b => b is HealthPickup));
         }
 
+        [TestMethod]
         public void AddingCluesPickupsTest()
         {
             int sizex = 5;
@@ -66,6 +60,7 @@ namespace ZorkUnitTest
 
         }
 
+        [TestMethod]
         public void AddingWeaponsTest()
         {
             int sizex = 5;
@@ -81,17 +76,7 @@ namespace ZorkUnitTest
                     objects.AddRange(m[new Point(x, y)].ObjectsInRoom);
                 }
             }
-            Weapon weapon = null;
-            foreach (var item in objects)
-            {
-                if (item is Weapon)
-                {
-                    weapon = item as Weapon;
-                    break;
-                }
-            }
-            Assert.IsTrue(weapon != null);
-
+            Assert.IsTrue(objects.Any(b => b is Weapon));
         }
 
         /// <summary>
@@ -100,9 +85,30 @@ namespace ZorkUnitTest
         [TestMethod]
         public void DropChanceTest()
         {
-            Assert.IsTrue(ObjectDefinitions.DropChanceByPercentage(100));
+            Assert.IsTrue(Chance.Percentage(100));
         }
 
-      
+        [TestMethod]
+        public void TestCreateCorpseObject()
+        {
+            CorpseNPCObject corpse = new CorpseNPCObject("", "desc");
+            Assert.IsNotNull(corpse);
+
+        }
+
+        [TestMethod]
+        public void TestCreateCorpsePickup()
+        {
+            CorpseNPCObject corpse = new CorpseNPCObject("", "desc");
+            string output = "";
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                corpse.PickupObject(new Room("", new Point(0,0)), null);
+                output = sw.ToString();
+                
+            }
+            Assert.IsTrue(output.Contains("Can't pickup a dead body"));
+        }
     }
 }

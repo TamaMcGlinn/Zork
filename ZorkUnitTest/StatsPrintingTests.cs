@@ -16,49 +16,53 @@ namespace ZorkUnitTest
         [TestMethod]
         public void WeaponDescriptionIsCorrect()
         {
-            Player p = new Player();
+            Player p = CharacterTests.CreatePlayerCharacter();
             string gunName = "gun";
             string gunDescription = "description";
             p.EquippedWeapon = new Weapon(gunName, 1, gunDescription);
-            StringWriter consoleOutput = new StringWriter();
-            Console.SetOut(consoleOutput);
-            p.EquippedWeapon.PrintStats();
-            Assert.AreEqual(gunName + ": " + gunDescription + 
-                "\r\nStrength: " + p.EquippedWeapon.Strength + 
-                "\r\n", consoleOutput.ToString());
+            using (StringWriter consoleOutput = new StringWriter())
+            {
+                Console.SetOut(consoleOutput);
+                p.EquippedWeapon.PrintStats();
+                Assert.AreEqual(gunName + ": " + gunDescription +
+                    "\r\nStrength: " + p.EquippedWeapon.Strength +
+                    "\r\n", consoleOutput.ToString());
+            }
         }
 
         [TestMethod]
         public void UnarmedPlayerDescriptionIsCorrect()
         {
-            Player p = new Player();
+            Player p = CharacterTests.CreatePlayerCharacter();
             p.EquippedWeapon = null;
-            StringWriter consoleOutput = new StringWriter();
-            Console.SetOut(consoleOutput);
-            p.PrintStats();
-            Assert.AreEqual(CharacterDefinitions.PlayerCharacter.Name + ": " 
-                + CharacterDefinitions.PlayerCharacter.Description +
-                "\r\nHealth: 100" +
-                "\r\nStrength: " + CharacterDefinitions.PlayerCharacter.Strength + 
-                "\r\nUnarmed.\r\n", consoleOutput.ToString());
+            using (StringWriter consoleOutput = new StringWriter())
+            {
+                Console.SetOut(consoleOutput);
+                p.PrintStats();
+                Assert.AreEqual(p.Name + ": "
+                    + p.Description +
+                    "\r\nHealth: 100" +
+                    "\r\nStrength: " + p.Strength +
+                    "\r\nUnarmed.\r\n\r\n", consoleOutput.ToString());
+            }
         }
 
         [TestMethod]
         public void ArmedPlayerDescriptionIsCorrect()
         {
-            Player p = new Player();
-            p.EquippedWeapon = new Weapon("gun", 1, "description");
+          
             using (StringWriter consoleOutput = new StringWriter())
             {
+                Player p = CharacterTests.CreatePlayerCharacter();
                 Console.SetOut(consoleOutput);
                 p.PrintStats();
-                string expectedResult = CharacterDefinitions.PlayerCharacter.Name + ": "
-                    + CharacterDefinitions.PlayerCharacter.Description +
+                string expectedResult = p.Name + ": "
+                    + p.Description +
                     "\r\nHealth: 100" +
-                    "\r\nStrength: " + CharacterDefinitions.PlayerCharacter.Strength +
+                    "\r\nStrength: " + p.Strength +
                     "\r\nCurrent weapon:" +
                     "\r\n" + p.EquippedWeapon.Name + ": " + p.EquippedWeapon.Description +
-                    "\r\nStrength: " + p.EquippedWeapon.Strength + "\r\n";
+                    "\r\nStrength: " + p.EquippedWeapon.Strength + "\r\n\r\n";
                 Assert.AreEqual(expectedResult, consoleOutput.ToString());
             }
         }

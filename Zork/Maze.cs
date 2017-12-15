@@ -1,35 +1,41 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Drawing;
 using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Linq;
 using Zork.Objects;
+using Zork.Properties;
+using Zork.UIContext;
 
 namespace Zork
 {
-    public class Maze
+    public class Maze : IEnumerable<Room>
     {
-        Room[,] rooms;
-        Random rng;
+        public Room[,] Rooms { get; set; }
+        public const string HouseDescription = "Your house";
         public readonly int Width;
         public readonly int Height;
+        private List<string> streetNames = new List<string>();
 
         public Maze(int xSize, int ySize, int StartX, int StartY)
         {
             Width = xSize;
             Height = ySize;
-            rng = new Random();
-            rooms = new Room[xSize, ySize];
-            rooms[StartX, StartY] = new Room("Your house");
+            Rooms = new Room[xSize, ySize];
+            Rooms[StartX, StartY] = new Room(HouseDescription, new Point(StartX, StartY));
+
+            string streetnames = Resources.streetnames;
+            
+            streetNames.AddRange(streetnames.Split(new string[] { "\r\n"}, StringSplitOptions.None ));
             CreateNeighbour(new Point(StartX, StartY));
             AddExtraConnections(xSize * ySize);
         }
 
         public Room this[int x, int y]
         {
-            get { return rooms[x, y]; }
+            get { return Rooms[x, y]; }
         }
 
         public Room this[Point p]
@@ -39,65 +45,12 @@ namespace Zork
 
         public void AddItemToRandomRoom(BaseObject obj)
         {
-            GetRandomRoom().ObjectsInRoom.Add(obj);
+            this[GetRandomRoom()].ObjectsInRoom.Add(obj);
         }
 
-        public Room GetRandomRoom()
+        public Point GetRandomRoom()
         {
-            return this[rng.Next(0, Width), rng.Next(0, Height)];
-        }
-
-        public void Print()
-        {
-            for (int yi = 0; yi < Height; ++yi)
-            {
-                for (int xi = 0; xi < Width; ++xi)
-                {
-                    PrintHorizontal(xi, yi);
-                }
-                PrintLowerHalf(yi);
-            }
-        }
-
-        private void PrintLowerHalf(int yi)
-        {
-            Console.Write("\n");
-            if (yi < Height - 1)
-            {
-                for (int xi = 0; xi < Width; ++xi)
-                {
-                    PrintVertical(xi, yi);
-                }
-                Console.Write("\n");
-            }
-        }
-
-        private void PrintVertical(int xi, int yi)
-        {
-            if (rooms[xi, yi].CanGoThere[Direction.South])
-            {
-                Debug.Assert(yi == Height - 1 || rooms[xi, yi + 1].CanGoThere[Direction.North]);
-                Console.Write("|");
-            }
-            else if (xi < Width - 1)
-            {
-                Console.Write(" ");
-            }
-            Console.Write(" ");
-        }
-
-        private void PrintHorizontal(int xi, int yi)
-        {
-            Console.Write("0");
-            if (rooms[xi, yi].CanGoThere[Direction.East])
-            {
-                Debug.Assert(xi == Width - 1 || rooms[xi + 1, yi].CanGoThere[Direction.West]);
-                Console.Write("-");
-            }
-            else if (xi < Width - 1)
-            {
-                Console.Write(" ");
-            }
+            return new Point(Chance.Between(0, Width), Chance.Between(0, Height));
         }
 
         private void AddExtraConnections(int extras)
@@ -108,11 +61,34 @@ namespace Zork
             }
             for (int i = 0; i < extras; ++i)
             {
-                var roomToConnect = new Point(rng.Next(1, Width - 1), rng.Next(1, Height - 1));
-                int neighbourToConnect = rng.Next(0, 4);
-                var neighbourPoint = new Point(roomToConnect.X + (neighbourToConnect % 2) * ((neighbourToConnect / 2) * 2 - 1), roomToConnect.Y + (1 - (neighbourToConnect % 2)) * ((neighbourToConnect / 2) * 2 - 1));
+                var roomToConnect = new Point(Chance.Between(1, Width - 1), Chance.Between(1, Height - 1));
+                var neighbourPoint = GetRandomNeighbour(roomToConnect);
                 Connect(roomToConnect, neighbourPoint);
             }
+        }
+
+        public Point GetRandomNeighbour(Point roomToConnect)
+        {
+            Direction[] allDirections = (Direction[])Enum.GetValues(typeof(Direction));
+            Direction direction = Chance.RandomElement(allDirections);
+            return roomToConnect.Add(direction);
+        }
+
+        public Room GetRandomOtherRoom(Room currentRoom)
+        {
+            List<Room> otherRooms = new List<Room>();
+            foreach(Room room in this)
+            {
+                if (room.LocationOfRoom != currentRoom.LocationOfRoom)
+                {
+                    otherRooms.Add(room);
+                }
+            }
+            if(otherRooms.Count == 0)
+            {
+                return null;
+            }
+            return Chance.RandomElement(otherRooms);
         }
 
         /// <summary>
@@ -132,18 +108,23 @@ namespace Zork
             }
         }
 
+        public void Print(Point playerLocation, List<Point> npcLocations)
+        {
+            new MapPrinter(this).Print(playerLocation, npcLocations);
+        }
+
         private void ConnectHorizontal(Point a, Point b)
         {
             if (a.X + 1 == b.X)
             {
-                rooms[a.X, a.Y].CanGoThere[Direction.East] = true;
-                rooms[b.X, b.Y].CanGoThere[Direction.West] = true;
+                Rooms[a.X, a.Y].CanGoThere[Direction.East] = true;
+                Rooms[b.X, b.Y].CanGoThere[Direction.West] = true;
             }
             else
             {
                 Debug.Assert(a.X - 1 == b.X);
-                rooms[a.X, a.Y].CanGoThere[Direction.West] = true;
-                rooms[b.X, b.Y].CanGoThere[Direction.East] = true;
+                Rooms[a.X, a.Y].CanGoThere[Direction.West] = true;
+                Rooms[b.X, b.Y].CanGoThere[Direction.East] = true;
             }
         }
 
@@ -151,14 +132,14 @@ namespace Zork
         {
             if (a.Y + 1 == b.Y)
             {
-                rooms[a.X, a.Y].CanGoThere[Direction.South] = true;
-                rooms[b.X, b.Y].CanGoThere[Direction.North] = true;
+                Rooms[a.X, a.Y].CanGoThere[Direction.South] = true;
+                Rooms[b.X, b.Y].CanGoThere[Direction.North] = true;
             }
             else
             {
                 Debug.Assert(a.Y - 1 == b.Y);
-                rooms[a.X, a.Y].CanGoThere[Direction.North] = true;
-                rooms[b.X, b.Y].CanGoThere[Direction.South] = true;
+                Rooms[a.X, a.Y].CanGoThere[Direction.North] = true;
+                Rooms[b.X, b.Y].CanGoThere[Direction.South] = true;
             }
         }
 
@@ -175,6 +156,33 @@ namespace Zork
         }
 
         /// <summary>
+        /// Return the neighbouring points accessible from the place.
+        /// </summary>
+        /// <param name="place">The target location to examine</param>
+        /// <returns></returns>
+        public IEnumerable<Point> AccessibleNeighbours(Point place)
+        {
+            foreach(Direction dir in Enum.GetValues(typeof(Direction)))
+            {
+                if (this[place].CanGoThere[dir])
+                {
+                    yield return place.Add(dir);
+                }
+            }
+        }
+
+        private string GetRoomDescription()
+        {
+            if( streetNames.Count == 0)
+            {
+                return "A busy street in London.";
+            }
+            var result = Chance.RandomElement(streetNames);
+            streetNames.Remove(result);
+            return result.Substring(0, result.Length-1);
+        }
+
+        /// <summary>
         /// Create rooms next to the current one as long as there are still null neighbours
         /// </summary>
         /// <param name="fromPoint"></param>
@@ -187,12 +195,21 @@ namespace Zork
                 {
                     return;
                 }
-                Point destPoint = options[rng.Next(0, options.Count)];
-                rooms[destPoint.X, destPoint.Y] = new Room("A busy street in London.");
+                Point destPoint = Chance.RandomElement(options);
+                Rooms[destPoint.X, destPoint.Y] = new Room(GetRoomDescription(), destPoint);
                 Connect(fromPoint, destPoint);
                 CreateNeighbour(destPoint); //recursive step
             }
         }
 
+        public IEnumerator<Room> GetEnumerator()
+        {
+            return new MazeEnumerator(this);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return (IEnumerator)GetEnumerator();
+        }
     }
 }

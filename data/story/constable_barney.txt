@@ -1,0 +1,13 @@
+<Sherlock! What's new?
+	>How are you?
+		<It's a fine day for a stroll, don't you think?
+			>Not really; my wife has been missing for several days.
+			>Whatever. Let me know if you see my wife.
+	>Can you help me?
+		<What do you need?
+			>Find the murderer!
+				<First find out who did it.
+			>I'm looking for a weapon.
+				<If you're going to take the law into your own hands, I can't help you.
+			>I'm wounded. Can you help me?
+				<Actually, I never really liked you. Good luck bleeding!

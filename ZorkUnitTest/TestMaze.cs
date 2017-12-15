@@ -10,6 +10,33 @@ namespace ZorkUnitTest
     public class TestMaze
     {
         [TestMethod]
+        public void HomeExists()
+        {
+            Maze maze = new Maze(5, 5, 0, 0);
+            bool foundHouse = false;
+            foreach (Room room in maze)
+            {
+                if (room.Description == Maze.HouseDescription)
+                {
+                    foundHouse = true;
+                }
+            }
+            Assert.IsTrue(foundHouse);
+        }
+
+        [TestMethod]
+        public void StreetNamesAreUnique()
+        {
+            Maze maze = new Maze(2, 2, 0, 0);
+            HashSet<string> descriptions = new HashSet<string>();
+            foreach (Room room in maze)
+            {
+                Assert.IsFalse(descriptions.Contains(room.Description));
+                descriptions.Add(room.Description);
+            }
+        }
+
+        [TestMethod]
         public void CreateRoom()
         {
             Maze m = new Maze(5, 5, 0, 0);

@@ -1,0 +1,13 @@
+<Hello sir.
+	>Good day. I'm looking for clues as to the murder of one Cecil, a lady of unsavoury profession.
+		<I know nothing.
+	>[brigands_stole_from_reginald]I need to talk to you about your son. It will be hard to hear.
+		<To be a father is sometimes to hear what must be heard. Speak freely.
+			>Kelsey, along with my own son, did steal from a drunkard by the name of Reginald, some half pound at least, I should think.
+				<For shame, for shame! That my blood should thus be shown as thick as mud.
+					>[kelsey_whored]Stay, there is more! Whereupon thy son did go and see Cecil. Hence do my suspicions turn on this house.
+						<Speak thou brigand, if thou dar'st!
+							>You murdered Cecil to conceil this blot upon your house.
+								<Your words strike near the truth, I must confess. Burton, my servant, did the deed on my bidding.
+					>You understand, I must retrieve this money the brigands shared, to give back to Reginald.
+						<Of course. I will reimburse the debt. (hands over 200d)[barclay_money]

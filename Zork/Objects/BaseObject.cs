@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Zork.Objects
 {
@@ -22,6 +18,9 @@ namespace Zork.Objects
         {
             get { return _description; }
         }
+
+        public abstract ConsoleColor Color { get; }
+
         #endregion properties
 
         public BaseObject(string name, string description)
@@ -34,9 +33,11 @@ namespace Zork.Objects
         /// Default puts the object in the specified character inventory.
         /// </summary>
         /// <param name="character"></param>
-        public virtual void PickupObject(Character character)
+        public virtual void PickupObject(Room room, Character character)
         {
+            room.ObjectsInRoom.Remove(this);
             character.Inventory.Add(this);
         }
+
     }
 }
