@@ -28,7 +28,7 @@ namespace Zork.Characters
             {
                 StepsBeforeNextKill--;
             }
-            else
+            if (StepsBeforeNextKill == 0)
             {
                 KillRandomNPCInSameRoom(game);
             }
