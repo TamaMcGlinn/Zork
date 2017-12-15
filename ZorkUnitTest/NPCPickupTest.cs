@@ -39,7 +39,7 @@ namespace ZorkUnitTest
         }
 
         [TestMethod]
-        public void NPCLeavesClues()
+        public void NPCDoesNotPickupClues()
         {
             using (ShimsContext.Create())
             {
