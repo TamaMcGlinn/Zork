@@ -97,11 +97,12 @@ namespace Zork.Characters
 
         private void PossiblyPickSomethingUp()
         {
-            if (CurrentRoom.ObjectsInRoom.Count > 0)
+            List<BaseObject> NonClueItems = CurrentRoom.ObjectsInRoom.Where(obj => !(obj is Clue)).ToList();
+            if (NonClueItems.Count > 0)
             {
                 if (Chance.Percentage(PickUpChance))
                 {
-                    PickUpObject(Chance.RandomElement(CurrentRoom.ObjectsInRoom));
+                    PickUpObject(Chance.RandomElement(NonClueItems));
                 }
             }
             if( Inventory.Count >= 3)
