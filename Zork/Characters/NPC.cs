@@ -3,7 +3,6 @@
 using System.Collections.Generic;
 using System.Linq;
 using Zork.Texts;
-using System.Drawing;
 
 namespace Zork.Characters
 {
@@ -105,7 +104,7 @@ namespace Zork.Characters
 
         private void PossiblyPickSomethingUp()
         {
-            List<BaseObject> NonClueItems = CurrentRoom.ObjectsInRoom.Where(obj => !(obj is Clue)).ToList();
+            List<BaseObject> NonClueItems = CurrentRoom.GetNonClueItems();
             if (NonClueItems.Count > 0)
             {
                 if (Chance.Percentage(PickUpChance))

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 using System.Text;
 using Zork.Characters;
 using Zork.Objects;
@@ -125,6 +126,11 @@ namespace Zork
                 ColorContext.PrintWithKeyCodes($"[{i+1}] {formattedName} : {NPCsInRoom[i].Description}\n");
             }
             Console.WriteLine();
+        }
+
+        public List<BaseObject> GetNonClueItems()
+        {
+            return ObjectsInRoom.Where(obj => !(obj is Clue)).ToList();
         }
 
         public void PrintRoomContents()
