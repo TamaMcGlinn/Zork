@@ -52,7 +52,8 @@ namespace Zork
             { 'c', (Game g) => { g.player.PrintStats(); } },
             { 'b', (Game g) => { g.player.Battle(g); } },
             { 'm', (Game g) => { g.maze.Print(g.player.CurrentRoom.LocationOfRoom, g.GetNPCLocations()); } },
-            { 'u', (Game g) => { g.player.UseObject(); }}
+            { 'u', (Game g) => { g.player.UseObject(); }},
+            { 'q', (Game g) => { g.ExitGame = true; }}
         };
 
         private List<Point> GetNPCLocations()
@@ -124,8 +125,8 @@ namespace Zork
             {
                 ColorContext.PrintWithKeyCodes("Please enter [N]orth, [S]outh, [E]ast or [W]est to move around,\n");
                 ColorContext.PrintWithKeyCodes("[L] to look around, [P] to pick up an item, [I] for Inventory, [B] for Battle,\n");
-                ColorContext.PrintWithKeyCodes("[C] to view stats, or [M] to print the map. [U] to use items.\n");
-                ColorContext.PrintWithKeyCodes("[T] to talk to someone.\n\n");
+                ColorContext.PrintWithKeyCodes("[C] to view stats, or [M] to print the map. [U] is to use items,\n");
+                ColorContext.PrintWithKeyCodes("[T] to talk to someone, or [Q] to exit the game.\n\n");
             }
         }
     }

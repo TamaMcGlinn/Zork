@@ -75,15 +75,6 @@ namespace Zork
 
         }
 
-        /// <summary>
-        /// Ctor with all default values except name and description
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="description"></param>
-        public Character(string name, string description) : this (name, description, 100, 100)
-        {
-
-        }
         public Character(string name, string description, int strength, int startHealth, Weapon weapon = null) : this(name, description, strength, startHealth, startHealth, weapon)
         {
         }

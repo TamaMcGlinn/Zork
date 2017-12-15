@@ -41,17 +41,39 @@ namespace ZorkUnitTest
         }
 
         [TestMethod]
+        public void WinGame()
+        {
+            StringWriter consoleOutput = new StringWriter();
+            Console.SetOut(consoleOutput);
+            Game game = new Game();
+            Maze maze = CreateMaze();
+            Room room = maze.Rooms[0, 0];
+            Player player = new Player(room);
+            NPC barney = CreateWeakMurderer();
+            player.Fight(barney, game);
+            Assert.IsTrue(consoleOutput.ToString().Contains("You win!"));
+        }
+
+        [TestMethod]
         public void FightweakEnemyTest()
         {
             Game game = new Game();
             Maze maze = CreateMaze();
             Room room = maze.Rooms[0, 0];
             Player player = new Player(room);
-            NPC barney = CreateWeakNPC();
+            MurdererNPC barney = CreateWeakMurderer();
             player.Fight(barney, game);
             Assert.IsTrue(player.Health > 0);
         }
 
+        private MurdererNPC CreateWeakMurderer()
+        {
+            MurdererNPC npc = new MurdererNPC("constable_barney", "", 1, 10, 5, new Weapon("Strong weapon", 10, "desc"));
+            Room r = new Room("", new Point(0, 0));
+            npc.CurrentRoom = r;
+            r.NPCsInRoom.Add(npc);
+            return npc;
+        }
         public Maze CreateMaze()
         {
 
