@@ -18,7 +18,7 @@ namespace Zork.Texts
         {
             string text = Resources.ResourceManager.GetString(characterName);
             RootNodes = null;
-            if (text != string.Empty)
+            if (!string.IsNullOrEmpty(text))
             {
                 var lines = text.Split('\n');
                 RootNodes = ReadNodes(lines, 0);
