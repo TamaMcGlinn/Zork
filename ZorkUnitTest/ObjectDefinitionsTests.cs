@@ -5,6 +5,7 @@ using Zork.Objects;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Linq;
+using System.IO;
 
 namespace ZorkUnitTest
 {
@@ -87,6 +88,27 @@ namespace ZorkUnitTest
             Assert.IsTrue(ObjectDefinitions.DropChanceByPercentage(100));
         }
 
-      
+        [TestMethod]
+        public void TestCreateCorpseObject()
+        {
+            CorpseNPCObject corpse = new CorpseNPCObject("", "desc");
+            Assert.IsNotNull(corpse);
+
+        }
+
+        [TestMethod]
+        public void TestCreateCorpsePickup()
+        {
+            CorpseNPCObject corpse = new CorpseNPCObject("", "desc");
+            string output = "";
+            using (StringWriter sw = new StringWriter())
+            {
+                Console.SetOut(sw);
+                corpse.PickupObject(null);
+                output = sw.ToString();
+                
+            }
+            Assert.IsTrue(output.Contains("Can't pickup a dead body"));
+        }
     }
 }
