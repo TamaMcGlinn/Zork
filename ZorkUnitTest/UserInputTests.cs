@@ -55,7 +55,7 @@ namespace ZorkUnitTest
         [TestMethod]
         public void TestTalkCommand()
         {
-            using (var sr = new StringReader("t\n1\nq"))
+            using (var sr = new StringReader("t\n1\n1\n1\n1\n1\nq"))
             {
                 Console.SetIn(sr);
                 Program.Main(new string[0]);
@@ -85,7 +85,7 @@ namespace ZorkUnitTest
         [TestMethod]
         public void TestBattleCommand()
         {
-            using (var sr = new StringReader("b\n1\nq"))
+            using (var sr = new StringReader("b\n1\nN\nN\nN\nN\nN\nN\nN\nN\nq"))
             {
                 Console.SetIn(sr);
                 Program.Main(new string[0]);

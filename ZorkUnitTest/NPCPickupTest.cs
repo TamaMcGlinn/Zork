@@ -34,7 +34,7 @@ namespace ZorkUnitTest
                 {
                     npc.OnPlayerMoved(game);
                 }
-                Assert.IsTrue(npc.Inventory.Count >= 1);
+                Assert.IsNotNull(npc.EquippedWeapon);
             }
         }
 
