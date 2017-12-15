@@ -83,8 +83,10 @@ namespace ZorkUnitTest
         public NPC CreateNPCBarney()
         {
             Room r = new Room("", new Point(0, 0));
-            NPC barney = new NPC("constable_barney", "", 30, 100, 5, new Weapon("Strong weapon", 10, "desc"));
-            barney.CurrentRoom = r;
+            NPC barney = new NPC("constable_barney", "", 30, 100, 5, new Weapon("Strong weapon", 10, "desc"))
+            {
+                CurrentRoom = r
+            };
             r.NPCsInRoom.Add(barney);
             return barney;
         }

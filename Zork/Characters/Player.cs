@@ -155,8 +155,7 @@ namespace Zork.Characters
             {
                 return;
             }
-            int userInputNumber;
-            int.TryParse(userInput, out userInputNumber);
+            int.TryParse(userInput, out int userInputNumber);
             userInputNumber--;
             if (userInputNumber >= 0 && userInputNumber < useableItems.Count)
             {
@@ -171,8 +170,7 @@ namespace Zork.Characters
             {
                 return;
             }
-            int enemyNumber;
-            if (int.TryParse(Console.ReadLine(), out enemyNumber) && enemyNumber > 0 && enemyNumber <= CurrentRoom.NPCsInRoom.Count)
+            if (int.TryParse(Console.ReadLine(), out int enemyNumber) && enemyNumber > 0 && enemyNumber <= CurrentRoom.NPCsInRoom.Count)
             {
                 NPC enemy = CurrentRoom.NPCsInRoom[enemyNumber - 1];
                 Fight(enemy, game);
@@ -236,8 +234,7 @@ namespace Zork.Characters
             }
             Console.WriteLine("With whom do you want to talk?");
             CurrentRoom.PrintNPCs();
-            int talkToNPCInt;
-            int.TryParse(Console.ReadLine(), out talkToNPCInt);
+            int.TryParse(Console.ReadLine(), out int talkToNPCInt);
             talkToNPCInt -= 1;
             if(talkToNPCInt >= 0 && talkToNPCInt < CurrentRoom.NPCsInRoom.Count)
             {

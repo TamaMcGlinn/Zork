@@ -201,8 +201,7 @@ namespace Zork
             }
             CurrentRoom.PrintItems(CurrentRoom.ObjectsInRoom);
             string input = Console.ReadLine();
-            int inputInteger;
-            int.TryParse(input, out inputInteger);
+            int.TryParse(input, out int inputInteger);
             TryPickUp(CurrentRoom, inputInteger - 1);
         }
 
