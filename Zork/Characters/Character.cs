@@ -147,7 +147,7 @@ namespace Zork
                 {
                     Console.WriteLine("You died!");
                 }
-                Environment.Exit(0);
+                game.ExitGame = true;
             }
             else
             {
@@ -160,7 +160,7 @@ namespace Zork
                     {
                         Console.WriteLine($"You win! {enemy.Name} was served justice by death!");
                     }
-                    Environment.Exit(0);
+                    game.ExitGame = true;
                 }
                 else
                 {

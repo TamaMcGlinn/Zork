@@ -13,6 +13,7 @@ namespace Zork
     /// </summary>
     public class Game
     {
+        public bool ExitGame = false;
         public Maze maze;
         public const int Width = 30;
         public const int Height = 16;
@@ -86,7 +87,7 @@ namespace Zork
         {
             PrintPreamble();
             PrintInstructions();
-            while (true)
+            while (!ExitGame)
             {
                 player.CurrentRoom.PrintRoom();
                 ProcessInput(Console.ReadLine());
