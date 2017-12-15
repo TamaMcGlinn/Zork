@@ -1,0 +1,3 @@
+<Away, peasant!
+	>Stay! How came you by that horse?
+		<Is it any matter of yours? (rides away)

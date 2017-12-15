@@ -1,0 +1,15 @@
+<What?
+	>Who are you?
+		<[introduced]I've told thee once, and shall not repeat it! Begone peasant!
+		<Sir Henry, heir to the throne of England. Begone peasant![introduced]
+	>You bastard! Murderer!
+		<Thou lowly cozener, thou purple-hued malt worm, thou drone, thou snail, thou slug, thou sot! I defy thee to prove by the blade what thy wretched lips do conjure!
+	>I'd like to ask you a few questions.
+		<Ask away.
+			>How came you by that red cloak?
+				<It was bequeathed by my late aunt's nephew's dog. Why do you ask?
+					>I'm a curious man by nature.
+			>What do you most desire in life?
+				<For this conversation to end swiftly. Goodbye.
+			>Where is the king?
+				<He is gone to Ireland to settle affairs there.
