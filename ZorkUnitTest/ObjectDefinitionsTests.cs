@@ -104,7 +104,7 @@ namespace ZorkUnitTest
             using (StringWriter sw = new StringWriter())
             {
                 Console.SetOut(sw);
-                corpse.PickupObject(new Room(), null);
+                corpse.PickupObject(new Room("", new Point(0,0)), null);
                 output = sw.ToString();
                 
             }
