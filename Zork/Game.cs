@@ -15,8 +15,8 @@ namespace Zork
     {
         public bool ExitGame = false;
         public Maze maze;
-        public const int Width = 30;
-        public const int Height = 16;
+        public const int Width = 14;
+        public const int Height = 10;
         const int StartX = 1;
         const int StartY = 1;
         public Player player;
