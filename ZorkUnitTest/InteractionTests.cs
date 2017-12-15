@@ -58,9 +58,8 @@ namespace ZorkUnitTest
 
         public NPC createNPCBarney()
         {
-
             Room r = new Room("", new Point(0, 0));
-            NPC barney = new NPC("sherrif_barney", "", 30, 100, 5, new Weapon("Strong weapon", 10, "desc"));
+            NPC barney = new NPC("constable_barney", "", 30, 100, 5, new Weapon("Strong weapon", 10, "desc"));
             barney.CurrentRoom = r;
             r.NPCsInRoom.Add(barney);
             return barney;
@@ -68,7 +67,7 @@ namespace ZorkUnitTest
 
         public NPC CreateWeakNPC()
         {
-           NPC npc =  new NPC("sherrif_barney", "", 1, 10, 5, new Weapon("Strong weapon", 10, "desc"));
+           NPC npc =  new NPC("constable_barney", "", 1, 10, 5, new Weapon("Strong weapon", 10, "desc"));
             Room r = new Room("", new Point(0, 0));
             npc.CurrentRoom = r;
             r.NPCsInRoom.Add(npc);

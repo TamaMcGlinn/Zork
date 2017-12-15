@@ -155,7 +155,7 @@ namespace ZorkUnitTest
 
         private Character CreateCharacterWithoutWeapon()
         {
-            return new NPC("sherrif_barney", "This man has a long beard.", 4, 100, 5, null);
+            return new NPC("constable_barney", "This man has a long beard.", 4, 100, 5, null);
         }
         
         [TestMethod]
