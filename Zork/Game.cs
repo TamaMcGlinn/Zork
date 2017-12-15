@@ -89,7 +89,7 @@ namespace Zork
             while (true)
             {
                 player.CurrentRoom.PrintRoom();
-                NPC hostileNPC = player.CurrentRoom.NPCsInRoom.Find((NPC enemy) => enemy.IsHostile);
+                NPC hostileNPC = player.CurrentRoom.GetHostileNPC();
                 if (hostileNPC != null)
                 {
                     Console.WriteLine(hostileNPC.Name + " attacks you on sight!");
