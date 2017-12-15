@@ -30,7 +30,7 @@ namespace Zork.Characters
 
         public NPC(string name, string description, int strength, int startHealth, int maxHealth,  int letsPlayerFleePerXRounds, Weapon weapon = null) : base(name, description, strength, startHealth, maxHealth, weapon)
         {
-            this.Text = new TextTree(Name + ".txt");
+            this.Text = new TextTree(Name);
             PickNextTimeToMove();
             LetsPlayerFleePerXRounds = letsPlayerFleePerXRounds;
         }

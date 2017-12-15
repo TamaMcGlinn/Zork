@@ -2,6 +2,8 @@
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Reflection;
+using Zork.Properties;
 
 namespace Zork.Texts
 {
@@ -12,18 +14,15 @@ namespace Zork.Texts
     {
         public List<Node> RootNodes;
 
-        public TextTree(string filename)
+        public TextTree(string characterName)
         {
-            string text = "";
-            string path = "../../../data/story/" + filename;
-            if (!File.Exists(path))
+            string text = Resources.ResourceManager.GetString(characterName);
+            RootNodes = null;
+            if (text != string.Empty)
             {
-                RootNodes = null;
-                return;
+                var lines = text.Split('\n');
+                RootNodes = ReadNodes(lines, 0);
             }
-            text = System.IO.File.ReadAllText(path);
-            var lines = text.Split('\n');
-            RootNodes = ReadNodes(lines, 0);
         }
 
         private static int countInitialTabs(string line)

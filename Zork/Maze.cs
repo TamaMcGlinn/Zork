@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using Zork.Objects;
+using Zork.Properties;
 using Zork.UIContext;
 
 namespace Zork
@@ -27,18 +28,9 @@ namespace Zork
             Rooms = new Room[xSize, ySize];
             Rooms[StartX, StartY] = new Room(HouseDescription, new Point(StartX, StartY));
 
-            string streetnamesFilePath = "../../../data/streetnames.txt";
-            if (File.Exists(streetnamesFilePath))
-            {
-                streetNames.AddRange(File.ReadAllText(streetnamesFilePath).Split('\n'));
-            }
-            else
-            {
-                //a few default streetnames
-                streetNames.Add("Wallstreet");
-                streetNames.Add("Derproad");
-                streetNames.Add("Sherhome");
-            }
+            string streetnames = Resources.streetnames;
+            
+            streetNames.AddRange(streetnames.Split(new string[] { "\r\n"}, StringSplitOptions.None ));
             CreateNeighbour(new Point(StartX, StartY));
             AddExtraConnections(xSize * ySize);
         }
