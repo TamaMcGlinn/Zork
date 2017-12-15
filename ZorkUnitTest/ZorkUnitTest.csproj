@@ -49,6 +49,7 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="UserInputTests.cs" />
     <Compile Include="FleeBehaviourTests.cs" />
     <Compile Include="InteractionTests.cs" />
     <Compile Include="PickupTests.cs" />
