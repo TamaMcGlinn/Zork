@@ -22,14 +22,15 @@ namespace Zork.Characters
             StepsBeforeNextKill = KillEveryXPlayerSteps;
         }
         
-        public override void OnPlayerMoved(Game game)
+        public void PossiblyKillSomeone(Game game)
         {
-            base.OnPlayerMoved(game);
-            StepsBeforeNextKill--;
-            if(StepsBeforeNextKill == 0)
+            if (StepsBeforeNextKill > 0)
+            {
+                StepsBeforeNextKill--;
+            }
+            else
             {
                 KillRandomNPCInSameRoom(game);
-                StepsBeforeNextKill = KillEveryXPlayerSteps;
             }
         }
 
@@ -44,6 +45,7 @@ namespace Zork.Characters
             {
                 NPC victim = Chance.RandomElement(otherNPCs);
                 victim.KillThisNPC(game);
+                StepsBeforeNextKill = KillEveryXPlayerSteps;
             }
         }
     }

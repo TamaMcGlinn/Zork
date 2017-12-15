@@ -311,6 +311,7 @@ namespace Zork.Characters
                 {
                     npc.OnPlayerMoved(game);
                 }
+                game.Murderer.PossiblyKillSomeone(game);
             }
             else
             {

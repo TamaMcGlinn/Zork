@@ -78,7 +78,7 @@ namespace Zork.Characters
             return playerResponse.FirstAvailableChild(player);
         }
 
-        public virtual void OnPlayerMoved(Game game)
+        public void OnPlayerMoved(Game game)
         {
             _turnsUntilNextMove--;
             if( _turnsUntilNextMove == 0)

@@ -56,6 +56,8 @@ namespace Zork
             { 'q', (Game g) => { g.ExitGame = true; }}
         };
 
+        public MurdererNPC Murderer;
+
         private List<Point> GetNPCLocations()
         {
             return NPCS.ConvertAll((NPC npc) => { return npc.CurrentRoom.LocationOfRoom; }).ToList();
@@ -66,6 +68,7 @@ namespace Zork
             maze = new Maze(Width, Height, StartX, StartY);
             player = new Player(maze[new Point(StartX, StartY)]);
             AddCharacters();
+            Murderer = NPCS.Find(npc => npc is MurdererNPC) as MurdererNPC;
             ObjectDefinitions.AddItems(maze);
         }
 
