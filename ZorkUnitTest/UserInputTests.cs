@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Zork;
+using Zork.Objects;
 
 namespace ZorkUnitTest
 {
@@ -57,10 +58,50 @@ namespace ZorkUnitTest
         {
             using (var sr = new StringReader("t\n1\nq"))
             {
+                
                 Console.SetIn(sr);
                 Program.Main(new string[0]);
             }
         }
+
+        [TestMethod]
+        public void TestTryPickUp()
+        {
+            using (StringWriter stringWriter = new StringWriter())
+            {
+                using (var sr = new StringReader("p\n1\ni\nq"))
+                {
+                    Console.SetOut(stringWriter);
+                    Game game = new Game();
+                    game.player.CurrentRoom.ObjectsInRoom.Clear();
+                    game.player.CurrentRoom.ObjectsInRoom.Add(new HealthPickup("healthPickup", 10, "a healthy pickup"));
+                    Console.SetIn(sr);
+                    game.Run();
+                    string consoleOutput = stringWriter.ToString();
+                    Assert.IsTrue(consoleOutput.Contains("You currently have the following items:\r\nhealthPickup a healthy pickup"));
+                }
+            }
+        }
+
+        [TestMethod]
+        public void TestTalkToPlayer()
+        {
+            using (StringWriter stringWriter = new StringWriter())
+            {
+                using (var sr = new StringReader("t\n1\n1\n1\n1\n1\n1\nq"))
+                {
+
+                    Console.SetOut(stringWriter);
+                    Game game = new Game();
+                    game.player.CurrentRoom.NPCsInRoom.Add(game.NPCS.Find(npc => npc.Name == "sir_barclay"));
+                    Console.SetIn(sr);
+                    game.Run();
+                    string consoleOutput = stringWriter.ToString();
+                    Assert.IsTrue(consoleOutput.Contains("Good day. I'm looking for clues as to the murder of one Cecil, a lady of unsavoury profession."));
+                }
+            }
+        }
+
 
         [TestMethod]
         public void TestInventoryCommand()
