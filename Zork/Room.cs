@@ -128,9 +128,9 @@ namespace Zork
             Console.WriteLine();
         }
 
-        public List<BaseObject> GetNonClueItems()
+        public List<BaseObject> GetNonClueNonCorpseItems()
         {
-            return ObjectsInRoom.Where(obj => !(obj is Clue)).ToList();
+            return ObjectsInRoom.Where(obj => !(obj is Clue) && !(obj is CorpseNPCObject)).ToList();
         }
 
         public void PrintRoomContents()

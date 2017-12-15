@@ -104,12 +104,12 @@ namespace Zork.Characters
 
         private void PossiblyPickSomethingUp()
         {
-            List<BaseObject> NonClueItems = CurrentRoom.GetNonClueItems();
-            if (NonClueItems.Count > 0)
+            List<BaseObject> NonClueNonCorpseItems = CurrentRoom.GetNonClueNonCorpseItems();
+            if (NonClueNonCorpseItems.Count > 0)
             {
                 if (Chance.Percentage(PickUpChance))
                 {
-                    PickUpObject(Chance.RandomElement(NonClueItems));
+                    PickUpObject(Chance.RandomElement(NonClueNonCorpseItems));
                 }
             }
             if( Inventory.Count >= 3)
