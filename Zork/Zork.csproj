@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Chance.cs" />
     <Compile Include="Characters\Character.cs" />
     <Compile Include="MapPrinter.cs" />
     <Compile Include="Objects\CorpseNPCObject.cs" />
@@ -69,7 +70,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Chance.cs" />
     <Compile Include="Room.cs" />
     <Compile Include="Texts\Node.cs" />
     <Compile Include="Texts\TextTree.cs" />
