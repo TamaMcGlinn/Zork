@@ -23,7 +23,8 @@ namespace ZorkUnitTest
             int oldX = p.CurrentRoom.LocationOfRoom.X;
             int oldY = p.CurrentRoom.LocationOfRoom.Y;
             p.Flee(m);
-            Assert.IsTrue(p.CurrentRoom.LocationOfRoom.X != oldX || p.CurrentRoom.LocationOfRoom.Y != oldY);
+            bool different = p.CurrentRoom.LocationOfRoom.X != oldX | p.CurrentRoom.LocationOfRoom.Y != oldY;
+            Assert.IsTrue(different);
         }
     }
 }

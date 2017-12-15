@@ -133,5 +133,9 @@ namespace Zork
             DescribeObjectsInRoom();
         }
 
+        public NPC GetHostileNPC()
+        {
+            return NPCsInRoom.Find((NPC enemy) => enemy.IsHostile);
+        }
     }
 }

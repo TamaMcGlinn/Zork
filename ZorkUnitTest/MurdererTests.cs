@@ -106,10 +106,5 @@ namespace ZorkUnitTest
             return murderer;
             
         }
-
-        public Maze CreateMaze()
-        {
-            return new Maze(5, 5, 0, 0);
-        }
     }
 }
