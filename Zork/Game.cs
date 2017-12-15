@@ -35,7 +35,7 @@ namespace Zork
             new NPC("maxwell", "Sir Barclay's cook. He has a woman's hands, that have clearly never had to plug a leak below deck.", 8, 80, 1, null ),
             new NPC("emerson", "Looks like an unsavory sort of fellow.", 8, 80, 1, null ),
             new NPC("geoffrey", "By the looks of him, his brain is as dry as the remainder biscuit after voyage.", 8, 80, 1, null ),
-            new NPC("reginald", "He's no starveling. This great stinking hill of flesh has ne'er seen the inside of a shower nor the bottom of a salad bowl.", 2, 80, 1, null )
+            new NPC("reginald", "He's no starveling. This great stinking hill of flesh has ne'er seen the inside of a shower nor the bottom of a salad bowl.", 2, 80, 1, null ),
         };
 
         private Dictionary<char, Action<Game>> commands = new Dictionary<char, Action<Game>>()
@@ -71,8 +71,22 @@ namespace Zork
             ObjectDefinitions.AddItems(maze);
         }
 
+        private void AddHostileNPC(NPC npc)
+        {
+            npc.MarkHostile();
+            NPCS.Add(npc);
+        }
+
         private void AddCharacters()
         {
+            for (int i = 0; i < 2; ++i)
+            {
+                AddHostileNPC(new NPC("bear", "A black bear!", 9, 110, 4, null));
+            }
+            for (int i = 0; i < 8; ++i)
+            {
+                AddHostileNPC(new NPC("rabid dog", "He's frothing at the mouth!", 8, 40, 4, null));
+            }
             foreach (NPC npc in NPCS)
             {
                 Point location = maze.GetRandomRoom();
