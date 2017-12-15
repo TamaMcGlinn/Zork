@@ -142,7 +142,7 @@ namespace Zork
             }
             else
             {
-                enemy.Inventory.AddRange(enemy.Inventory);
+                enemy.DropAllItems();
                 enemy.KillThisNPC(game);
                 bool gameWon = enemy is MurdererNPC;
                 if (gameWon)
