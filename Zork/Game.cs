@@ -91,8 +91,17 @@ namespace Zork
             while (!ExitGame)
             {
                 player.CurrentRoom.PrintRoom();
-                ProcessInput(Console.ReadLine());
-                Console.WriteLine();
+                NPC hostileNPC = player.CurrentRoom.GetHostileNPC();
+                if (hostileNPC != null)
+                {
+                    Console.WriteLine(hostileNPC.Name + " attacks you on sight!");
+                    player.Fight(hostileNPC, this);
+                }
+                else
+                {
+                    ProcessInput(Console.ReadLine());
+                    Console.WriteLine();
+                }
             }
         }
 
