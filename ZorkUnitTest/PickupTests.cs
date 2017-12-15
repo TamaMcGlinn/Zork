@@ -1,6 +1,7 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -67,7 +68,7 @@ namespace ZorkUnitTest
         {
             Player p = CreatePlayer();
             Weapon w = new Weapon("Longsword", 5, "a big sword");
-            w.PickupObject(p);
+            w.PickupObject(new Room("", new Point(0,0)), p);
             Assert.IsTrue(p.EquippedWeapon == w);
         }
 
@@ -76,7 +77,7 @@ namespace ZorkUnitTest
         {
             Player p = CreatePlayer();
             Clue bo = new Clue("pants", "description");
-            bo.PickupObject(p);
+            bo.PickupObject(new Room("", new Point(0, 0)), p);
             Assert.IsTrue(p.Inventory.Contains(bo));
         }
 
