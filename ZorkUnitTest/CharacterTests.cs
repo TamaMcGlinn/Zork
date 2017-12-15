@@ -21,27 +21,11 @@ namespace ZorkUnitTest
         {
             Weapon longSword = CreateWeapon();
             Character character1 = CreateNPC();
-            if (character1.Name != "constable_barney")
-            {
-                Assert.Fail("The name of the character is not correct");
-            }
-
-            if(character1.Strength != 4)
-            {
-                Assert.Fail("The strength is not correct");
-            }
-
-            if (character1.Health != 100)
-            {
-                Assert.Fail("The health of the character is not correct");
-            }
-
-            if (character1.EquippedWeapon == null)
-            {
-                Assert.Fail("The weapon of the character is not correct");
-            }
+            Assert.AreEqual("constable_barney", character1.Name);
+            Assert.AreEqual(4, character1.Strength);
+            Assert.AreEqual(100, character1.Health);
+            Assert.IsNotNull(character1.EquippedWeapon);
         }
-
 
         [TestMethod]
         public void NonExistingCharacterTest()
@@ -57,10 +41,7 @@ namespace ZorkUnitTest
         public void CharacterWithoutWeaponTest()
         {
             Character character1 = CreateCharacterWithoutWeapon();
-            if (character1.EquippedWeapon != null)
-            {
-                Assert.Fail("Somehow the character has a weapon");
-            }
+            Assert.IsNull(character1.EquippedWeapon);
         }
 
         /// <summary>
@@ -81,10 +62,7 @@ namespace ZorkUnitTest
                 string lookAroundTextString = consoleOutput.ToString();
                 string[] lookAroundTextList = lookAroundTextString.Split('\n');
                 //check whether the second line of text contains the name of the character added to the room
-                if (!lookAroundTextList[0].Contains(npc.Name.Replace('_', ' ')))
-                {
-                    Assert.Fail("The character's name is not printed in the second line of the look around method");
-                }
+                Assert.IsTrue(lookAroundTextList[0].Contains(npc.Name.Replace('_', ' ')));
                 //checks for the descriptions of the three weapons (the objects in the room)
                 for (int i = 3; i < 6; i++)
                 {

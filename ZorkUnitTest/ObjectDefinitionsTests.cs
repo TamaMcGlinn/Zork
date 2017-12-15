@@ -4,6 +4,7 @@ using Zork;
 using Zork.Objects;
 using System.Collections.Generic;
 using System.Drawing;
+using System.Linq;
 
 namespace ZorkUnitTest
 {
@@ -26,18 +27,10 @@ namespace ZorkUnitTest
                     objects.AddRange(m[new Point(x, y)].ObjectsInRoom);
                 }
             }
-            HealthPickup hp=null;
-            foreach (var item in objects)
-            {
-                if(item is HealthPickup)
-                {
-                    hp = item as HealthPickup;
-                    break;
-                }
-            }
-            Assert.IsTrue(hp != null);
+            Assert.IsTrue(objects.Any(b => b is HealthPickup));
         }
 
+        [TestMethod]
         public void AddingCluesPickupsTest()
         {
             int sizex = 5;
@@ -66,6 +59,7 @@ namespace ZorkUnitTest
 
         }
 
+        [TestMethod]
         public void AddingWeaponsTest()
         {
             int sizex = 5;
@@ -81,17 +75,7 @@ namespace ZorkUnitTest
                     objects.AddRange(m[new Point(x, y)].ObjectsInRoom);
                 }
             }
-            Weapon weapon = null;
-            foreach (var item in objects)
-            {
-                if (item is Weapon)
-                {
-                    weapon = item as Weapon;
-                    break;
-                }
-            }
-            Assert.IsTrue(weapon != null);
-
+            Assert.IsTrue(objects.Any(b => b is Weapon));
         }
 
         /// <summary>
