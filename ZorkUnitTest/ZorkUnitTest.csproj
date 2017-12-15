@@ -51,6 +51,8 @@
     <Reference Include="System.Drawing" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ListExtensionTest.cs" />
+    <Compile Include="MapPrinterTest.cs" />
     <Compile Include="UserInputTests.cs" />
     <Compile Include="FleeBehaviourTests.cs" />
     <Compile Include="InteractionTests.cs" />

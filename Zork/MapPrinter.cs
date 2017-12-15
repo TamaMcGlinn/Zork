@@ -11,6 +11,9 @@ namespace Zork
 {
     public class MapPrinter
     {
+        public const char PlayerSymbol = '&';
+        public const char NPCSymbol = 'x';
+
         private const int BorderSize = 2;
         private Maze _maze;
 
@@ -110,13 +113,13 @@ namespace Zork
             {
                 if (playerLocation.X == xi && playerLocation.Y == yi)
                 {
-                    Console.Write("&");
+                    Console.Write(PlayerSymbol);
                 }
                 else if (npcLocations.Any((Point p) => { return p.X == xi && p.Y == yi; }))
                 {
                     using (new ColorContext(ColorContext.MapNPCLocation, ColorContext.MapAvailableSquare))
                     {
-                        Console.Write("X");
+                        Console.Write(NPCSymbol);
                     }
                 }
                 else
