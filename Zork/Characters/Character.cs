@@ -157,7 +157,7 @@ namespace Zork
                 {
                     using (new ColorContext(ColorContext.FailureColor))
                     {
-                        Console.WriteLine($"Oh my god, you killed poor innocent {enemy.Name}! You've picked up all {enemy.Name}'s items, check your inventory!");
+                        Console.WriteLine($"Oh my god, you killed poor innocent {enemy.Name}! All of {enemy.Name}'s items are on the floor!");
                     }
                 }
             }
