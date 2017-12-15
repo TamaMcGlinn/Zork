@@ -39,8 +39,7 @@ namespace Zork.Characters
 
         private void PickNextTimeToMove()
         {
-            var rng = new Random();
-            _turnsUntilNextMove = rng.Next(MinTurnsBetweenMoves, MaxTurnsBetweenMoves + 1);
+            _turnsUntilNextMove = Chance.Between(MinTurnsBetweenMoves, MaxTurnsBetweenMoves + 1);
         }
 
         /// <summary>
@@ -84,12 +83,11 @@ namespace Zork.Characters
 
         private void Move()
         {
-            var rng = new Random();
             var currentLocation = CurrentRoom.LocationOfRoom;
             var options = maze.AccessibleNeighbours(currentLocation).ToList();
             if (options.Count > 0)
             {
-                var newRoom = options[rng.Next(0, options.Count)];
+                var newRoom = Chance.RandomElement(options);
                 maze[currentLocation].NPCsInRoom.Remove(this);
                 maze[newRoom].NPCsInRoom.Add(this);
                 CurrentRoom = maze[newRoom];
@@ -99,20 +97,18 @@ namespace Zork.Characters
 
         private void PossiblyPickSomethingUp()
         {
-            Random rng = new Random();
             if (CurrentRoom.ObjectsInRoom.Count > 0)
             {
-                if (ObjectDefinitions.DropChanceByPercentage(PickUpChance))
+                if (Chance.Percentage(PickUpChance))
                 {
-                    int pickupIndex = rng.Next(0, CurrentRoom.ObjectsInRoom.Count);
-                    PickUpObject(CurrentRoom.ObjectsInRoom[pickupIndex]);
+                    PickUpObject(Chance.RandomElement(CurrentRoom.ObjectsInRoom));
                 }
             }
             if( Inventory.Count >= 3)
             {
-                int dropIndex = rng.Next(0, Inventory.Count);
-                CurrentRoom.ObjectsInRoom.Add(Inventory[dropIndex]);
-                Inventory.RemoveAt(dropIndex);
+                var item = Chance.RandomElement(Inventory);
+                CurrentRoom.ObjectsInRoom.Add(item);
+                Inventory.Remove(item);
             }
         }
 

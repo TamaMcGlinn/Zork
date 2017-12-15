@@ -182,9 +182,8 @@ namespace Zork
         
         public int GenerateDamage()
         {
-            Random turnBonusDamageGenerator = new Random();
             const int maxBonusDamage = 10;
-            int bonusDamage = turnBonusDamageGenerator.Next(0, maxBonusDamage);
+            int bonusDamage = Chance.Between(0, maxBonusDamage);
 
             int damage = Strength + bonusDamage;
             if (EquippedWeapon != null)

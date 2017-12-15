@@ -14,7 +14,6 @@ namespace Zork
     {
         public Room[,] Rooms { get; set; }
         public const string HouseDescription = "Your house";
-        Random rng;
         public readonly int Width;
         public readonly int Height;
         private List<string> streetNames = new List<string>();
@@ -23,7 +22,6 @@ namespace Zork
         {
             Width = xSize;
             Height = ySize;
-            rng = new Random();
             Rooms = new Room[xSize, ySize];
             Rooms[StartX, StartY] = new Room(HouseDescription, new Point(StartX, StartY));
 
@@ -60,7 +58,7 @@ namespace Zork
 
         public Point GetRandomRoom()
         {
-            return new Point(rng.Next(0, Width), rng.Next(0, Height));
+            return new Point(Chance.Between(0, Width), Chance.Between(0, Height));
         }
 
         private void AddExtraConnections(int extras)
@@ -71,7 +69,7 @@ namespace Zork
             }
             for (int i = 0; i < extras; ++i)
             {
-                var roomToConnect = new Point(rng.Next(1, Width - 1), rng.Next(1, Height - 1));
+                var roomToConnect = new Point(Chance.Between(1, Width - 1), Chance.Between(1, Height - 1));
                 var neighbourPoint = GetRandomNeighbour(roomToConnect);
                 Connect(roomToConnect, neighbourPoint);
             }
@@ -80,7 +78,7 @@ namespace Zork
         public Point GetRandomNeighbour(Point roomToConnect)
         {
             Direction[] allDirections = (Direction[])Enum.GetValues(typeof(Direction));
-            Direction direction = allDirections[rng.Next(0, allDirections.Length)];
+            Direction direction = Chance.RandomElement(allDirections);
             return roomToConnect.Add(direction);
         }
 
@@ -98,7 +96,7 @@ namespace Zork
             {
                 return null;
             }
-            return otherRooms[rng.Next(0, otherRooms.Count)];
+            return Chance.RandomElement(otherRooms);
         }
 
         /// <summary>
@@ -187,10 +185,8 @@ namespace Zork
             {
                 return "A busy street in London.";
             }
-            Random rng = new Random();
-            int index = rng.Next(0, streetNames.Count);
-            var result = streetNames[index];
-            streetNames.RemoveAt(index);
+            var result = Chance.RandomElement(streetNames);
+            streetNames.Remove(result);
             return result.Substring(0, result.Length-1);
         }
 
@@ -207,7 +203,7 @@ namespace Zork
                 {
                     return;
                 }
-                Point destPoint = options[rng.Next(0, options.Count)];
+                Point destPoint = Chance.RandomElement(options);
                 Rooms[destPoint.X, destPoint.Y] = new Room(GetRoomDescription(), destPoint);
                 Connect(fromPoint, destPoint);
                 CreateNeighbour(destPoint); //recursive step
