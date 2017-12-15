@@ -173,9 +173,8 @@ namespace Zork
         
         public int GenerateDamage()
         {
-            Random turnBonusDamageGenerator = new Random();
             const int maxBonusDamage = 10;
-            int bonusDamage = turnBonusDamageGenerator.Next(0, maxBonusDamage);
+            int bonusDamage = Chance.Between(0, maxBonusDamage);
 
             int damage = Strength + bonusDamage;
             if (EquippedWeapon != null)
@@ -184,27 +183,7 @@ namespace Zork
             }
             return damage;
         }
-
-        /// <summary>
-        /// Lists all items in the room and gives options for the player to pick them up. 
-        /// If he chooses a valid item it gets added to the inventory.
-        /// </summary>
-        public void PickupItem()
-        {
-            if (CurrentRoom.ObjectsInRoom.Count <= 0)
-            {
-                using (new ColorContext(ColorContext.FailureColor))
-                {
-                    Console.WriteLine("There are no items to pickup in this room.");
-                }
-                return;
-            }
-            CurrentRoom.PrintItems(CurrentRoom.ObjectsInRoom);
-            string input = Console.ReadLine();
-            int.TryParse(input, out int inputInteger);
-            TryPickUp(CurrentRoom, inputInteger - 1);
-        }
-
+        
         public void DropWeapon()
         {
             if (EquippedWeapon != null)
@@ -220,21 +199,10 @@ namespace Zork
             Inventory.Clear();
         }
 
-        private void TryPickUp(Room currentRoom, int choiceIndex)
+        protected void PickUpObject(BaseObject obj)
         {
-            if (choiceIndex >= 0 && choiceIndex < CurrentRoom.ObjectsInRoom.Count)
-            {
-                var obj = CurrentRoom.ObjectsInRoom[choiceIndex];
-                CurrentRoom.ObjectsInRoom.Remove(obj);
-                obj.PickupObject(this);
-            }
-            else
-            {
-                using (new ColorContext(ColorContext.FailureColor))
-                {
-                    Console.WriteLine("Cannot pick that item up.");
-                }
-            }
+            CurrentRoom.ObjectsInRoom.Remove(obj);
+            obj.PickupObject(this);
         }
     }
 }

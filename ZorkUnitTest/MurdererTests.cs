@@ -80,7 +80,7 @@ namespace ZorkUnitTest
             int totalNpcs = CountNPCs(m);
             for (int i = 0; i < murderer.KillEveryXPlayerSteps; ++i)
             {
-                murderer.OnPlayerMoved(game);
+                murderer.PossiblyKillSomeone(game);
             }
             int totalnpcsAfterKill = CountNPCs(m);
             Assert.IsTrue(totalnpcsAfterKill < totalNpcs);

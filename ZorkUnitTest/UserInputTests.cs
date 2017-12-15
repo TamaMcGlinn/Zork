@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Zork;
-using Zork.Characters;
 using Zork.Objects;
 
 namespace ZorkUnitTest
@@ -57,8 +56,9 @@ namespace ZorkUnitTest
         [TestMethod]
         public void TestTalkCommand()
         {
-            using (var sr = new StringReader("t\n1\n1\n1\n1\n1\n1\nq"))
+            using (var sr = new StringReader("t\n1\n1\n1\n1\n1\nq"))
             {
+                
                 Console.SetIn(sr);
                 Program.Main(new string[0]);
             }
@@ -79,42 +79,6 @@ namespace ZorkUnitTest
                     game.Run();
                     string consoleOutput = stringWriter.ToString();
                     Assert.IsTrue(consoleOutput.Contains("You currently have the following items:\r\nhealthPickup a healthy pickup"));
-                }
-            }
-        }
-
-        [TestMethod]
-        public void TestUseObject()
-        {
-            using (var sr = new StringReader("1\nq"))
-            {
-                Game game = new Game();
-                game.player.Inventory.Clear();
-                game.player.Inventory.Add(new HealthPickup("healthPickup", 10, "a healthy pickup"));
-                game.player.Health = 90;
-                Console.SetIn(sr);
-                game.player.UseObject();
-                Assert.IsTrue(game.player.Health==100);
-            }
-        }
-
-        [TestMethod]
-        public void TestBattleEnemy()
-        {
-            using (StringWriter stringWriter = new StringWriter())
-            {
-                using (var sr = new StringReader("b\n1\nq"))
-                {
-                    Console.SetOut(stringWriter);
-                    Game game = new Game();
-                    game.player.CurrentRoom.NPCsInRoom.Clear();
-                    NPC npc = CharacterTests.CreateNPC();
-                    npc.CurrentRoom = game.player.CurrentRoom;
-                    game.player.CurrentRoom.NPCsInRoom.Add(npc);
-                    Console.SetIn(sr);
-                    game.Run();
-                    string output = stringWriter.ToString();
-                    Assert.IsTrue(output.Contains("You hit for"));
                 }
             }
         }
@@ -162,7 +126,7 @@ namespace ZorkUnitTest
         [TestMethod]
         public void TestBattleCommand()
         {
-            using (var sr = new StringReader("b\n1\nq"))
+            using (var sr = new StringReader("b\n1\nN\nN\nN\nN\nN\nN\nN\nN\nq"))
             {
                 Console.SetIn(sr);
                 Program.Main(new string[0]);
